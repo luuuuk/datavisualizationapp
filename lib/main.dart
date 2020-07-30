@@ -1,5 +1,7 @@
+import 'package:data_visualization_app/screens/add_data_screen.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'screens/home_screen.dart';
 
 void main() => runApp(MyApp());
@@ -10,18 +12,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Data Visualization',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: ThemeColors.darkBlue,
-        accentColor: ThemeColors.yellowGreenish,
-
-        // Define the default font family.
-        fontFamily: 'Roboto',
-      ),
       debugShowCheckedModeBanner: false,
+      theme: VisualizationTheme().theme,
       initialRoute: HomeScreen.routeName,
       routes: {
         HomeScreen.routeName: (context) => HomeScreen(),
+        AddDataScreen.routeName: (context) => AddDataScreen(),
       },
     );
   }
