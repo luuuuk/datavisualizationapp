@@ -1,4 +1,6 @@
+import 'package:data_visualization_app/models/recorded_activity.dart';
 import 'package:data_visualization_app/screens/add_data_screen.dart';
+import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
 import 'package:data_visualization_app/widgets/bottom_bar.dart';
@@ -17,35 +19,57 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Container(
         color: ThemeColors.darkBlue,
         child: Center(
-            child: hasData
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+          child: FutureBuilder<List<RecordedActivity>>(
+              future: getActivityData(),
+              builder:
+                  (context, AsyncSnapshot<List<RecordedActivity>> snapshot) {
+                if (snapshot.hasData) {
+                  return ListView(
                     children: [
                       BorderContainerWidget(
                         Center(
-                          child: Text(
-                            "Here goes your data",
-                            style:
-                            GoogleFonts.montserrat(color: Colors.white),
-                            textAlign: TextAlign.center,
+                          child: DataTable(
+                            columns: [
+                              DataColumn(
+                                  label: Text(
+                                    "Type",
+                                    style: GoogleFonts.montserrat(fontSize: 12.0, fontWeight: FontWeight.w900),
+                                  )),
+                              DataColumn(
+                                  label: Text(
+                                    "Duration",
+                                    style: GoogleFonts.montserrat(fontSize: 12.0, fontWeight: FontWeight.w900),
+                                  )),
+                              DataColumn(
+                                  label: Text(
+                                    "Distance",
+                                    style: GoogleFonts.montserrat(fontSize: 12.0, fontWeight: FontWeight.w900),
+                                  )),
+                            ],
+                            rows: getTableRows(snapshot.data),
                           ),
                         ),
-                        "Here goes your title",
+                        "Total Activities",
                       ),
                     ],
-                  )
-                : Center(
+                  );
+                } else {
+                  return Center(
                     child: Text(
                       "You have not yet entered any data to be displayed. \nStart by using the button down here in the right corner.",
-                      style: GoogleFonts.montserrat(color: Colors.white, ),
+                      style: GoogleFonts.montserrat(
+                        color: Colors.white,
+                      ),
                       textAlign: TextAlign.center,
                     ),
-                  )),
+                  );
+                }
+              }),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: ThemeColors.orange,
@@ -58,5 +82,40 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomBarWidget(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
+  }
+
+  /// Method to get the data from the database
+  Future<List<RecordedActivity>> getActivityData() async {
+    DatabaseManager dbManager = new DatabaseManager();
+    List<RecordedActivity> activities = await dbManager.getActivities();
+
+    if (activities == null || activities.isEmpty) {
+      setState(() {
+        hasData = false;
+      });
+      return null;
+    } else {
+      setState(() {
+        hasData = true;
+      });
+    }
+
+    return activities;
+  }
+
+  /// Method to fill the rows of the table
+  List<DataRow> getTableRows(List<RecordedActivity> activities){
+
+    List<DataRow> tableRows = new List<DataRow>();
+
+    for(RecordedActivity recAct in activities){
+      tableRows.add( DataRow(cells: [
+        DataCell(Text(recAct.activityType)),
+        DataCell(Text(recAct.duration)),
+        DataCell(Text(recAct.distance.toString())),
+      ],));
+    }
+
+    return tableRows;
   }
 }

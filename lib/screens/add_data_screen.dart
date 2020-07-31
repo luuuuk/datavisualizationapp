@@ -15,6 +15,7 @@ class AddDataScreen extends StatefulWidget {
 }
 
 class _AddDataScreenState extends State<AddDataScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   DateTime dateTime;
   final Map<int, Widget> type = <int, Widget>{
     0: Text(
@@ -42,6 +43,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
@@ -223,10 +225,34 @@ class _AddDataScreenState extends State<AddDataScreen> {
     RecordedActivity newActivity = RecordedActivity(activityType, selectedDate.toString(), selectedDuration.toString(), selectedDistance);
 
     DatabaseManager dbManager = new DatabaseManager();
+    dbManager.saveActivity(newActivity);
+
+
     List<RecordedActivity> activities = await dbManager.getActivities();
+    showSnackBar(true);
 
     for(RecordedActivity activity in activities){
       print(activity.toString());
     }
+  }
+
+  /// Method to show the snack bar
+  void showSnackBar(bool success) {
+
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        backgroundColor: success ? Colors.green : Colors.red, // Set color depending on success
+        content: success? const Text(
+          'Activity has been saved.',
+          style: TextStyle(color: Colors.white),
+        )
+            :const Text(
+          'There has been a problem while saving your activity.',
+          style: TextStyle(color: Colors.white),
+        ),
+        //action: SnackBarAction(
+        //    label: 'DISMISS', onPressed: ,),
+      ),
+    );
   }
 }
