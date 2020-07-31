@@ -1,7 +1,6 @@
 import 'package:data_visualization_app/screens/add_data_screen.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'screens/home_screen.dart';
 
 void main() => runApp(MyApp());

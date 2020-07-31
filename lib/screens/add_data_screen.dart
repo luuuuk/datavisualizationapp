@@ -1,4 +1,5 @@
-import 'package:data_visualization_app/models/activity.dart';
+import 'package:data_visualization_app/models/recorded_activity.dart';
+import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ class AddDataScreen extends StatefulWidget {
 
 class _AddDataScreenState extends State<AddDataScreen> {
   DateTime dateTime;
-  bool _visible;
   final Map<int, Widget> type = <int, Widget>{
     0: Text(
       "Running",
@@ -208,18 +208,25 @@ class _AddDataScreenState extends State<AddDataScreen> {
   format(Duration d) => d.toString().split('.').first.padLeft(8, "0");
 
   /// Method to save the entries on the screen
-  void saveEntries(){
-    ActivityType activityType;
+  Future<void> saveEntries() async {
+    String activityType;
     switch(segmentedControlGroupValue){
-      case 0: activityType = ActivityType.running;
+      case 0: activityType = "Running";
       break;
-      case 1: activityType = ActivityType.cycling;
+      case 1: activityType = "Cycling";
       break;
-      case 2: activityType = ActivityType.climbing;
+      case 2: activityType = "Climbing";
       break;
-      default: activityType = ActivityType.running;
+      default: activityType = "Running";
     }
 
-    Activity newActivity = Activity(activityType, selectedDate, selectedDuration, selectedDistance);
+    RecordedActivity newActivity = RecordedActivity(activityType, selectedDate.toString(), selectedDuration.toString(), selectedDistance);
+
+    DatabaseManager dbManager = new DatabaseManager();
+    List<RecordedActivity> activities = await dbManager.getActivities();
+
+    for(RecordedActivity activity in activities){
+      print(activity.toString());
+    }
   }
 }
