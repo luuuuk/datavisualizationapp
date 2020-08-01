@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: charts.MaterialPalette.white,
                   ),
                   lineStyle: charts.LineStyleSpec(
-                    thickness: 1,
+                    thickness: 0,
                     color: charts.MaterialPalette.white,
                   )
               ),
@@ -201,13 +201,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     format: 'H',
                     transitionFormat: 'H',
                   ))),
-            primaryMeasureAxis: charts.NumericAxisSpec(
-                renderSpec: charts.GridlineRendererSpec(
-                    labelStyle: charts.TextStyleSpec(
-                        fontSize: 10, color: charts.MaterialPalette.white),
-                    lineStyle: charts.LineStyleSpec(
-                        thickness: 1,
-                        color: charts.MaterialPalette.white)))
+          primaryMeasureAxis: charts.NumericAxisSpec(
+              renderSpec: charts.GridlineRendererSpec(
+                  labelStyle: charts.TextStyleSpec(
+                      fontSize: 10, color: charts.MaterialPalette.white),
+                  lineStyle: charts.LineStyleSpec(
+                      thickness: 1,
+                      color: charts.MaterialPalette.white))),
+          customSeriesRenderers: [
+            new charts.PointRendererConfig(
+              // ID used to link series to this renderer.
+                customRendererId: 'customPoint')
+          ],
         ),
       );
     }

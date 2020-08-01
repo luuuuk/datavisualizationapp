@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:data_visualization_app/models/recorded_activity.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class SortingDataService {
   /// Method to get series only containing the total activity distance
@@ -84,12 +85,11 @@ class SortingDataService {
     }
 
     /// Add first and last day of the week for data series to be in that range
-    runningActivitiesTime.add(ActivitiesDataDateTime(DateTime.now().subtract(Duration(days: 7)), 0, ThemeColors.blueGreenis));
-    cyclingActivitiesTime.add(ActivitiesDataDateTime(DateTime.now().subtract(Duration(days: 7)), 0, ThemeColors.orange));
-    climbingActivitiesTime.add(ActivitiesDataDateTime(DateTime.now().subtract(Duration(days: 7)), 0, ThemeColors.yellowGreenish));
-    runningActivitiesTime.add(ActivitiesDataDateTime(DateTime.now(), 0, ThemeColors.blueGreenis));
-    cyclingActivitiesTime.add(ActivitiesDataDateTime(DateTime.now(), 0, ThemeColors.orange));
-    climbingActivitiesTime.add(ActivitiesDataDateTime(DateTime.now(), 0, ThemeColors.yellowGreenish));
+    for(int i = 0; i < 8; i++){
+      runningActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.blueGreenis));
+      cyclingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.orange));
+      climbingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.yellowGreenish));
+    }
 
     if (runningActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
@@ -98,7 +98,7 @@ class SortingDataService {
         domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
         data: runningActivitiesTime,
-      ));
+      )..setAttribute(charts.rendererIdKey, 'customPoint'),);
     }
     if (cyclingActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
@@ -107,7 +107,7 @@ class SortingDataService {
         domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
         data: cyclingActivitiesTime,
-      ));
+      )..setAttribute(charts.rendererIdKey, 'customPoint'),);
     }
     if (climbingActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
@@ -116,7 +116,7 @@ class SortingDataService {
         domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
         data: climbingActivitiesTime,
-      ));
+      )..setAttribute(charts.rendererIdKey, 'customPoint'),);
     }
 
     return series;
