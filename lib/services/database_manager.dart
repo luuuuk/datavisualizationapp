@@ -28,17 +28,33 @@ class DatabaseManager {
   }
 
   initDB() async {
-    var dbDir = await getDatabasesPath();
-    var dbPath = join(dbDir, "activity_database.db");
+    var databasesPath = await getDatabasesPath();
+    var path = join(databasesPath, "asset_activity_database.db");
 
-    ByteData data = await rootBundle.load("assets/activity_database.db");
-    List<int> bytes =
-        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    await File(dbPath).writeAsBytes(bytes);
-    return await openDatabase(dbPath, version: 1,
-        onCreate: (Database db, int version)  {
-      print("------------------------ onCreate ------------------------");
-    });
+// Check if the database exists
+    var exists = await databaseExists(path);
+
+    if (!exists) {
+      // Should happen only the first time you launch your application
+      print("Creating new copy from asset");
+
+      // Make sure the parent directory exists
+      try {
+        await Directory(dirname(path)).create(recursive: true);
+      } catch (_) {}
+
+      // Copy from asset
+      ByteData data = await rootBundle.load(join("assets", "activity_database.db"));
+      List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+
+      // Write and flush the bytes written
+      await File(path).writeAsBytes(bytes, flush: true);
+    } else {
+      print("Opening existing database");
+    }
+    // open the database
+    return await openDatabase(path);
   }
 
   /// Method to get all activities
@@ -47,7 +63,6 @@ class DatabaseManager {
     List<Map> list = await dbClient.rawQuery('SELECT * FROM activities');
     List<RecordedActivity> activities = new List();
     for (int i = 0; i < list.length; i++) {
-
       activities.add(new RecordedActivity(list[i]["type"], list[i]["date"],
           list[i]["duration"], list[i]["distance"]));
     }
@@ -55,29 +70,10 @@ class DatabaseManager {
   }
 
   /// Save card
-  void saveActivity(RecordedActivity activity) async {
-    var dbClient = await database;
+  Future<int> saveActivity(RecordedActivity activity) async {
+    Database dbClient = await this.database;
 
-    await dbClient.transaction((txn) async {
-      return await txn.rawInsert(
-          'INSERT INTO activities(type, date, duration, distance) VALUES(' +
-              '\'' +
-              activity.activityType.toString() +
-              '\'' +
-              ',' +
-              '\'' +
-              activity.date.toString() +
-              '\'' +
-              ',' +
-              '\'' +
-              activity.duration.toString() +
-              '\'' +
-              ',' +
-              '\'' +
-              activity.distance.toString() +
-              '\'' +
-              ')');
-    });
-    return;
+    var result = await dbClient.insert("activities", activity.toMap());
+    return result;
   }
 }
