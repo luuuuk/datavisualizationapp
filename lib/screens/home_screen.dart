@@ -66,6 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       BorderContainerWidget(
                           _buildTotalDistanceChart(snapshot.data),
                           "Total Distance"),
+                      BorderContainerWidget(
+                        _buildWeeklyActivityChart(snapshot.data),
+                        "Weekly Activities"
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 24, 0, 0),
+                      ),
                     ],
                   );
                 } else {
@@ -121,9 +128,9 @@ class _HomeScreenState extends State<HomeScreen> {
     for (RecordedActivity recAct in activities) {
       tableRows.add(DataRow(
         cells: [
-          DataCell(Text(recAct.activityType)),
-          DataCell(Text(recAct.duration)),
-          DataCell(Text(recAct.distance.toString())),
+          DataCell(Text(recAct.activityType, style: GoogleFonts.montserrat(color: Colors.white),)),
+          DataCell(Text(recAct.duration, style: GoogleFonts.montserrat(color: Colors.white),)),
+          DataCell(Text(recAct.distance.toString(), style: GoogleFonts.montserrat(color: Colors.white),)),
         ],
       ));
     }
@@ -163,5 +170,51 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: charts.MaterialPalette.white))),
       ),
     );
+  }
+
+  Widget _buildWeeklyActivityChart(List<RecordedActivity> activities){
+
+    List<charts.Series<ActivitiesDataDateTime, DateTime>> data = SortingDataService().getWeeklyActivity(activities);
+
+    if(data.isNotEmpty) {
+      return SizedBox(
+        height: 200.0,
+        child: new charts.TimeSeriesChart(
+          data,
+          animate: false,
+          domainAxis: new charts.DateTimeAxisSpec(
+              renderSpec: charts.GridlineRendererSpec(
+                  axisLineStyle: charts.LineStyleSpec(
+                    color: charts.MaterialPalette.white, // this also doesn't change the Y axis labels
+                  ),
+                  labelStyle: new charts.TextStyleSpec(
+                    fontSize: 10,
+                    color: charts.MaterialPalette.white,
+                  ),
+                  lineStyle: charts.LineStyleSpec(
+                    thickness: 1,
+                    color: charts.MaterialPalette.white,
+                  )
+              ),
+              tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+                  hour: new charts.TimeFormatterSpec(
+                    format: 'H',
+                    transitionFormat: 'H',
+                  ))),
+            primaryMeasureAxis: charts.NumericAxisSpec(
+                renderSpec: charts.GridlineRendererSpec(
+                    labelStyle: charts.TextStyleSpec(
+                        fontSize: 10, color: charts.MaterialPalette.white),
+                    lineStyle: charts.LineStyleSpec(
+                        thickness: 1,
+                        color: charts.MaterialPalette.white)))
+        ),
+      );
+    }
+    else {
+      return Center(
+        child: Text("There seems to be no training data this week...\nTime to start training!", style: GoogleFonts.montserrat(color: Colors.white),),
+      );
+    }
   }
 }
