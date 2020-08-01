@@ -1,12 +1,14 @@
 import 'package:data_visualization_app/models/recorded_activity.dart';
 import 'package:data_visualization_app/screens/add_data_screen.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
+import 'package:data_visualization_app/services/sorting_data.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
 import 'package:data_visualization_app/widgets/bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/';
@@ -36,25 +38,34 @@ class _HomeScreenState extends State<HomeScreen> {
                             columns: [
                               DataColumn(
                                   label: Text(
-                                    "Type",
-                                    style: GoogleFonts.montserrat(fontSize: 12.0, fontWeight: FontWeight.w900),
-                                  )),
+                                "Type",
+                                style: GoogleFonts.montserrat(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.w900),
+                              )),
                               DataColumn(
                                   label: Text(
-                                    "Duration",
-                                    style: GoogleFonts.montserrat(fontSize: 12.0, fontWeight: FontWeight.w900),
-                                  )),
+                                "Duration",
+                                style: GoogleFonts.montserrat(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.w900),
+                              )),
                               DataColumn(
                                   label: Text(
-                                    "Distance",
-                                    style: GoogleFonts.montserrat(fontSize: 12.0, fontWeight: FontWeight.w900),
-                                  )),
+                                "Distance",
+                                style: GoogleFonts.montserrat(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.w900),
+                              )),
                             ],
                             rows: getTableRows(snapshot.data),
                           ),
                         ),
-                        "Total Activities",
+                        "Activity Overview",
                       ),
+                      BorderContainerWidget(
+                          _buildTotalDistanceChart(snapshot.data),
+                          "Total Distance"),
                     ],
                   );
                 } else {
@@ -104,18 +115,53 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   /// Method to fill the rows of the table
-  List<DataRow> getTableRows(List<RecordedActivity> activities){
-
+  List<DataRow> getTableRows(List<RecordedActivity> activities) {
     List<DataRow> tableRows = new List<DataRow>();
 
-    for(RecordedActivity recAct in activities){
-      tableRows.add( DataRow(cells: [
-        DataCell(Text(recAct.activityType)),
-        DataCell(Text(recAct.duration)),
-        DataCell(Text(recAct.distance.toString())),
-      ],));
+    for (RecordedActivity recAct in activities) {
+      tableRows.add(DataRow(
+        cells: [
+          DataCell(Text(recAct.activityType)),
+          DataCell(Text(recAct.duration)),
+          DataCell(Text(recAct.distance.toString())),
+        ],
+      ));
     }
 
     return tableRows;
+  }
+
+  /// Method to build the BarChart containing the data for the duration of the given [activities]
+  Widget _buildTotalDistanceChart(List<RecordedActivity> activities) {
+    return SizedBox(
+      height: 200.0,
+      child: new charts.BarChart(
+        SortingDataService().getTotalActivitiesDistance(activities),
+        animate: false,
+        barGroupingType: charts.BarGroupingType.stacked,
+        domainAxis: new charts.OrdinalAxisSpec(
+            renderSpec: new charts.SmallTickRendererSpec(
+
+                // Tick and Label styling here.
+                labelStyle: new charts.TextStyleSpec(
+                    fontSize: 12, // size in Pts.
+                    color: charts.MaterialPalette.white),
+
+                // Change the line colors to match text color.
+                lineStyle: new charts.LineStyleSpec(
+                    color: charts.MaterialPalette.white))),
+        primaryMeasureAxis: new charts.NumericAxisSpec(
+            renderSpec: new charts.GridlineRendererSpec(
+
+                // Tick and Label styling here.
+                labelStyle: new charts.TextStyleSpec(
+                    fontSize: 12, // size in Pts.
+                    color: charts.MaterialPalette.white),
+
+                // Change the line colors to match text color.
+                lineStyle: new charts.LineStyleSpec(
+                    color: charts.MaterialPalette.white))),
+      ),
+    );
   }
 }
