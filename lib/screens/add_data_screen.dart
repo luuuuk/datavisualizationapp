@@ -222,14 +222,15 @@ class _AddDataScreenState extends State<AddDataScreen> {
       default: activityType = "Running";
     }
 
-    RecordedActivity newActivity = RecordedActivity(activityType, selectedDate.toString(), selectedDuration.toString(), selectedDistance);
+    RecordedActivity newActivity = RecordedActivity(activityType, selectedDate.toString(), format(selectedDuration).toString(), selectedDistance);
 
     DatabaseManager dbManager = new DatabaseManager();
-    dbManager.saveActivity(newActivity);
+    int success = await dbManager.saveActivity(newActivity);
 
+    showSnackBar(success == 0 ? false : true);
 
     List<RecordedActivity> activities = await dbManager.getActivities();
-    showSnackBar(true);
+
 
     for(RecordedActivity activity in activities){
       print(activity.toString());
