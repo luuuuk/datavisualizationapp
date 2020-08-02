@@ -31,7 +31,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
       style: GoogleFonts.montserrat(),
     ),
   };
-  int segmentedControlGroupValue;
+  int segmentedControlGroupValue = 0;
   TextEditingController _dateController = new TextEditingController();
   TextEditingController _timeController = new TextEditingController();
   TextEditingController _distanceController = new TextEditingController();
@@ -48,16 +48,16 @@ class _AddDataScreenState extends State<AddDataScreen> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: ThemeColors.darkBlue,
+            color: Colors.white,
           ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        backgroundColor: ThemeColors.blueGreenis,
+        backgroundColor: ThemeColors.lightBlue,
         title: Text(
           "Add Data",
-          style: GoogleFonts.montserrat(color: ThemeColors.darkBlue),
+          style: GoogleFonts.montserrat(color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -140,6 +140,9 @@ class _AddDataScreenState extends State<AddDataScreen> {
                 ),
                 "Distance",
               ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 24, 0, 0),
             ),
           ],
         ),

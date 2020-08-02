@@ -33,42 +33,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   return ListView(
                     children: [
                       BorderContainerWidget(
-                        Center(
-                          child: DataTable(
-                            columns: [
-                              DataColumn(
-                                  label: Text(
-                                "Type",
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w900),
-                              )),
-                              DataColumn(
-                                  label: Text(
-                                "Duration",
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w900),
-                              )),
-                              DataColumn(
-                                  label: Text(
-                                "Distance",
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w900),
-                              )),
-                            ],
-                            rows: getTableRows(snapshot.data),
-                          ),
-                        ),
-                        "Activity Overview",
+                        _buildWeeklyOverview(snapshot.data),
+                        "Weekly Activity Overview"
+                      ),
+                      BorderContainerWidget(
+                          _buildWeeklyActivityChart(snapshot.data),
+                          "Weekly Activity Time"
                       ),
                       BorderContainerWidget(
                           _buildTotalDistanceChart(snapshot.data),
-                          "Total Distance"),
+                          "Total Activity Distance"),
+
                       BorderContainerWidget(
-                        _buildWeeklyActivityChart(snapshot.data),
-                        "Weekly Activities"
+                        _buildAllActivitiesTableWidget(snapshot.data),
+                        "Activities Overview",
                       ),
                       Container(
                         margin: EdgeInsets.fromLTRB(0, 24, 0, 0),
@@ -221,5 +199,109 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Text("There seems to be no training data this week...\nTime to start training!", style: GoogleFonts.montserrat(color: Colors.white),),
       );
     }
+  }
+
+  Widget _buildAllActivitiesTableWidget(List<RecordedActivity> activities){
+    return Center(
+      child: DataTable(
+        columns: [
+          DataColumn(
+              label: Text(
+                "Type",
+                style: GoogleFonts.montserrat(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w900),
+              )),
+          DataColumn(
+              label: Text(
+                "Duration",
+                style: GoogleFonts.montserrat(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w900),
+              )),
+          DataColumn(
+              label: Text(
+                "Distance",
+                style: GoogleFonts.montserrat(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w900),
+              )),
+        ],
+        rows: getTableRows(activities),
+      ),
+    );
+  }
+
+  /// Method to build a weekly overview table containing only activity data from the past week
+  Widget _buildWeeklyOverview(List<RecordedActivity> activities){
+
+    /// Hours, Minutes, Seconds, Distance
+    List<int> cyclingTime = [0,0];
+    List<int> runningTime = [0,0];
+    int climbingTime = 0;
+
+    for (RecordedActivity activity in activities) {
+      List stringDateSplitted = activity.date.split(".");
+      DateTime dateTime = DateTime(
+          int.parse(stringDateSplitted[2]), int.parse(stringDateSplitted[1]),
+          int.parse(stringDateSplitted[0]));
+
+      /// If older than a week, do not include
+      if (dateTime.compareTo(DateTime.now().subtract(Duration(days: 7))) > 0) {
+        List stringDurationSplitted = activity.duration.split(":");
+        int durationInHours =
+            int.parse(stringDurationSplitted[0]);
+
+        /// Add up duration and distance per activity type
+        switch (activity.activityType) {
+          case "Running": {
+            runningTime[0] += durationInHours;
+            runningTime[1] += activity.distance;
+          }
+            break;
+          case "Cycling": {
+            cyclingTime[0] += durationInHours;
+            cyclingTime[1] += activity.distance;
+          }
+            break;
+          case "Climbing": {
+            climbingTime += durationInHours;
+          }
+        }
+      }
+    }
+
+    return Table(
+        border: TableBorder(
+          horizontalInside: BorderSide(
+            color: Colors.white,
+            style: BorderStyle.solid,
+            width: 1.0,
+          ),
+          verticalInside: BorderSide(
+            color: Colors.white,
+            style: BorderStyle.solid,
+            width: 1.0,
+          ),
+        ),
+        children: [
+          _buildTableRow("Type, Duration, Distance"),
+          _buildTableRow("Cycling , "+ cyclingTime[0].toString() +" hours, "+ cyclingTime[1].toString() +" km"),
+          _buildTableRow("Running, "+ runningTime[0].toString() +" hours, "+ runningTime[1].toString() +" km"),
+          _buildTableRow("Climbing, "+ climbingTime.toString() +" hours, -"),
+        ],
+    );
+  }
+
+  TableRow _buildTableRow(String listOfNames) {
+    return TableRow(
+      children: listOfNames.split(',').map((name) {
+        return Container(
+          alignment: Alignment.center,
+          child: Text(name, style: GoogleFonts.montserrat(color: Colors.white)),
+          padding: EdgeInsets.all(8.0),
+        );
+      }).toList(),
+    );
   }
 }

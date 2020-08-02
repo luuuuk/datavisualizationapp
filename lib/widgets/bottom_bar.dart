@@ -12,25 +12,25 @@ class BottomBarWidget extends StatelessWidget{
       notchMargin: 4.0,
       clipBehavior: Clip.antiAlias,
       child: BottomNavigationBar(
-          backgroundColor: ThemeColors.blueGreenis,
+          backgroundColor: ThemeColors.lightBlue,
           items: [
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.list,
-                  color: ThemeColors.darkBlue,
+                  color: Colors.white,
                 ),
                 title: Text(
                   "List",
-                  style: GoogleFonts.montserrat(color: ThemeColors.darkBlue),
+                  style: GoogleFonts.montserrat(color: Colors.white),
                 )),
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.edit,
-                  color: ThemeColors.darkBlue,
+                  color: Colors.white,
                 ),
                 title: Text(
                   "Edit",
-                  style: GoogleFonts.montserrat(color: ThemeColors.darkBlue),
+                  style: GoogleFonts.montserrat(color: Colors.white),
                 )),
           ]),
     );

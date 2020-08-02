@@ -121,6 +121,22 @@ class SortingDataService {
 
     return series;
   }
+
+  /// Method to get series containing cumulated weekly activities for the last month
+
+  /// Method to get series containing cumulated monthly activities for the last year
+
+  /// Method to get series containing cumulated yearly activities for the last two years
+
+  /// Method to get the average cycling speed over the last 10 weeks
+
+  /// Method to get the average running speed over the last 10 weeks
+
+  /// Method to get the average cycling speed over the last 10 months
+
+  /// Method to get the average running speed over the last 10 months
+
+
 }
 
 class ActivitiesData {
