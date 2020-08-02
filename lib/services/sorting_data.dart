@@ -58,8 +58,73 @@ class SortingDataService {
     for (RecordedActivity activity in recAct) {
       List stringDateSplitted = activity.date.split(".");
       DateTime dateTime = DateTime(
-          int.parse(stringDateSplitted[2]), int.parse(stringDateSplitted[1]), int.parse(stringDateSplitted[0]));
+          int.parse(stringDateSplitted[2]), int.parse(stringDateSplitted[1]),
+          int.parse(stringDateSplitted[0]));
 
+      for (int i = 0; i < 8; i++) {
+        /// Check if the activity happened on the given date
+        if (dateTime.compareTo(DateTime(DateTime
+            .now()
+            .year, DateTime
+            .now()
+            .month, DateTime
+            .now()
+            .day).subtract(Duration(days: i))) == 0) {
+          List stringDurationSplitted = activity.duration.split(":");
+          double durationInMin =
+              int.parse(stringDurationSplitted[0]).toDouble() +
+                  int.parse(stringDurationSplitted[1]) / 60;
+
+          switch (activity.activityType) {
+            case "Running":
+              runningActivitiesTime
+                  .add(ActivitiesDataDateTime(
+                  dateTime, durationInMin, ThemeColors.blueGreenis));
+              break;
+            case "Cycling":
+              cyclingActivitiesTime
+                  .add(ActivitiesDataDateTime(
+                  dateTime, durationInMin, ThemeColors.orange));
+              break;
+            case "Climbing":
+              climbingActivitiesTime
+                  .add(ActivitiesDataDateTime(
+                  dateTime, durationInMin, ThemeColors.yellowGreenish));
+          }
+        } else {
+          runningActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime
+              .now()
+              .year, DateTime
+              .now()
+              .month, DateTime
+              .now()
+              .day).subtract(Duration(days: i)), 0, ThemeColors.blueGreenis));
+          cyclingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime
+              .now()
+              .year, DateTime
+              .now()
+              .month, DateTime
+              .now()
+              .day).subtract(Duration(days: i)), 0, ThemeColors.orange));
+          climbingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime
+              .now()
+              .year, DateTime
+              .now()
+              .month, DateTime
+              .now()
+              .day).subtract(Duration(days: i)), 0,
+              ThemeColors.yellowGreenish));
+        }
+
+        /*
+        runningActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.blueGreenis));
+        cyclingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.orange));
+        climbingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.yellowGreenish));
+         */
+      }
+    }
+
+      /*
       /// If older than a week, do not include
       if (dateTime.compareTo(DateTime.now().subtract(Duration(days: 7))) > 0) {
 
@@ -90,6 +155,7 @@ class SortingDataService {
       cyclingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.orange));
       climbingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.yellowGreenish));
     }
+       */
 
     if (runningActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
@@ -99,6 +165,13 @@ class SortingDataService {
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
         data: runningActivitiesTime,
       )..setAttribute(charts.rendererIdKey, 'customPoint'),);
+      series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
+        id: 'Running',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+        measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+        data: runningActivitiesTime,
+      ));
     }
     if (cyclingActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
@@ -108,6 +181,13 @@ class SortingDataService {
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
         data: cyclingActivitiesTime,
       )..setAttribute(charts.rendererIdKey, 'customPoint'),);
+      series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
+        id: 'Cycling',
+        colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+        domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+        measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+        data: cyclingActivitiesTime,
+      ));
     }
     if (climbingActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
@@ -117,6 +197,13 @@ class SortingDataService {
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
         data: climbingActivitiesTime,
       )..setAttribute(charts.rendererIdKey, 'customPoint'),);
+      series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
+        id: 'Climbing',
+        colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+        domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+        measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+        data: climbingActivitiesTime,
+      ));
     }
 
     return series;

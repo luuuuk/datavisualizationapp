@@ -69,11 +69,22 @@ class DatabaseManager {
     return activities;
   }
 
-  /// Save card
+  /// Save activity
   Future<int> saveActivity(RecordedActivity activity) async {
     Database dbClient = await this.database;
 
     var result = await dbClient.insert("activities", activity.toMap());
     return result;
+  }
+
+  /// Delete activity
+  Future<void> deleteActivity(RecordedActivity activity) async {
+    Database dbClient = await this.database;
+
+    var result = await dbClient.delete(
+      'activities',
+      where: "type = ? AND date = ? AND duration = ? AND distance =?",
+      whereArgs: [activity.activityType, activity.date, activity.duration, activity.distance.toString()],
+    );
   }
 }
