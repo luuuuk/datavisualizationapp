@@ -63,7 +63,7 @@ class DatabaseManager {
     List<Map> list = await dbClient.rawQuery('SELECT * FROM activities');
     List<RecordedActivity> activities = new List();
     for (int i = 0; i < list.length; i++) {
-      activities.add(new RecordedActivity(list[i]["type"], list[i]["date"],
+      activities.add(new RecordedActivity(list[i]["id"], list[i]["type"], list[i]["date"],
           list[i]["duration"], list[i]["distance"]));
     }
     return activities;
@@ -83,8 +83,8 @@ class DatabaseManager {
 
     var result = await dbClient.delete(
       'activities',
-      where: "type = ? AND date = ? AND duration = ? AND distance =?",
-      whereArgs: [activity.activityType, activity.date, activity.duration, activity.distance.toString()],
+      where: "id = ?",
+      whereArgs: [activity.id],
     );
   }
 }
