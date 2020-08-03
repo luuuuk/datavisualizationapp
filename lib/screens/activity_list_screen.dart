@@ -46,6 +46,15 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
                       return Dismissible(
+                        background: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(left: 24.0),
+                          color: Colors.red,
+                          child: Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
                         key: Key(snapshot.data[index].date),
                         onDismissed: (direction) {
                           setState(() {
