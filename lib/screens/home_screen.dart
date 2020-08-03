@@ -43,6 +43,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         "Monthly Activity Overview",
                       ),
                       BorderContainerWidget(
+                        _build12WeeksActivityTimeChart(snapshot.data),
+                        "Activity Time last 12 weeks",
+                      ),
+                      BorderContainerWidget(
+                        _build12WeeksCyclingDistanceChart(snapshot.data),
+                        "Cycling Distance last 12 weeks",
+                      ),
+                      BorderContainerWidget(
+                        _build12WeeksRunningDistanceChart(snapshot.data),
+                        "Running Distance last 12 weeks",
+                      ),
+                      BorderContainerWidget(
                         _buildOverview(snapshot.data, 2),
                         "Yearly Activity Overview",
                       ),
@@ -185,83 +197,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildWeeklyActivityChart(List<RecordedActivity> activities) {
-    List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
-        SortingDataService().getWeeklyActivity(activities);
-
-    if (data.isNotEmpty) {
-      return SizedBox(
-        height: 200.0,
-        child: new charts.TimeSeriesChart(
-          data,
-          animate: false,
-          defaultRenderer: new charts.LineRendererConfig(includePoints: true, includeArea: true,),
-          domainAxis: new charts.DateTimeAxisSpec(
-              renderSpec: charts.GridlineRendererSpec(
-                  axisLineStyle: charts.LineStyleSpec(
-                    color: charts.MaterialPalette
-                        .white, // this also doesn't change the Y axis labels
-                  ),
-                  labelStyle: new charts.TextStyleSpec(
-                    fontSize: 10,
-                    color: charts.MaterialPalette.white,
-                  ),
-                  lineStyle: charts.LineStyleSpec(
-                    thickness: 0,
-                    color: charts.MaterialPalette.white,
-                  )),
-              tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
-                  hour: new charts.TimeFormatterSpec(
-                format: 'H',
-                transitionFormat: 'H',
-              ))),
-          primaryMeasureAxis: charts.NumericAxisSpec(
-              renderSpec: charts.GridlineRendererSpec(
-                  labelStyle: charts.TextStyleSpec(
-                      fontSize: 10, color: charts.MaterialPalette.white),
-                  lineStyle: charts.LineStyleSpec(
-                      thickness: 1, color: charts.MaterialPalette.white))),
-          behaviors: [
-            new charts.SeriesLegend(
-              // Positions for "start" and "end" will be left and right respectively
-              // for widgets with a build context that has directionality ltr.
-              // For rtl, "start" and "end" will be right and left respectively.
-              // Since this example has directionality of ltr, the legend is
-              // positioned on the right side of the chart.
-              position: charts.BehaviorPosition.bottom,
-              // For a legend that is positioned on the left or right of the chart,
-              // setting the justification for [endDrawArea] is aligned to the
-              // bottom of the chart draw area.
-              outsideJustification: charts.OutsideJustification.middleDrawArea,
-              // By default, if the position of the chart is on the left or right of
-              // the chart, [horizontalFirst] is set to false. This means that the
-              // legend entries will grow as new rows first instead of a new column.
-              horizontalFirst: true,
-              // By setting this value to 2, the legend entries will grow up to two
-              // rows before adding a new column.
-              desiredMaxRows: 2,
-              // This defines the padding around each legend entry.
-              cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
-              // Render the legend entry text with custom styles.
-              entryTextStyle: charts.TextStyleSpec(
-                color: charts.Color.white,
-                fontFamily: 'Montserrat',
-                fontSize: 10,
-              ),
-            )
-          ],
-        ),
-      );
-    } else {
-      return Center(
-        child: Text(
-          "There seems to be no training data this week...\nTime to start training!",
-          style: GoogleFonts.montserrat(color: Colors.white),
-        ),
-      );
-    }
-  }
-
   TableRow _buildTableRow(String listOfNames) {
     return TableRow(
       children: listOfNames.split(',').map((name) {
@@ -371,16 +306,133 @@ class _HomeScreenState extends State<HomeScreen> {
         _buildTableRow("Type, Duration, Distance"),
         _buildTableRow("Cycling , " +
             cyclingTime[0].toString() +
-            " h : " + cyclingTime[1].toString() + " m," +
+            " h : " +
+            cyclingTime[1].toString() +
+            " m," +
             cyclingTime[2].toString() +
             " km"),
         _buildTableRow("Running, " +
             runningTime[0].toString() +
-            " h : " + runningTime[1].toString() + " m," +
+            " h : " +
+            runningTime[1].toString() +
+            " m," +
             runningTime[2].toString() +
             " km"),
-        _buildTableRow("Climbing, " + climbingTime[0].toString() + " h : " + climbingTime[1].toString() +" m, -"),
+        _buildTableRow("Climbing, " +
+            climbingTime[0].toString() +
+            " h : " +
+            climbingTime[1].toString() +
+            " m, -"),
       ],
     );
+  }
+
+  _build12WeeksActivityTimeChart(List<RecordedActivity> activities) {
+    List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
+    SortingDataService().getActivityTimePast12Weeks(activities);
+
+    return _buildLineGraphWithAreaAndPoints(data);
+  }
+
+  _build12WeeksCyclingDistanceChart(List<RecordedActivity> activities) {
+    List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
+    SortingDataService().getActivityDistancePast12Weeks(activities);
+
+    data.removeAt(0);
+
+    return _buildLineGraphWithAreaAndPoints(data);
+  }
+
+  _build12WeeksRunningDistanceChart(List<RecordedActivity> activities) {
+    List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
+    SortingDataService().getActivityDistancePast12Weeks(activities);
+
+    data.removeAt(1);
+
+    return _buildLineGraphWithAreaAndPoints(data);
+  }
+
+  Widget _buildWeeklyActivityChart(List<RecordedActivity> activities) {
+    List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
+    SortingDataService().getWeeklyActivity(activities);
+
+    return _buildLineGraphWithAreaAndPoints(data);
+  }
+
+  _buildLineGraphWithAreaAndPoints(List<charts.Series<ActivitiesDataDateTime, DateTime>> data){
+    if (data.isNotEmpty) {
+      return SizedBox(
+        height: 200.0,
+        child: new charts.TimeSeriesChart(
+          data,
+          animate: false,
+          defaultRenderer: new charts.LineRendererConfig(
+            includePoints: true,
+            includeArea: true,
+          ),
+          domainAxis: new charts.DateTimeAxisSpec(
+              renderSpec: charts.GridlineRendererSpec(
+                  axisLineStyle: charts.LineStyleSpec(
+                    color: charts.MaterialPalette
+                        .white, // this also doesn't change the Y axis labels
+                  ),
+                  labelStyle: new charts.TextStyleSpec(
+                    fontSize: 10,
+                    color: charts.MaterialPalette.white,
+                  ),
+                  lineStyle: charts.LineStyleSpec(
+                    thickness: 0,
+                    color: charts.MaterialPalette.white,
+                  )),
+              tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+                  hour: new charts.TimeFormatterSpec(
+                    format: 'H',
+                    transitionFormat: 'H',
+                  ))),
+          primaryMeasureAxis: charts.NumericAxisSpec(
+              renderSpec: charts.GridlineRendererSpec(
+                  labelStyle: charts.TextStyleSpec(
+                      fontSize: 10, color: charts.MaterialPalette.white),
+                  lineStyle: charts.LineStyleSpec(
+                      thickness: 1, color: charts.MaterialPalette.white))),
+          behaviors: [
+            new charts.SeriesLegend(
+              // Positions for "start" and "end" will be left and right respectively
+              // for widgets with a build context that has directionality ltr.
+              // For rtl, "start" and "end" will be right and left respectively.
+              // Since this example has directionality of ltr, the legend is
+              // positioned on the right side of the chart.
+              position: charts.BehaviorPosition.bottom,
+              // For a legend that is positioned on the left or right of the chart,
+              // setting the justification for [endDrawArea] is aligned to the
+              // bottom of the chart draw area.
+              outsideJustification: charts.OutsideJustification.middleDrawArea,
+              // By default, if the position of the chart is on the left or right of
+              // the chart, [horizontalFirst] is set to false. This means that the
+              // legend entries will grow as new rows first instead of a new column.
+              horizontalFirst: true,
+              // By setting this value to 2, the legend entries will grow up to two
+              // rows before adding a new column.
+              desiredMaxRows: 2,
+              // This defines the padding around each legend entry.
+              cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
+              // Render the legend entry text with custom styles.
+              entryTextStyle: charts.TextStyleSpec(
+                color: charts.Color.white,
+                fontFamily: 'Montserrat',
+                fontSize: 10,
+              ),
+            )
+          ],
+        ),
+      );
+    } else {
+      return Center(
+        child: Text(
+          "There seems to be no training data this week...\nTime to start training!",
+          style: GoogleFonts.montserrat(color: Colors.white),
+        ),
+      );
+    }
   }
 }

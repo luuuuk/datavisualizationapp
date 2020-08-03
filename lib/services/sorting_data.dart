@@ -150,19 +150,194 @@ class SortingDataService {
     return series;
   }
 
-  /// Method to get series containing cumulated weekly activities for the last month
+  /// Method to get series containing only activities from the past week
+  List<charts.Series<ActivitiesDataDateTime, DateTime>> getActivityTimePast12Weeks(
+      List<RecordedActivity> recAct) {
+    List<charts.Series<ActivitiesDataDateTime, DateTime>> series =
+    new List<charts.Series<ActivitiesDataDateTime, DateTime>>();
+    List<ActivitiesDataDateTime> runningActivitiesTime =
+    new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> cyclingActivitiesTime =
+    new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> climbingActivitiesTime =
+    new List<ActivitiesDataDateTime>();
 
-  /// Method to get series containing cumulated monthly activities for the last year
+    List<double> runningTimePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> cyclingTimePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> climbingTimePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-  /// Method to get series containing cumulated yearly activities for the last two years
+    /// Go through all activties from weeks T-11 to now()
+    for (int i = 0; i < 11; i++) {
+      /// Check if activities match the date
+      for (RecordedActivity activity in recAct) {
+        List stringDateSplitted = activity.date.split(".");
+        DateTime dateTime = DateTime(int.parse(stringDateSplitted[2]),
+            int.parse(stringDateSplitted[1]), int.parse(stringDateSplitted[0]));
 
-  /// Method to get the average cycling speed over the last 10 weeks
+        /// Check if the activity happened on the given date
+        if (dateTime.compareTo(DateTime(DateTime.now().year,
+            DateTime.now().month, DateTime.now().day)
+            .subtract(Duration(days: 7*i))) <=
+            0 && dateTime.compareTo(DateTime(DateTime.now().year,
+            DateTime.now().month, DateTime.now().day)
+            .subtract(Duration(days: 7*(i+1)))) >=
+            0) {
+          List stringDurationSplitted = activity.duration.split(":");
+          double durationInMin =
+              int.parse(stringDurationSplitted[0]).toDouble() +
+                  int.parse(stringDurationSplitted[1]) / 60;
 
-  /// Method to get the average running speed over the last 10 weeks
+          switch (activity.activityType) {
+            case "Running":
+              runningTimePerWeek[i] += durationInMin;
+              break;
+            case "Cycling":
+              cyclingTimePerWeek[i] += durationInMin;
+              break;
+            case "Climbing":
+              climbingTimePerWeek[i] += durationInMin;
+          }
+        }
+      }
+    }
 
-  /// Method to get the average cycling speed over the last 10 months
+    for (int i = 0; i < 11; i++) {
+      runningActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: 7*i)),
+          runningTimePerWeek[i],
+          ThemeColors.blueGreenis));
+      cyclingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: 7*i)),
+          cyclingTimePerWeek[i],
+          ThemeColors.orange));
+      climbingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: 7*i)),
+          climbingTimePerWeek[i],
+          ThemeColors.yellowGreenish));
+    }
 
-  /// Method to get the average running speed over the last 10 months
+    if (runningActivitiesTime.isNotEmpty) {
+      series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
+        id: 'Running',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+        measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+        data: runningActivitiesTime,
+      ));
+    }
+    if (cyclingActivitiesTime.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Cycling',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: cyclingActivitiesTime,
+        ),
+      );
+    }
+    if (climbingActivitiesTime.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Climbing',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: climbingActivitiesTime,
+        ),
+      );
+    }
+
+    return series;
+  }
+
+  /// Method to get series containing only activities from the past week
+  List<charts.Series<ActivitiesDataDateTime, DateTime>> getActivityDistancePast12Weeks(
+      List<RecordedActivity> recAct) {
+    List<charts.Series<ActivitiesDataDateTime, DateTime>> series =
+    new List<charts.Series<ActivitiesDataDateTime, DateTime>>();
+    List<ActivitiesDataDateTime> runningActivitiesDistance =
+    new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> cyclingActivitiesDistance =
+    new List<ActivitiesDataDateTime>();
+
+    List<double> runningDistancePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> cyclingDistancePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    /// Go through all activties from weeks T-11 to now()
+    for (int i = 0; i < 11; i++) {
+      /// Check if activities match the date
+      for (RecordedActivity activity in recAct) {
+        List stringDateSplitted = activity.date.split(".");
+        DateTime dateTime = DateTime(int.parse(stringDateSplitted[2]),
+            int.parse(stringDateSplitted[1]), int.parse(stringDateSplitted[0]));
+
+        /// Check if the activity happened on the given date
+        if (dateTime.compareTo(DateTime(DateTime.now().year,
+            DateTime.now().month, DateTime.now().day)
+            .subtract(Duration(days: 7*i))) <=
+            0 && dateTime.compareTo(DateTime(DateTime.now().year,
+            DateTime.now().month, DateTime.now().day)
+            .subtract(Duration(days: 7*(i+1)))) >=
+            0) {
+          int distanceKm = activity.distance;
+
+          switch (activity.activityType) {
+            case "Running":
+              runningDistancePerWeek[i] += distanceKm;
+              break;
+            case "Cycling":
+              cyclingDistancePerWeek[i] += distanceKm;
+              break;
+          }
+        }
+      }
+    }
+
+    for (int i = 0; i < 11; i++) {
+      runningActivitiesDistance.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: 7*i)),
+          runningDistancePerWeek[i],
+          ThemeColors.blueGreenis));
+      cyclingActivitiesDistance.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: 7*i)),
+          cyclingDistancePerWeek[i],
+          ThemeColors.orange));
+    }
+
+    if (runningActivitiesDistance.isNotEmpty) {
+      series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
+        id: 'Running',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+        measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+        data: runningActivitiesDistance,
+      ));
+    }
+    if (cyclingActivitiesDistance.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Cycling',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: cyclingActivitiesDistance,
+        ),
+      );
+    }
+
+    return series;
+  }
 
 }
 
