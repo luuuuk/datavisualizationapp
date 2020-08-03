@@ -279,9 +279,9 @@ class _HomeScreenState extends State<HomeScreen> {
   /// overviewCode 0: weekly, 1: monthly, 2: yearly
   Widget _buildOverview(List<RecordedActivity> activities, int overviewCode) {
     /// Hours, Minutes, Seconds, Distance
-    List<int> cyclingTime = [0, 0];
-    List<int> runningTime = [0, 0];
-    int climbingTime = 0;
+    List<int> cyclingTime = [0, 0, 0];
+    List<int> runningTime = [0, 0, 0];
+    List<int> climbingTime = [0, 0];
     bool expressionToEvaluate;
 
     for (RecordedActivity activity in activities) {
@@ -317,28 +317,43 @@ class _HomeScreenState extends State<HomeScreen> {
       if (expressionToEvaluate) {
         List stringDurationSplitted = activity.duration.split(":");
         int durationInHours = int.parse(stringDurationSplitted[0]);
+        int durationInMinutes = int.parse(stringDurationSplitted[1]);
 
         /// Add up duration and distance per activity type
         switch (activity.activityType) {
           case "Running":
             {
               runningTime[0] += durationInHours;
-              runningTime[1] += activity.distance;
+              runningTime[1] += durationInMinutes;
+              runningTime[2] += activity.distance;
             }
             break;
           case "Cycling":
             {
               cyclingTime[0] += durationInHours;
-              cyclingTime[1] += activity.distance;
+              cyclingTime[1] += durationInMinutes;
+              cyclingTime[2] += activity.distance;
             }
             break;
           case "Climbing":
             {
-              climbingTime += durationInHours;
+              climbingTime[0] += durationInHours;
+              climbingTime[1] += durationInMinutes;
             }
         }
       }
     }
+
+    /// Calculate sum of time
+    int fullRunningHoursToAdd = runningTime[1] ~/ 60;
+    int fullCyclingHoursToAdd = cyclingTime[1] ~/ 60;
+    int fullClimbingHoursToAdd = climbingTime[1] ~/ 60;
+    runningTime[0] += fullRunningHoursToAdd;
+    runningTime[1] -= fullRunningHoursToAdd * 60;
+    cyclingTime[0] += fullCyclingHoursToAdd;
+    cyclingTime[1] -= fullCyclingHoursToAdd * 60;
+    climbingTime[0] += fullClimbingHoursToAdd;
+    climbingTime[1] -= fullClimbingHoursToAdd * 60;
 
     return Table(
       border: TableBorder(
@@ -357,15 +372,15 @@ class _HomeScreenState extends State<HomeScreen> {
         _buildTableRow("Type, Duration, Distance"),
         _buildTableRow("Cycling , " +
             cyclingTime[0].toString() +
-            " hours, " +
-            cyclingTime[1].toString() +
+            " h : " + cyclingTime[1].toString() + " m," +
+            cyclingTime[2].toString() +
             " km"),
         _buildTableRow("Running, " +
             runningTime[0].toString() +
-            " hours, " +
-            runningTime[1].toString() +
+            " h : " + runningTime[1].toString() + " m," +
+            runningTime[2].toString() +
             " km"),
-        _buildTableRow("Climbing, " + climbingTime.toString() + " hours, -"),
+        _buildTableRow("Climbing, " + climbingTime[0].toString() + " h : " + climbingTime[1].toString() +" m, -"),
       ],
     );
   }
