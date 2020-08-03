@@ -59,6 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         "Yearly Activity Overview",
                       ),
                       BorderContainerWidget(
+                          _buildTotalDurationChart(snapshot.data),
+                          "Total Activity Time"),
+                      BorderContainerWidget(
                           _buildTotalDistanceChart(snapshot.data),
                           "Total Activity Distance"),
                       Container(
@@ -163,36 +166,30 @@ class _HomeScreenState extends State<HomeScreen> {
     return tableRows;
   }
 
-  /// Method to build the BarChart containing the data for the duration of the given [activities]
+  /// Method to build the BarChart containing the data for the distance of the given [activities]
   Widget _buildTotalDistanceChart(List<RecordedActivity> activities) {
     return SizedBox(
       height: 200.0,
-      child: new charts.BarChart(
+      child: new charts.PieChart(
         SortingDataService().getTotalActivitiesDistance(activities),
         animate: false,
-        barGroupingType: charts.BarGroupingType.stacked,
-        domainAxis: new charts.OrdinalAxisSpec(
-            renderSpec: new charts.SmallTickRendererSpec(
+        defaultRenderer: new charts.ArcRendererConfig(
+            arcWidth: 60,
+            arcRendererDecorators: [new charts.ArcLabelDecorator(labelPosition: charts.ArcLabelPosition.inside)]),
+      ),
+    );
+  }
 
-                // Tick and Label styling here.
-                labelStyle: new charts.TextStyleSpec(
-                    fontSize: 12, // size in Pts.
-                    color: charts.MaterialPalette.white),
-
-                // Change the line colors to match text color.
-                lineStyle: new charts.LineStyleSpec(
-                    color: charts.MaterialPalette.white))),
-        primaryMeasureAxis: new charts.NumericAxisSpec(
-            renderSpec: new charts.GridlineRendererSpec(
-
-                // Tick and Label styling here.
-                labelStyle: new charts.TextStyleSpec(
-                    fontSize: 12, // size in Pts.
-                    color: charts.MaterialPalette.white),
-
-                // Change the line colors to match text color.
-                lineStyle: new charts.LineStyleSpec(
-                    color: charts.MaterialPalette.white))),
+  /// Method to build the BarChart containing the data for the duration of the given [activities]
+  Widget _buildTotalDurationChart(List<RecordedActivity> activities) {
+    return SizedBox(
+      height: 200.0,
+      child: new charts.PieChart(
+        SortingDataService().getTotalActivitiesTime(activities),
+        animate: false,
+        defaultRenderer: new charts.ArcRendererConfig(
+            arcWidth: 60,
+            arcRendererDecorators: [new charts.ArcLabelDecorator(labelPosition: charts.ArcLabelPosition.inside)]),
       ),
     );
   }
@@ -329,14 +326,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _build12WeeksActivityTimeChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
-    SortingDataService().getActivityTimePast12Weeks(activities);
+        SortingDataService().getActivityTimePast12Weeks(activities);
 
     return _buildLineGraphWithAreaAndPoints(data);
   }
 
   _build12WeeksCyclingDistanceChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
-    SortingDataService().getActivityDistancePast12Weeks(activities);
+        SortingDataService().getActivityDistancePast12Weeks(activities);
 
     data.removeAt(0);
 
@@ -345,7 +342,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _build12WeeksRunningDistanceChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
-    SortingDataService().getActivityDistancePast12Weeks(activities);
+        SortingDataService().getActivityDistancePast12Weeks(activities);
 
     data.removeAt(1);
 
@@ -354,12 +351,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildWeeklyActivityChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
-    SortingDataService().getWeeklyActivity(activities);
+        SortingDataService().getWeeklyActivity(activities);
 
     return _buildLineGraphWithAreaAndPoints(data);
   }
 
-  _buildLineGraphWithAreaAndPoints(List<charts.Series<ActivitiesDataDateTime, DateTime>> data){
+  _buildLineGraphWithAreaAndPoints(
+      List<charts.Series<ActivitiesDataDateTime, DateTime>> data) {
     if (data.isNotEmpty) {
       return SizedBox(
         height: 200.0,
@@ -386,9 +384,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   )),
               tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
                   hour: new charts.TimeFormatterSpec(
-                    format: 'H',
-                    transitionFormat: 'H',
-                  ))),
+                format: 'H',
+                transitionFormat: 'H',
+              ))),
           primaryMeasureAxis: charts.NumericAxisSpec(
               renderSpec: charts.GridlineRendererSpec(
                   labelStyle: charts.TextStyleSpec(

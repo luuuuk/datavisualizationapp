@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SortingDataService {
+
   /// Method to get series only containing the total activity distance
   List<charts.Series<ActivitiesData, String>> getTotalActivitiesDistance(
       List<RecordedActivity> recAct) {
@@ -27,10 +28,8 @@ class SortingDataService {
     }
 
     var data = [
-      new ActivitiesData('Running', runningDistance, ThemeColors.blueGreenis),
+      new ActivitiesData('Running', runningDistance, ThemeColors.lightBlue),
       new ActivitiesData('Cycling', cyclingDistance, ThemeColors.orange),
-      new ActivitiesData('Combined', runningDistance, ThemeColors.blueGreenis),
-      new ActivitiesData('Combined', cyclingDistance, ThemeColors.orange),
     ];
 
     var series = [
@@ -40,6 +39,53 @@ class SortingDataService {
         measureFn: (ActivitiesData clickData, _) => clickData.number,
         colorFn: (ActivitiesData clickData, _) => clickData.color,
         data: data,
+        labelAccessorFn: (ActivitiesData clickData, _) => clickData.number.toString() + " km",
+      ),
+    ];
+
+    return series;
+  }
+
+  /// Method to get series only containing the total activity distance
+  List<charts.Series<ActivitiesData, String>> getTotalActivitiesTime(
+      List<RecordedActivity> recAct) {
+    int runningTime = 0;
+    int cyclingTime = 0;
+    int climbingTime = 0;
+
+    for (RecordedActivity activity in recAct) {
+
+      List stringDurationSplitted = activity.duration.split(":");
+      int durationInMin = int.parse(stringDurationSplitted[0]) * 60 + int.parse(stringDurationSplitted[1]);
+
+      switch (activity.activityType) {
+        case "Running":
+          runningTime += durationInMin;
+          break;
+        case "Cycling":
+          cyclingTime += durationInMin;
+          break;
+        case "Climbing":
+          cyclingTime += durationInMin;
+          break;
+      }
+    }
+
+    var data = [
+      new ActivitiesData('Running', runningTime, ThemeColors.blueGreenis),
+      new ActivitiesData('Cycling', cyclingTime, ThemeColors.orange),
+      new ActivitiesData('Climbing', climbingTime, ThemeColors.yellowGreenish),
+    ];
+
+
+    var series = [
+      new charts.Series(
+        id: 'Total Activity Distance',
+        domainFn: (ActivitiesData clickData, _) => clickData.naming,
+        measureFn: (ActivitiesData clickData, _) => clickData.number,
+        colorFn: (ActivitiesData clickData, _) => clickData.color,
+        data: data,
+        labelAccessorFn: (ActivitiesData clickData, _) => (clickData.number ~/ 60).toString() + " h : " + (clickData.number - (clickData.number ~/ 60)*60).toString() + " m",
       ),
     ];
 
