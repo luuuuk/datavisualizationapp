@@ -34,18 +34,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (snapshot.hasData) {
                   return ListView(
                     children: [
-                      BorderContainerWidget(_buildWeeklyOverview(snapshot.data),
+                      BorderContainerWidget(_buildOverview(snapshot.data, 0),
                           "Weekly Activity Overview"),
                       BorderContainerWidget(
                           _buildWeeklyActivityChart(snapshot.data),
                           "Weekly Activity Time"),
                       BorderContainerWidget(
+                        _buildOverview(snapshot.data, 1),
+                        "Monthly Activity Overview",
+                      ),
+                      BorderContainerWidget(
+                        _buildOverview(snapshot.data, 2),
+                        "Yearly Activity Overview",
+                      ),
+                      BorderContainerWidget(
                           _buildTotalDistanceChart(snapshot.data),
                           "Total Activity Distance"),
-                      BorderContainerWidget(
-                        _buildAllActivitiesTableWidget(snapshot.data),
-                        "Activities Overview",
-                      ),
                       Container(
                         margin: EdgeInsets.fromLTRB(0, 24, 0, 0),
                       ),
@@ -79,17 +83,25 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         // FAB 1
         SpeedDialChild(
-            child: Icon(Icons.list, color: Colors.white,),
-            backgroundColor: ThemeColors.orange,
-            onTap: () { Navigator.pushNamed(context, ActivityListScreen.routeName); },
-    ),
+          child: Icon(
+            Icons.list,
+            color: Colors.white,
+          ),
+          backgroundColor: ThemeColors.orange,
+          onTap: () {
+            Navigator.pushNamed(context, ActivityListScreen.routeName);
+          },
+        ),
         // FAB 2
         SpeedDialChild(
-            child: Icon(Icons.add, color: Colors.white,),
-            backgroundColor: ThemeColors.orange,
-            onTap: () {
-              Navigator.pushNamed(context, AddDataScreen.routeName);
-            },
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          backgroundColor: ThemeColors.orange,
+          onTap: () {
+            Navigator.pushNamed(context, AddDataScreen.routeName);
+          },
         ),
       ],
     );
@@ -233,9 +245,9 @@ class _HomeScreenState extends State<HomeScreen> {
               cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
               // Render the legend entry text with custom styles.
               entryTextStyle: charts.TextStyleSpec(
-                  color: charts.Color.white,
-                  fontFamily: 'Montserrat',
-                  fontSize: 10,
+                color: charts.Color.white,
+                fontFamily: 'Montserrat',
+                fontSize: 10,
               ),
             )
           ],
@@ -251,48 +263,58 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Widget _buildAllActivitiesTableWidget(List<RecordedActivity> activities) {
-    return Center(
-      child: DataTable(
-        columns: [
-          DataColumn(
-              label: Text(
-            "Type",
-            style: GoogleFonts.montserrat(
-                fontSize: 12.0, fontWeight: FontWeight.w900),
-          )),
-          DataColumn(
-              label: Text(
-            "Duration",
-            style: GoogleFonts.montserrat(
-                fontSize: 12.0, fontWeight: FontWeight.w900),
-          )),
-          DataColumn(
-              label: Text(
-            "Distance",
-            style: GoogleFonts.montserrat(
-                fontSize: 12.0, fontWeight: FontWeight.w900),
-          )),
-        ],
-        rows: getTableRows(activities),
-      ),
+  TableRow _buildTableRow(String listOfNames) {
+    return TableRow(
+      children: listOfNames.split(',').map((name) {
+        return Container(
+          alignment: Alignment.center,
+          child: Text(name, style: GoogleFonts.montserrat(color: Colors.white)),
+          padding: EdgeInsets.all(8.0),
+        );
+      }).toList(),
     );
   }
 
-  /// Method to build a weekly overview table containing only activity data from the past week
-  Widget _buildWeeklyOverview(List<RecordedActivity> activities) {
+  /// Method to build a weekly overview table containing only activity data
+  /// overviewCode 0: weekly, 1: monthly, 2: yearly
+  Widget _buildOverview(List<RecordedActivity> activities, int overviewCode) {
     /// Hours, Minutes, Seconds, Distance
     List<int> cyclingTime = [0, 0];
     List<int> runningTime = [0, 0];
     int climbingTime = 0;
+    bool expressionToEvaluate;
 
     for (RecordedActivity activity in activities) {
       List stringDateSplitted = activity.date.split(".");
       DateTime dateTime = DateTime(int.parse(stringDateSplitted[2]),
           int.parse(stringDateSplitted[1]), int.parse(stringDateSplitted[0]));
 
+      switch (overviewCode) {
+        case 0:
+          {
+            expressionToEvaluate = (dateTime
+                    .compareTo(DateTime.now().subtract(Duration(days: 7))) >
+                0);
+          }
+          break;
+        case 1:
+          {
+            expressionToEvaluate = (dateTime.month == DateTime.now().month);
+          }
+          break;
+        case 2:
+          {
+            expressionToEvaluate = (dateTime.year == DateTime.now().year);
+          }
+          break;
+        default:
+          expressionToEvaluate =
+              (dateTime.compareTo(DateTime.now().subtract(Duration(days: 7))) >
+                  0);
+      }
+
       /// If older than a week, do not include
-      if (dateTime.compareTo(DateTime.now().subtract(Duration(days: 7))) > 0) {
+      if (expressionToEvaluate) {
         List stringDurationSplitted = activity.duration.split(":");
         int durationInHours = int.parse(stringDurationSplitted[0]);
 
@@ -345,18 +367,6 @@ class _HomeScreenState extends State<HomeScreen> {
             " km"),
         _buildTableRow("Climbing, " + climbingTime.toString() + " hours, -"),
       ],
-    );
-  }
-
-  TableRow _buildTableRow(String listOfNames) {
-    return TableRow(
-      children: listOfNames.split(',').map((name) {
-        return Container(
-          alignment: Alignment.center,
-          child: Text(name, style: GoogleFonts.montserrat(color: Colors.white)),
-          padding: EdgeInsets.all(8.0),
-        );
-      }).toList(),
     );
   }
 }
