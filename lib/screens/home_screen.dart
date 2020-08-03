@@ -5,7 +5,6 @@ import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/services/sorting_data.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
-import 'package:data_visualization_app/widgets/bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -196,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: new charts.TimeSeriesChart(
           data,
           animate: false,
-          defaultRenderer: new charts.LineRendererConfig(includePoints: true),
+          defaultRenderer: new charts.LineRendererConfig(includePoints: true, includeArea: true,),
           domainAxis: new charts.DateTimeAxisSpec(
               renderSpec: charts.GridlineRendererSpec(
                   axisLineStyle: charts.LineStyleSpec(

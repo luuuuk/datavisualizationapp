@@ -58,6 +58,10 @@ class SortingDataService {
     List<ActivitiesDataDateTime> climbingActivitiesTime =
         new List<ActivitiesDataDateTime>();
 
+    List<double> runningTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> cyclingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> climbingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0];
+
     /// Go through all activties from day T-7 to now()
     for (int i = 0; i < 8; i++) {
       /// Check if activities match the date
@@ -78,89 +82,47 @@ class SortingDataService {
 
           switch (activity.activityType) {
             case "Running":
-              runningActivitiesTime.add(ActivitiesDataDateTime(
-                  dateTime, durationInMin, ThemeColors.blueGreenis));
+              runningTimePerDay[i] += durationInMin;
               break;
             case "Cycling":
-              cyclingActivitiesTime.add(ActivitiesDataDateTime(
-                  dateTime, durationInMin, ThemeColors.orange));
+              cyclingTimePerDay[i] += durationInMin;
               break;
             case "Climbing":
-              climbingActivitiesTime.add(ActivitiesDataDateTime(
-                  dateTime, durationInMin, ThemeColors.yellowGreenish));
+              climbingTimePerDay[i] += durationInMin;
           }
-        } else {
-          runningActivitiesTime.add(ActivitiesDataDateTime(
-              DateTime(DateTime.now().year, DateTime.now().month,
-                      DateTime.now().day)
-                  .subtract(Duration(days: i)),
-              0,
-              ThemeColors.blueGreenis));
-          cyclingActivitiesTime.add(ActivitiesDataDateTime(
-              DateTime(DateTime.now().year, DateTime.now().month,
-                      DateTime.now().day)
-                  .subtract(Duration(days: i)),
-              0,
-              ThemeColors.orange));
-          climbingActivitiesTime.add(ActivitiesDataDateTime(
-              DateTime(DateTime.now().year, DateTime.now().month,
-                      DateTime.now().day)
-                  .subtract(Duration(days: i)),
-              0,
-              ThemeColors.yellowGreenish));
-        }
-
-        /*
-        runningActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.blueGreenis));
-        cyclingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.orange));
-        climbingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.yellowGreenish));
-         */
-      }
-    }
-
-    /*
-      /// If older than a week, do not include
-      if (dateTime.compareTo(DateTime.now().subtract(Duration(days: 7))) > 0) {
-
-        List stringDurationSplitted = activity.duration.split(":");
-        double durationInMin =
-            int.parse(stringDurationSplitted[0]).toDouble() +
-                int.parse(stringDurationSplitted[1]) / 60;
-
-        switch (activity.activityType) {
-          case "Running":
-            runningActivitiesTime
-                .add(ActivitiesDataDateTime(dateTime, durationInMin, ThemeColors.blueGreenis));
-            break;
-          case "Cycling":
-            cyclingActivitiesTime
-                .add(ActivitiesDataDateTime(dateTime, durationInMin, ThemeColors.orange));
-            break;
-          case "Climbing":
-            climbingActivitiesTime
-                .add(ActivitiesDataDateTime(dateTime, durationInMin, ThemeColors.yellowGreenish));
         }
       }
     }
 
-    /// Add first and last day of the week for data series to be in that range
-    for(int i = 0; i < 8; i++){
-      runningActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.blueGreenis));
-      cyclingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.orange));
-      climbingActivitiesTime.add(ActivitiesDataDateTime(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day).subtract(Duration(days: i)), 0, ThemeColors.yellowGreenish));
+    for (int i = 0; i < 8; i++) {
+      runningActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          runningTimePerDay[i],
+          ThemeColors.blueGreenis));
+      cyclingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          cyclingTimePerDay[i],
+          ThemeColors.orange));
+      climbingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          climbingTimePerDay[i],
+          ThemeColors.yellowGreenish));
     }
-       */
 
     if (runningActivitiesTime.isNotEmpty) {
-      series.add(
-        charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Running',
-          colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
-          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
-          data: runningActivitiesTime,
-        )
-      );
+      series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
+        id: 'Running',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+        measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+        data: runningActivitiesTime,
+      ));
     }
     if (cyclingActivitiesTime.isNotEmpty) {
       series.add(
