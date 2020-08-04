@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           "Weekly Activity Time"),
                       BorderContainerWidget(
                         _buildOverview(snapshot.data, 1),
-                        "Monthly Activity Overview",
+                        "Monthly Activity Overview" + _getCurrentMonthName(),
                       ),
                       BorderContainerWidget(
                         _build12WeeksActivityTimeChart(snapshot.data),
@@ -59,11 +59,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         "Yearly Activity Overview",
                       ),
                       BorderContainerWidget(
-                          _buildTotalDurationChart(snapshot.data),
-                          "Total Activity Time"),
+                        _buildTotalDurationChart(snapshot.data),
+                        "Total Activity Time",
+                      ),
                       BorderContainerWidget(
-                          _buildTotalDistanceChart(snapshot.data),
-                          "Total Activity Distance"),
+                        _buildTotalDistanceChart(snapshot.data),
+                        "Total Activity Distance",
+                      ),
                       Container(
                         margin: EdgeInsets.fromLTRB(0, 24, 0, 0),
                       ),
@@ -175,7 +177,10 @@ class _HomeScreenState extends State<HomeScreen> {
         animate: false,
         defaultRenderer: new charts.ArcRendererConfig(
             arcWidth: 60,
-            arcRendererDecorators: [new charts.ArcLabelDecorator(labelPosition: charts.ArcLabelPosition.inside)]),
+            arcRendererDecorators: [
+              new charts.ArcLabelDecorator(
+                  labelPosition: charts.ArcLabelPosition.inside)
+            ]),
       ),
     );
   }
@@ -189,7 +194,10 @@ class _HomeScreenState extends State<HomeScreen> {
         animate: false,
         defaultRenderer: new charts.ArcRendererConfig(
             arcWidth: 60,
-            arcRendererDecorators: [new charts.ArcLabelDecorator(labelPosition: charts.ArcLabelPosition.inside)]),
+            arcRendererDecorators: [
+              new charts.ArcLabelDecorator(
+                  labelPosition: charts.ArcLabelPosition.inside)
+            ]),
       ),
     );
   }
@@ -431,6 +439,38 @@ class _HomeScreenState extends State<HomeScreen> {
           style: GoogleFonts.montserrat(color: Colors.white),
         ),
       );
+    }
+  }
+
+  /// Method to return the name of the current month
+  String _getCurrentMonthName() {
+    switch (DateTime.now().month) {
+      case DateTime.january:
+        return "January";
+      case DateTime.february:
+        return "February";
+      case DateTime.march:
+        return "March";
+      case DateTime.april:
+        return "April";
+      case DateTime.may:
+        return "May";
+      case DateTime.june:
+        return "June";
+      case DateTime.july:
+        return "July";
+      case DateTime.august:
+        return "August";
+      case DateTime.september:
+        return "September";
+      case DateTime.october:
+        return "October";
+      case DateTime.november:
+        return "November";
+      case DateTime.december:
+        return "December";
+      default:
+        return "Current Month";
     }
   }
 }
