@@ -1,4 +1,5 @@
 import 'package:data_visualization_app/models/recorded_activity.dart';
+import 'package:data_visualization_app/screens/modify_data_screen.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
@@ -51,13 +52,16 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                         actionExtentRatio: 0.25,
                         secondaryActions: <Widget>[
                           IconSlideAction(
-                            caption: 'Edit',
-                            color: Colors.amberAccent,
-                            icon: Icons.edit,
-                            onTap: () {
-                              /// Open EditActivityScreen
-                            },
-                          ),
+                              caption: 'Edit',
+                              color: Colors.amberAccent,
+                              icon: Icons.edit,
+                              onTap: () {
+                                /// Open ModifyActivityScreen
+                                Navigator.pop(context);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ModifyDataScreen(
+                                        snapshot.data[index])));
+                              }),
                           IconSlideAction(
                             caption: 'Delete',
                             color: Colors.red,

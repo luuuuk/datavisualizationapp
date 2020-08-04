@@ -87,4 +87,20 @@ class DatabaseManager {
       whereArgs: [activity.id],
     );
   }
+
+  /// Update Activity
+  Future<void> updateActivity(RecordedActivity activity) async {
+    // Get a reference to the database.
+    Database dbClient = await this.database;
+
+    // Update the given Activity.
+    await dbClient.update(
+      'activities',
+      activity.toMap(),
+      // Ensure that the Dog has a matching id.
+      where: "id = ?",
+      // Pass the Dog's id as a whereArg to prevent SQL injection.
+      whereArgs: [activity.id],
+    );
+  }
 }

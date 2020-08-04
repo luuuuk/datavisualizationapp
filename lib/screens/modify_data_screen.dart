@@ -8,13 +8,18 @@ import 'package:intl/intl.dart';
 
 import '../theme.dart';
 
-class AddDataScreen extends StatefulWidget {
-  static const routeName = '/AddDataScreen';
+class ModifyDataScreen extends StatefulWidget {
+  static const routeName = '/ModifyDataScreen';
+  final RecordedActivity activityToUpdate;
+
+  ModifyDataScreen(this.activityToUpdate);
+
   @override
-  _AddDataScreenState createState() => new _AddDataScreenState();
+  _ModifyDataScreenState createState() => new _ModifyDataScreenState();
 }
 
-class _AddDataScreenState extends State<AddDataScreen> {
+class _ModifyDataScreenState extends State<ModifyDataScreen> {
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   DateTime dateTime;
   final Map<int, Widget> type = <int, Widget>{
@@ -41,13 +46,31 @@ class _AddDataScreenState extends State<AddDataScreen> {
   int selectedDistance = 0;
 
   @override
+  void initState() {
+    super.initState();
+
+    segmentedControlGroupValue = _getActivityType();
+    _dateController.value = TextEditingValue(text: widget.activityToUpdate.date);
+    _timeController.value = TextEditingValue(text: widget.activityToUpdate.duration);
+    _distanceController.value = TextEditingValue(text: widget.activityToUpdate.distance.toString());
+
+    List<String> splittedDate = widget.activityToUpdate.date.split(".");
+    List<String> splittedTime = widget.activityToUpdate.date.split(":");
+    isClimbing = (_getActivityType() == 2);
+    selectedDistance = widget.activityToUpdate.distance;
+    selectedDate = new DateTime(int.parse(splittedDate[2]),int.parse(splittedDate[1]),int.parse(splittedDate[0]));
+    selectedDuration = new Duration(hours: int.parse(splittedDate[0]), minutes: int.parse(splittedDate[1]), seconds: int.parse(splittedDate[0]));
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.close,
             color: Colors.white,
           ),
           onPressed: () {
@@ -56,7 +79,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
         ),
         backgroundColor: ThemeColors.lightBlue,
         title: Text(
-          "Add Data",
+          "Modify Activity",
           style: GoogleFonts.montserrat(color: Colors.white),
         ),
         centerTitle: true,
@@ -149,10 +172,10 @@ class _AddDataScreenState extends State<AddDataScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: ThemeColors.orange,
-        onPressed: () => saveEntries(),
-        tooltip: 'Save data',
+        onPressed: () => updateEntries(),
+        tooltip: 'Update data',
         child: Icon(
-          Icons.save,
+          Icons.update_outlined,
           color: Colors.white,
         ),
       ),
@@ -213,8 +236,21 @@ class _AddDataScreenState extends State<AddDataScreen> {
   format(Duration d) => d.toString().split('.').first.padLeft(8, "0");
 
   /// Method to save the entries on the screen
-  Future<void> saveEntries() async {
+  Future<void> updateEntries() async {
+    String activityType = changeActivityType(segmentedControlGroupValue);
+
+    RecordedActivity updateActivity = RecordedActivity(widget.activityToUpdate.id, activityType, DateFormat('dd.MM.yyyy').format(selectedDate).toString(), format(selectedDuration).toString(), selectedDistance);
+
+    DatabaseManager dbManager = new DatabaseManager();
+    await dbManager.updateActivity(updateActivity);
+
+    showSnackBar(true);
+  }
+
+  /// Change activity type
+  String changeActivityType(int newValue){
     String activityType;
+
     switch(segmentedControlGroupValue){
       case 0: activityType = "Running";
       break;
@@ -225,12 +261,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
       default: activityType = "Running";
     }
 
-    RecordedActivity newActivity = RecordedActivity(DateTime.now().hashCode, activityType, DateFormat('dd.MM.yyyy').format(selectedDate).toString(), format(selectedDuration).toString(), selectedDistance);
-
-    DatabaseManager dbManager = new DatabaseManager();
-    int success = await dbManager.saveActivity(newActivity);
-
-    showSnackBar(success == 0 ? false : true);
+    return activityType;
   }
 
   /// Method to show the snack bar
@@ -240,7 +271,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
       SnackBar(
         backgroundColor: success ? Colors.green : Colors.red, // Set color depending on success
         content: success? const Text(
-          'Activity has been saved.',
+          'Activity has been updated.',
           style: TextStyle(color: Colors.white),
         )
             :const Text(
@@ -251,5 +282,14 @@ class _AddDataScreenState extends State<AddDataScreen> {
         //    label: 'DISMISS', onPressed: ,),
       ),
     );
+  }
+
+  int _getActivityType(){
+    switch(widget.activityToUpdate.activityType){
+      case "Running": return 0;
+      case "Cycling": return 1;
+      case "Climbing": return 2;
+      default: return 0;
+    }
   }
 }
