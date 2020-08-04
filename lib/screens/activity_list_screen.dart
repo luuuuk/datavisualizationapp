@@ -3,6 +3,7 @@ import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ActivityListScreen extends StatefulWidget {
@@ -45,31 +46,30 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                   child: ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
-                      return Dismissible(
-                        background: Container(
-                          alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.only(left: 24.0),
-                          color: Colors.red,
-                          child: Icon(
-                            Icons.delete,
-                            color: Colors.white,
+                      return Slidable(
+                        actionPane: SlidableDrawerActionPane(),
+                        actionExtentRatio: 0.25,
+                        secondaryActions: <Widget>[
+                          IconSlideAction(
+                            caption: 'Edit',
+                            color: Colors.amberAccent,
+                            icon: Icons.edit,
+                            onTap: () {
+                              /// Open EditActivityScreen
+                            },
                           ),
-                        ),
-                        key: Key(snapshot.data[index].date),
-                        onDismissed: (direction) {
-                          setState(() {
-                            deleteData(snapshot.data[index]);
-                            snapshot.data.removeAt(index);
-                            _key.currentState
-                              ..removeCurrentSnackBar()
-                              ..showSnackBar(
-                                SnackBar(
-                                  backgroundColor: ThemeColors.orange,
-                                  content: Text("Deleted activity", style: GoogleFonts.montserrat(color: Colors.white),),
-                                ),
-                              );
-                          });
-                        },
+                          IconSlideAction(
+                            caption: 'Delete',
+                            color: Colors.red,
+                            icon: Icons.delete,
+                            onTap: () {
+                              setState(() {
+                                deleteData(snapshot.data[index]);
+                                snapshot.data.removeAt(index);
+                              });
+                            },
+                          ),
+                        ],
                         child: Container(
                           padding: EdgeInsets.all(5.0),
                           child: BorderContainerWidget(
@@ -134,8 +134,21 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
     return activities;
   }
 
-  void deleteData(RecordedActivity activity){
+  void deleteData(RecordedActivity activity) {
     DatabaseManager dbManager = new DatabaseManager();
     dbManager.deleteActivity(activity);
+  }
+
+  /// Method to show the snack bar
+  void showSnackBar() {
+    _key.currentState.showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red, // Set color depending on success
+        content: const Text(
+          'Activity has been deleted.',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
   }
 }
