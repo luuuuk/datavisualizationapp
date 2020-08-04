@@ -135,6 +135,14 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
     DatabaseManager dbManager = new DatabaseManager();
     List<RecordedActivity> activities = await dbManager.getActivities();
 
+    activities.sort((a,b) {
+      List<String> splittedDateA = a.date.split(".");
+      List<String> splittedDateB = b.date.split(".");
+      DateTime dateA = DateTime(int.parse(splittedDateA[2]),int.parse(splittedDateA[1]),int.parse(splittedDateA[0]));
+      DateTime dateB = DateTime(int.parse(splittedDateB[2]),int.parse(splittedDateB[1]),int.parse(splittedDateB[0]));
+      return -dateA.compareTo(dateB);
+    });
+
     return activities;
   }
 
