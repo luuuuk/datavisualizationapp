@@ -76,38 +76,25 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                         ],
                         child: Container(
                           padding: EdgeInsets.all(5.0),
-                          child: BorderContainerWidget(
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Date: " + snapshot.data[index].date,
-                                  style: GoogleFonts.montserrat(
-                                      color: Colors.white),
+                          child: Column(
+                            children: [
+                              Divider(color: Colors.white,thickness: 1,),
+                              ListTile(
+                                leading: _getActivityIcon(snapshot.data[index]),
+                                title: Text(snapshot.data[index].activityType + " : " + snapshot.data[index].date, style: GoogleFonts.montserrat(
+                                    color: Colors.white),),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Duration: " + snapshot.data[index].duration, style: GoogleFonts.montserrat(
+                                        color: Colors.white),),
+                                    snapshot.data[index].activityType == "Climbing" ? Container() : Text("Distance: " + snapshot.data[index].distance.toString()+ " km", style: GoogleFonts.montserrat(
+                                        color: Colors.white),),
+                                  ],
                                 ),
-                                Divider(
-                                  color: ThemeColors.lightBlue,
-                                  thickness: 1.0,
-                                ),
-                                Text(
-                                  "Duration: " + snapshot.data[index].duration,
-                                  style: GoogleFonts.montserrat(
-                                      color: Colors.white),
-                                ),
-                                Divider(
-                                  color: ThemeColors.lightBlue,
-                                  thickness: 1.0,
-                                ),
-                                Text(
-                                  "Distance: " +
-                                      snapshot.data[index].distance.toString() +
-                                      " km",
-                                  style: GoogleFonts.montserrat(
-                                      color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            "Activity: " + snapshot.data[index].activityType,
+                              ),
+                              Divider(color: Colors.white,thickness: 1,),
+                            ],
                           ),
                         ),
                       );
@@ -146,6 +133,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
     return activities;
   }
 
+  /// Method to handle deleting of the specified [activity]
   void deleteData(RecordedActivity activity) {
     DatabaseManager dbManager = new DatabaseManager();
     dbManager.deleteActivity(activity);
@@ -162,5 +150,23 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
         ),
       ),
     );
+  }
+
+  /// Method to return an icon which matches the type of the specified [activity]
+  Widget _getActivityIcon(RecordedActivity activity){
+
+    Icon typeIcon;
+
+    switch(activity.activityType){
+      case "Running": typeIcon = Icon(Icons.directions_run, color: ThemeColors.lightBlue,);
+      break;
+      case "Cycling": typeIcon = Icon(Icons.directions_bike, color: ThemeColors.orange,);
+      break;
+      case "Climbing": typeIcon = Icon(Icons.filter_hdr, color: ThemeColors.yellowGreenish,);
+      break;
+      default: typeIcon = Icon(Icons.directions_run, color: ThemeColors.lightBlue,);
+    }
+
+    return typeIcon;
   }
 }
