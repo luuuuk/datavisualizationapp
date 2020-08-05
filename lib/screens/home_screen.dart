@@ -203,20 +203,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Method to build the BarChart containing the data for the duration of the given [activities]
   Widget _buildYearlyDurationChart(List<RecordedActivity> activities) {
-    return SizedBox(
-      height: 200.0,
-      child: new charts.PieChart(
-        SortingDataService().getYearlyActivitiesTime(activities),
-        animate: false,
-        defaultRenderer:
-            new charts.ArcRendererConfig(arcWidth: 45, arcRendererDecorators: [
-          new charts.ArcLabelDecorator(
-            labelPosition: charts.ArcLabelPosition.outside,
-            outsideLabelStyleSpec:
-                charts.TextStyleSpec(color: charts.Color.white, fontSize: 12),
-          )
-        ]),
-      ),
+    return Column(
+      children: [
+        SizedBox(
+          height: 200.0,
+          child: new charts.PieChart(
+            SortingDataService().getYearlyActivitiesTime(activities),
+            animate: false,
+            defaultRenderer:
+                new charts.ArcRendererConfig(arcWidth: 45, arcRendererDecorators: [
+              new charts.ArcLabelDecorator(
+                labelPosition: charts.ArcLabelPosition.outside,
+                outsideLabelStyleSpec:
+                    charts.TextStyleSpec(color: charts.Color.white, fontSize: 12),
+              )
+            ]),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Icon(Icons.directions_run, color: ThemeColors.lightBlue,),
+            Icon(Icons.directions_bike, color: ThemeColors.orange,),
+            Icon(Icons.filter_hdr, color: ThemeColors.yellowGreenish,),
+          ],
+        ),
+      ],
     );
   }
 
@@ -461,7 +476,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _buildAverageSpeedProgression(List<RecordedActivity> activities, int type){
 
-    var data = SortingDataService().getAverageSpeedData(activities, 10, type);
+    var data = SortingDataService().getAverageSpeedData(activities, 8, type);
 
     if(data.isNotEmpty){
       return SizedBox(
@@ -490,7 +505,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
         ),);
     } else {
-      return Container();
+      return Container(child: Text("No activities yet.", style: GoogleFonts.montserrat(color: Colors.white),),);
     }
 
 

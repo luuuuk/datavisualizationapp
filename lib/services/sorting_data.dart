@@ -81,7 +81,7 @@ class SortingDataService {
     }
 
     var data = [
-      new ActivitiesData('Running', runningTime, ThemeColors.blueGreenis),
+      new ActivitiesData('Running', runningTime, ThemeColors.lightBlue),
       new ActivitiesData('Cycling', cyclingTime, ThemeColors.orange),
       new ActivitiesData('Climbing', climbingTime, ThemeColors.yellowGreenish),
     ];
@@ -405,11 +405,20 @@ class SortingDataService {
     new List<ActivitiesPrecisionData>();
     List<ActivitiesPrecisionData> targetSpeeds =new List<ActivitiesPrecisionData>();
 
+    /// Sort activities
+    recAct.sort((a,b) {
+      List<String> splittedDateA = a.date.split(".");
+      List<String> splittedDateB = b.date.split(".");
+      DateTime dateA = DateTime(int.parse(splittedDateA[2]),int.parse(splittedDateA[1]),int.parse(splittedDateA[0]));
+      DateTime dateB = DateTime(int.parse(splittedDateB[2]),int.parse(splittedDateB[1]),int.parse(splittedDateB[0]));
+      return -dateA.compareTo(dateB);
+    });
+
     int noOfIncludedActivities = 0;
     String lookingForType = type == 0 ? "Running" : "Cycling";
 
     /// Iterate through all activities
-    for(RecordedActivity activity in recAct){
+    for(RecordedActivity activity in recAct.reversed){
 
       /// Include only the wanted number of activities and the right activity type
       if(noOfIncludedActivities < noOfActivities && activity.activityType == lookingForType){
@@ -430,10 +439,10 @@ class SortingDataService {
           type == 0 ? 10 : 30,
         Colors.white));
 
+        noOfIncludedActivities++;
+
       }
     }
-
-
 
     if (averageSpeeds.isNotEmpty) {
       series.add(charts.Series<ActivitiesPrecisionData, String>(
@@ -479,7 +488,7 @@ class ActivitiesDataDateTime {
 }
 
 class ActivitiesPrecisionData {
-  final String title;
+  String title;
   final double number;
   final charts.Color color;
 
