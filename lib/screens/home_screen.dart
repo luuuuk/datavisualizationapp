@@ -461,7 +461,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _buildAverageSpeedProgression(List<RecordedActivity> activities, int type){
 
-    var data = SortingDataService().getAverageSpeedData(activities, 20, type);
+    var data = SortingDataService().getAverageSpeedData(activities, 10, type);
 
     if(data.isNotEmpty){
       return SizedBox(
