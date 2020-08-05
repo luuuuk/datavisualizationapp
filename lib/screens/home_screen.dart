@@ -228,9 +228,9 @@ class _HomeScreenState extends State<HomeScreen> {
   /// overviewCode 0: weekly, 1: monthly, 2: yearly
   Widget _buildOverview(List<RecordedActivity> activities, int overviewCode) {
     /// Hours, Minutes, Seconds, Distance
-    List<int> cyclingTime = [0, 0, 0];
-    List<int> runningTime = [0, 0, 0];
-    List<int> climbingTime = [0, 0];
+    List<int> cyclingTime = [0, 0, 0, 0];
+    List<int> runningTime = [0, 0, 0, 0];
+    List<int> climbingTime = [0, 0, 0];
     bool expressionToEvaluate;
 
     for (RecordedActivity activity in activities) {
@@ -275,6 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
               runningTime[0] += durationInHours;
               runningTime[1] += durationInMinutes;
               runningTime[2] += activity.distance;
+              runningTime[3]++;
             }
             break;
           case "Cycling":
@@ -282,12 +283,14 @@ class _HomeScreenState extends State<HomeScreen> {
               cyclingTime[0] += durationInHours;
               cyclingTime[1] += durationInMinutes;
               cyclingTime[2] += activity.distance;
+              cyclingTime[3]++;
             }
             break;
           case "Climbing":
             {
               climbingTime[0] += durationInHours;
               climbingTime[1] += durationInMinutes;
+              climbingTime[2]++;
             }
         }
       }
@@ -318,26 +321,21 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       children: [
-        _buildTableRow("Type, Duration, Distance"),
-        _buildTableRow("Cycling , " +
-            cyclingTime[0].toString() +
-            " h : " +
-            cyclingTime[1].toString() +
-            " m," +
-            cyclingTime[2].toString() +
-            " km"),
-        _buildTableRow("Running, " +
-            runningTime[0].toString() +
+        _buildTableRow("Running, Cycling, Climbing"),
+        _buildTableRow(runningTime[3].toString() + "," + cyclingTime[3].toString() + "," +  climbingTime[2].toString()),
+        _buildTableRow(runningTime[0].toString() +
             " h : " +
             runningTime[1].toString() +
-            " m," +
-            runningTime[2].toString() +
-            " km"),
-        _buildTableRow("Climbing, " +
-            climbingTime[0].toString() +
+            " m," + cyclingTime[0].toString() +
+            " h : " +
+            cyclingTime[1].toString() +
+            " m," + climbingTime[0].toString() +
             " h : " +
             climbingTime[1].toString() +
-            " m, -"),
+            " m"),
+        _buildTableRow(runningTime[2].toString() +
+            " km," + cyclingTime[2].toString() +
+            " km, -"),
       ],
     );
   }
