@@ -33,11 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (snapshot.hasData) {
                   return ListView(
                     children: [
-                      BorderContainerWidget(_buildOverview(snapshot.data, 0),
-                          "Weekly Activity Overview"),
                       BorderContainerWidget(
-                          _buildWeeklyActivityChart(snapshot.data),
-                          "Weekly Activity Time"),
+                          _weeklyOverviewWidget(snapshot.data), "Last 7 Days"),
                       BorderContainerWidget(
                         _buildOverview(snapshot.data, 1),
                         "Monthly Activity Overview: " + _getCurrentMonthName(),
@@ -51,17 +48,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         "Cycling Distance last 12 weeks",
                       ),
                       BorderContainerWidget(
-                        _buildAverageSpeedProgression(snapshot.data, 1),
-                        "Average Speed Progression in Cycling"
-                      ),
+                          _buildAverageSpeedProgression(snapshot.data, 1),
+                          "Average Speed Progression in Cycling"),
                       BorderContainerWidget(
                         _build12WeeksRunningDistanceChart(snapshot.data),
                         "Running Distance last 12 weeks",
                       ),
                       BorderContainerWidget(
                           _buildAverageSpeedProgression(snapshot.data, 0),
-                          "Average Speed Progression in Running"
-                      ),
+                          "Average Speed Progression in Running"),
                       BorderContainerWidget(
                         _buildOverview(snapshot.data, 2),
                         "Yearly Activity Overview",
@@ -72,10 +67,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       BorderContainerWidget(
                         _buildYearlyDistanceChart(snapshot.data),
-                        "Total Activity Distance " + DateTime.now().year.toString(),
+                        "Total Activity Distance " +
+                            DateTime.now().year.toString(),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 24, 0, 0),
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 64),
                       ),
                     ],
                   );
@@ -189,14 +185,17 @@ class _HomeScreenState extends State<HomeScreen> {
             labelStyle: new charts.TextStyleSpec(
               fontSize: 10,
               color: charts.MaterialPalette.white,
-            ),),
+            ),
+          ),
         ),
         primaryMeasureAxis: charts.NumericAxisSpec(
-            renderSpec: charts.GridlineRendererSpec(
-                labelStyle: charts.TextStyleSpec(
-                    fontSize: 10, color: charts.MaterialPalette.white),
-                lineStyle: charts.LineStyleSpec(
-                    thickness: 1, color: charts.MaterialPalette.white),),),
+          renderSpec: charts.GridlineRendererSpec(
+            labelStyle: charts.TextStyleSpec(
+                fontSize: 10, color: charts.MaterialPalette.white),
+            lineStyle: charts.LineStyleSpec(
+                thickness: 1, color: charts.MaterialPalette.white),
+          ),
+        ),
       ),
     );
   }
@@ -210,14 +209,15 @@ class _HomeScreenState extends State<HomeScreen> {
           child: new charts.PieChart(
             SortingDataService().getYearlyActivitiesTime(activities),
             animate: false,
-            defaultRenderer:
-                new charts.ArcRendererConfig(arcWidth: 45, arcRendererDecorators: [
-              new charts.ArcLabelDecorator(
-                labelPosition: charts.ArcLabelPosition.outside,
-                outsideLabelStyleSpec:
-                    charts.TextStyleSpec(color: charts.Color.white, fontSize: 12),
-              )
-            ]),
+            defaultRenderer: new charts.ArcRendererConfig(
+                arcWidth: 45,
+                arcRendererDecorators: [
+                  new charts.ArcLabelDecorator(
+                    labelPosition: charts.ArcLabelPosition.outside,
+                    outsideLabelStyleSpec: charts.TextStyleSpec(
+                        color: charts.Color.white, fontSize: 12),
+                  )
+                ]),
           ),
         ),
         Container(
@@ -226,9 +226,18 @@ class _HomeScreenState extends State<HomeScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Icon(Icons.directions_run, color: ThemeColors.lightBlue,),
-            Icon(Icons.directions_bike, color: ThemeColors.orange,),
-            Icon(Icons.filter_hdr, color: ThemeColors.yellowGreenish,),
+            Icon(
+              Icons.directions_run,
+              color: ThemeColors.lightBlue,
+            ),
+            Icon(
+              Icons.directions_bike,
+              color: ThemeColors.orange,
+            ),
+            Icon(
+              Icons.filter_hdr,
+              color: ThemeColors.yellowGreenish,
+            ),
           ],
         ),
       ],
@@ -244,6 +253,23 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.all(8.0),
         );
       }).toList(),
+    );
+  }
+
+  /// Method to assemble the weekly overview
+  Widget _weeklyOverviewWidget(List<RecordedActivity> activities) {
+    return Column(
+      children: <Widget>[
+        _buildOverview(activities, 0),
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+        ),
+        Text(
+          "Activity Time in h",
+          style: GoogleFonts.montserrat(color: Colors.white),
+        ),
+        _buildWeeklyActivityChart(activities),
+      ],
     );
   }
 
@@ -330,35 +356,89 @@ class _HomeScreenState extends State<HomeScreen> {
     climbingTime[0] += fullClimbingHoursToAdd;
     climbingTime[1] -= fullClimbingHoursToAdd * 60;
 
-    return Table(
-      border: TableBorder(
-        horizontalInside: BorderSide(
-          color: Colors.white,
-          style: BorderStyle.solid,
-          width: 1.0,
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Icon(
+                  Icons.directions_run,
+                  color: ThemeColors.lightBlue,
+                ),
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    runningTime[0].toString() +
+                        " h : " +
+                        runningTime[1].toString() +
+                        " m",
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white, fontSize: 14),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                  child: Text(
+                    runningTime[2].toString() +
+                        " km",
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white, fontSize: 14),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Icon(
+                  Icons.directions_bike,
+                  color: ThemeColors.orange,
+                ),
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    cyclingTime[0].toString() +
+                        " h : " +
+                        cyclingTime[1].toString() +
+                        " m",
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white, fontSize: 14),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                  child: Text(
+                    cyclingTime[2].toString() +
+                        " km",
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white, fontSize: 14),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Icon(
+                  Icons.filter_hdr,
+                  color: ThemeColors.yellowGreenish,
+                ),
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    climbingTime[0].toString() +
+                        " h : " +
+                        climbingTime[1].toString() +
+                        " m",
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white, fontSize: 14),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-        verticalInside: BorderSide(
-          color: Colors.white,
-          style: BorderStyle.solid,
-          width: 1.0,
-        ),
-      ),
-      children: [
-        _buildTableRow("Running, Cycling, Climbing"),
-        _buildTableRow(runningTime[3].toString() + "," + cyclingTime[3].toString() + "," +  climbingTime[2].toString()),
-        _buildTableRow(runningTime[0].toString() +
-            " h : " +
-            runningTime[1].toString() +
-            " m," + cyclingTime[0].toString() +
-            " h : " +
-            cyclingTime[1].toString() +
-            " m," + climbingTime[0].toString() +
-            " h : " +
-            climbingTime[1].toString() +
-            " m"),
-        _buildTableRow(runningTime[2].toString() +
-            " km," + cyclingTime[2].toString() +
-            " km, -"),
       ],
     );
   }
@@ -367,7 +447,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
         SortingDataService().getActivityTimePast12Weeks(activities);
 
-    return _buildLineGraphWithAreaAndPoints(data);
+    return _buildLineGraphWithAreaAndPoints(data, 200);
   }
 
   _build12WeeksCyclingDistanceChart(List<RecordedActivity> activities) {
@@ -376,7 +456,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     data.removeAt(0);
 
-    return _buildLineGraphWithAreaAndPoints(data);
+    return _buildLineGraphWithAreaAndPoints(data, 200);
   }
 
   _build12WeeksRunningDistanceChart(List<RecordedActivity> activities) {
@@ -385,21 +465,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
     data.removeAt(1);
 
-    return _buildLineGraphWithAreaAndPoints(data);
+    return _buildLineGraphWithAreaAndPoints(data, 200);
   }
 
   Widget _buildWeeklyActivityChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
         SortingDataService().getWeeklyActivity(activities);
 
-    return _buildLineGraphWithAreaAndPoints(data);
+    return _buildLineGraphWithAreaAndPoints(data, 140);
   }
 
   _buildLineGraphWithAreaAndPoints(
-      List<charts.Series<ActivitiesDataDateTime, DateTime>> data) {
+      List<charts.Series<ActivitiesDataDateTime, DateTime>> data,
+      double height) {
     if (data.isNotEmpty) {
       return SizedBox(
-        height: 200.0,
+        height: height,
         child: new charts.TimeSeriesChart(
           data,
           animate: false,
@@ -473,15 +554,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-
-  _buildAverageSpeedProgression(List<RecordedActivity> activities, int type){
-
+  _buildAverageSpeedProgression(List<RecordedActivity> activities, int type) {
     var data = SortingDataService().getAverageSpeedData(activities, 8, type);
 
-    if(data.isNotEmpty){
+    if (data.isNotEmpty) {
       return SizedBox(
         height: 200.0,
-        child:charts.BarChart(
+        child: charts.BarChart(
           data,
           animate: false,
           domainAxis: charts.AxisSpec<String>(
@@ -489,26 +568,33 @@ class _HomeScreenState extends State<HomeScreen> {
               labelStyle: new charts.TextStyleSpec(
                 fontSize: 10,
                 color: charts.MaterialPalette.white,
-              ),),
+              ),
+            ),
           ),
           primaryMeasureAxis: charts.NumericAxisSpec(
             renderSpec: charts.GridlineRendererSpec(
               labelStyle: charts.TextStyleSpec(
                   fontSize: 10, color: charts.MaterialPalette.white),
               lineStyle: charts.LineStyleSpec(
-                  thickness: 1, color: charts.MaterialPalette.white),),),
-            customSeriesRenderers: [
-              new charts.BarTargetLineRendererConfig<String>(
+                  thickness: 1, color: charts.MaterialPalette.white),
+            ),
+          ),
+          customSeriesRenderers: [
+            new charts.BarTargetLineRendererConfig<String>(
                 // ID used to link series to this renderer.
-                  customRendererId: 'customTargetLine',
-                  groupingType: charts.BarGroupingType.stacked)
-            ],
-        ),);
+                customRendererId: 'customTargetLine',
+                groupingType: charts.BarGroupingType.stacked)
+          ],
+        ),
+      );
     } else {
-      return Container(child: Text("No activities yet.", style: GoogleFonts.montserrat(color: Colors.white),),);
+      return Container(
+        child: Text(
+          "No activities yet.",
+          style: GoogleFonts.montserrat(color: Colors.white),
+        ),
+      );
     }
-
-
   }
 
   /// Method to return the name of the current month
