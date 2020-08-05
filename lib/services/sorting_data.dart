@@ -418,7 +418,7 @@ class SortingDataService {
     String lookingForType = type == 0 ? "Running" : "Cycling";
 
     /// Iterate through all activities
-    for(RecordedActivity activity in recAct.reversed){
+    for(RecordedActivity activity in recAct){
 
       /// Include only the wanted number of activities and the right activity type
       if(noOfIncludedActivities < noOfActivities && activity.activityType == lookingForType){
@@ -428,7 +428,7 @@ class SortingDataService {
 
         double averageSpeed = activity.distance.toDouble() / (double.parse(splittedDuration[0]) + double.parse(splittedDuration[1]) / 60);
 
-        averageSpeeds.add(ActivitiesPrecisionData(
+        averageSpeeds.insert(0, ActivitiesPrecisionData(
             splittedDate[0] + "." + splittedDate[1],
             averageSpeed,
             type == 0 ? ThemeColors.lightBlue : ThemeColors.orange));
