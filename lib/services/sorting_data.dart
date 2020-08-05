@@ -9,21 +9,26 @@ import 'package:intl/intl.dart';
 class SortingDataService {
 
   /// Method to get series only containing the total activity distance
-  List<charts.Series<ActivitiesData, String>> getTotalActivitiesDistance(
+  List<charts.Series<ActivitiesData, String>> getYearlyActivitiesDistance(
       List<RecordedActivity> recAct) {
     int runningDistance = 0;
     int cyclingDistance = 0;
 
     for (RecordedActivity activity in recAct) {
-      switch (activity.activityType) {
-        case "Running":
-          runningDistance += activity.distance;
-          break;
-        case "Cycling":
-          cyclingDistance += activity.distance;
-          break;
-        case "Climbing":
-          break;
+
+      List splittedDate = activity.date.split(".");
+
+      if(int.parse(splittedDate[2]) == DateTime.now().year) {
+        switch (activity.activityType) {
+          case "Running":
+            runningDistance += activity.distance;
+            break;
+          case "Cycling":
+            cyclingDistance += activity.distance;
+            break;
+          case "Climbing":
+            break;
+        }
       }
     }
 
@@ -47,7 +52,7 @@ class SortingDataService {
   }
 
   /// Method to get series only containing the total activity distance
-  List<charts.Series<ActivitiesData, String>> getTotalActivitiesTime(
+  List<charts.Series<ActivitiesData, String>> getYearlyActivitiesTime(
       List<RecordedActivity> recAct) {
     int runningTime = 0;
     int cyclingTime = 0;
@@ -55,19 +60,23 @@ class SortingDataService {
 
     for (RecordedActivity activity in recAct) {
 
-      List stringDurationSplitted = activity.duration.split(":");
-      int durationInMin = int.parse(stringDurationSplitted[0]) * 60 + int.parse(stringDurationSplitted[1]);
+      List splittedDate = activity.date.split(".");
 
-      switch (activity.activityType) {
-        case "Running":
-          runningTime += durationInMin;
-          break;
-        case "Cycling":
-          cyclingTime += durationInMin;
-          break;
-        case "Climbing":
-          cyclingTime += durationInMin;
-          break;
+      if(int.parse(splittedDate[2]) == DateTime.now().year){
+        List stringDurationSplitted = activity.duration.split(":");
+        int durationInMin = int.parse(stringDurationSplitted[0]) * 60 + int.parse(stringDurationSplitted[1]);
+
+        switch (activity.activityType) {
+          case "Running":
+            runningTime += durationInMin;
+            break;
+          case "Cycling":
+            cyclingTime += durationInMin;
+            break;
+          case "Climbing":
+            cyclingTime += durationInMin;
+            break;
+        }
       }
     }
 
@@ -253,7 +262,7 @@ class SortingDataService {
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .subtract(Duration(days: 7*i)),
           runningTimePerWeek[i],
-          ThemeColors.blueGreenis));
+          ThemeColors.lightBlue));
       cyclingActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -271,7 +280,7 @@ class SortingDataService {
     if (runningActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
         id: 'Running',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
         domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
         data: runningActivitiesTime,
@@ -352,7 +361,7 @@ class SortingDataService {
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .subtract(Duration(days: 7*i)),
           runningDistancePerWeek[i],
-          ThemeColors.blueGreenis));
+          ThemeColors.lightBlue));
       cyclingActivitiesDistance.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -364,7 +373,7 @@ class SortingDataService {
     if (runningActivitiesDistance.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
         id: 'Running',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
         domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
         data: runningActivitiesDistance,

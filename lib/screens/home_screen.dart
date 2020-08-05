@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           "Weekly Activity Time"),
                       BorderContainerWidget(
                         _buildOverview(snapshot.data, 1),
-                        "Monthly Activity Overview" + _getCurrentMonthName(),
+                        "Monthly Activity Overview: " + _getCurrentMonthName(),
                       ),
                       BorderContainerWidget(
                         _build12WeeksActivityTimeChart(snapshot.data),
@@ -59,12 +59,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         "Yearly Activity Overview",
                       ),
                       BorderContainerWidget(
-                        _buildTotalDurationChart(snapshot.data),
-                        "Total Activity Time",
+                        _buildYearlyDurationChart(snapshot.data),
+                        "Total Activity Time " + DateTime.now().year.toString(),
                       ),
                       BorderContainerWidget(
-                        _buildTotalDistanceChart(snapshot.data),
-                        "Total Activity Distance",
+                        _buildYearlyDistanceChart(snapshot.data),
+                        "Total Activity Distance " + DateTime.now().year.toString(),
                       ),
                       Container(
                         margin: EdgeInsets.fromLTRB(0, 24, 0, 0),
@@ -169,35 +169,45 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   /// Method to build the BarChart containing the data for the distance of the given [activities]
-  Widget _buildTotalDistanceChart(List<RecordedActivity> activities) {
+  Widget _buildYearlyDistanceChart(List<RecordedActivity> activities) {
     return SizedBox(
-      height: 200.0,
-      child: new charts.PieChart(
-        SortingDataService().getTotalActivitiesDistance(activities),
+      height: 100.0,
+      child: new charts.BarChart(
+        SortingDataService().getYearlyActivitiesDistance(activities),
         animate: false,
-        defaultRenderer: new charts.ArcRendererConfig(
-            arcWidth: 60,
-            arcRendererDecorators: [
-              new charts.ArcLabelDecorator(
-                  labelPosition: charts.ArcLabelPosition.inside)
-            ]),
+        vertical: false,
+        domainAxis: charts.AxisSpec<String>(
+          renderSpec: charts.GridlineRendererSpec(
+            labelStyle: new charts.TextStyleSpec(
+              fontSize: 10,
+              color: charts.MaterialPalette.white,
+            ),),
+        ),
+        primaryMeasureAxis: charts.NumericAxisSpec(
+            renderSpec: charts.GridlineRendererSpec(
+                labelStyle: charts.TextStyleSpec(
+                    fontSize: 10, color: charts.MaterialPalette.white),
+                lineStyle: charts.LineStyleSpec(
+                    thickness: 1, color: charts.MaterialPalette.white),),),
       ),
     );
   }
 
   /// Method to build the BarChart containing the data for the duration of the given [activities]
-  Widget _buildTotalDurationChart(List<RecordedActivity> activities) {
+  Widget _buildYearlyDurationChart(List<RecordedActivity> activities) {
     return SizedBox(
       height: 200.0,
       child: new charts.PieChart(
-        SortingDataService().getTotalActivitiesTime(activities),
+        SortingDataService().getYearlyActivitiesTime(activities),
         animate: false,
-        defaultRenderer: new charts.ArcRendererConfig(
-            arcWidth: 60,
-            arcRendererDecorators: [
-              new charts.ArcLabelDecorator(
-                  labelPosition: charts.ArcLabelPosition.inside)
-            ]),
+        defaultRenderer:
+            new charts.ArcRendererConfig(arcWidth: 45, arcRendererDecorators: [
+          new charts.ArcLabelDecorator(
+            labelPosition: charts.ArcLabelPosition.outside,
+            outsideLabelStyleSpec:
+                charts.TextStyleSpec(color: charts.Color.white, fontSize: 12),
+          )
+        ]),
       ),
     );
   }
