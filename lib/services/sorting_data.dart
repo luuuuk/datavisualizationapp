@@ -74,7 +74,7 @@ class SortingDataService {
             cyclingTime += durationInMin;
             break;
           case "Climbing":
-            cyclingTime += durationInMin;
+            climbingTime += durationInMin;
             break;
         }
       }
