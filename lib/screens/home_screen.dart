@@ -51,8 +51,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         "Cycling Distance last 12 weeks",
                       ),
                       BorderContainerWidget(
+                        _buildAverageSpeedProgression(snapshot.data, 1),
+                        "Average Speed Progression in Cycling"
+                      ),
+                      BorderContainerWidget(
                         _build12WeeksRunningDistanceChart(snapshot.data),
                         "Running Distance last 12 weeks",
+                      ),
+                      BorderContainerWidget(
+                          _buildAverageSpeedProgression(snapshot.data, 0),
+                          "Average Speed Progression in Running"
                       ),
                       BorderContainerWidget(
                         _buildOverview(snapshot.data, 2),
@@ -448,6 +456,44 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     }
+  }
+
+
+  _buildAverageSpeedProgression(List<RecordedActivity> activities, int type){
+
+    var data = SortingDataService().getAverageSpeedData(activities, 20, type);
+
+    if(data.isNotEmpty){
+      return SizedBox(
+        height: 200.0,
+        child:charts.BarChart(
+          data,
+          animate: false,
+          domainAxis: charts.AxisSpec<String>(
+            renderSpec: charts.GridlineRendererSpec(
+              labelStyle: new charts.TextStyleSpec(
+                fontSize: 10,
+                color: charts.MaterialPalette.white,
+              ),),
+          ),
+          primaryMeasureAxis: charts.NumericAxisSpec(
+            renderSpec: charts.GridlineRendererSpec(
+              labelStyle: charts.TextStyleSpec(
+                  fontSize: 10, color: charts.MaterialPalette.white),
+              lineStyle: charts.LineStyleSpec(
+                  thickness: 1, color: charts.MaterialPalette.white),),),
+            customSeriesRenderers: [
+              new charts.BarTargetLineRendererConfig<String>(
+                // ID used to link series to this renderer.
+                  customRendererId: 'customTargetLine',
+                  groupingType: charts.BarGroupingType.stacked)
+            ],
+        ),);
+    } else {
+      return Container();
+    }
+
+
   }
 
   /// Method to return the name of the current month
