@@ -388,6 +388,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.white, fontSize: 14),
                   ),
                 ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                  child: Text(
+                    runningTime[3] == 0 ? "- km/run" : (runningTime[2] / runningTime[3]).toStringAsPrecision(2) +
+                        " km/run",
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white, fontSize: 14),
+                  ),
+                ),
               ],
             ),
             Column(
@@ -412,6 +421,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text(
                     cyclingTime[2].toString() +
                         " km",
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white, fontSize: 14),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                  child: Text(
+                    cyclingTime[3] == 0 ? "- km/ride" : (cyclingTime[2] / cyclingTime[3]).toStringAsPrecision(2) +
+                        " km/ride",
                     style: GoogleFonts.montserrat(
                         color: Colors.white, fontSize: 14),
                   ),
