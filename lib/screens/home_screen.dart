@@ -260,32 +260,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Method to assemble the weekly overview
   Widget _weeklyOverviewWidget(List<RecordedActivity> activities) {
-    return Column(
-      children: <Widget>[
-        OverviewWidget(activities, 0),
-        Container(
-          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-        ),
-        Text(
-          "Activity Time in h",
-          style: GoogleFonts.montserrat(color: Colors.white),
-        ),
-        _buildWeeklyActivityChart(activities),
-        /*
-        Container(
-          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-        ),
-        Text(
-          "Goals",
-          style: GoogleFonts.montserrat(color: Colors.white),
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-        ),
-
-         */
-      ],
-    );
+    return Column(children: <Widget>[
+      OverviewWidget(activities, 0),
+      Container(
+        padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+      ),
+      Text(
+        "Activity Time in h",
+        style: GoogleFonts.montserrat(color: Colors.white),
+      ),
+      _buildWeeklyActivityChart(activities),
+      Container(
+        padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+      ),
+    ]);
   }
 
   _build12WeeksActivityTimeChart(List<RecordedActivity> activities) {
