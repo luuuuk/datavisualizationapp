@@ -5,6 +5,7 @@ import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/services/sorting_data.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
+import 'package:data_visualization_app/widgets/goal.dart';
 import 'package:data_visualization_app/widgets/overview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -270,6 +271,19 @@ class _HomeScreenState extends State<HomeScreen> {
           style: GoogleFonts.montserrat(color: Colors.white),
         ),
         _buildWeeklyActivityChart(activities),
+        /*
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+        ),
+        Text(
+          "Goals",
+          style: GoogleFonts.montserrat(color: Colors.white),
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+        ),
+
+         */
       ],
     );
   }

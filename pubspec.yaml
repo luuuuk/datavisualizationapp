@@ -30,6 +30,7 @@ dependencies:
   flutter_speed_dial: ^1.2.5
   flutter_slidable: ^0.5.5
   flutter_launcher_icons: ^0.7.5
+  percent_indicator: ^2.1.5
 
 dev_dependencies:
   flutter_test:
