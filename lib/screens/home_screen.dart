@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return ListView(
                     children: [
                       BorderContainerWidget(
-                          _weeklyOverviewWidget(snapshot.data), "Last 7 Days"),
+                          _weeklyOverviewWidget(snapshot.data), "This Week"),
                       BorderContainerWidget(
                         OverviewWidget(snapshot.data, 1),
                         "Monthly Activity Overview: " + _getCurrentMonthName(),
@@ -60,17 +60,40 @@ class _HomeScreenState extends State<HomeScreen> {
                           _buildAverageSpeedProgression(snapshot.data, 0),
                           "Average Speed Progression in Running"),
                       BorderContainerWidget(
-                        OverviewWidget(snapshot.data, 2),
+                        Column(
+                          children: [
+                            OverviewWidget(snapshot.data, 2),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                            ),
+                            Divider(thickness: 1,),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+                              child: Text(
+                                "Total Activity Time " +
+                                    DateTime.now().year.toString(),
+                                style:
+                                GoogleFonts.montserrat(color: Colors.white),
+                              ),
+                            ),
+                            _buildYearlyDurationChart(snapshot.data),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                            ),
+                            Divider(thickness: 1,),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                            ),
+                            Text(
+                              "Total Activity Distance " +
+                                  DateTime.now().year.toString(),
+                              style:
+                                  GoogleFonts.montserrat(color: Colors.white),
+                            ),
+                            _buildYearlyDistanceChart(snapshot.data),
+                          ],
+                        ),
                         "Yearly Activity Overview",
-                      ),
-                      BorderContainerWidget(
-                        _buildYearlyDurationChart(snapshot.data),
-                        "Total Activity Time " + DateTime.now().year.toString(),
-                      ),
-                      BorderContainerWidget(
-                        _buildYearlyDistanceChart(snapshot.data),
-                        "Total Activity Distance " +
-                            DateTime.now().year.toString(),
                       ),
                       Container(
                         margin: EdgeInsets.fromLTRB(0, 0, 0, 64),
