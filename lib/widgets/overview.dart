@@ -4,6 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// Class implementing a widget giving an overview over past activities.
+/// Data is being given by [activities] whereas the [overviewCode] defines the
+/// time period over which the overview is being given, 0: one week 1: one month
+/// 2: one year
 class OverviewWidget extends StatelessWidget{
   final List<RecordedActivity> activities;
   final int overviewCode;
@@ -28,7 +32,7 @@ class OverviewWidget extends StatelessWidget{
         case 0:
           {
             expressionToEvaluate = (dateTime
-                .compareTo(DateTime.now().subtract(Duration(days: 7))) >
+                .compareTo(DateTime.now().subtract(Duration(days: DateTime.now().weekday-1))) >
                 0);
           }
           break;

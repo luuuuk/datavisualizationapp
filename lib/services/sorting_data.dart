@@ -117,8 +117,9 @@ class SortingDataService {
     List<double> cyclingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0];
     List<double> climbingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0];
 
-    /// Go through all activties from day T-7 to now()
-    for (int i = 0; i < 8; i++) {
+    /// Go through all activties from today-weekday-1 to today
+    /// (weekday starts at 1)
+    for (int i = 0; i < (DateTime.now().weekday -1); i++) {
       /// Check if activities match the date
       for (RecordedActivity activity in recAct) {
         List stringDateSplitted = activity.date.split(".");
@@ -149,7 +150,7 @@ class SortingDataService {
       }
     }
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < (DateTime.now().weekday); i++) {
       runningActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -168,6 +169,33 @@ class SortingDataService {
               .subtract(Duration(days: i)),
           climbingTimePerDay[i],
           ThemeColors.yellowGreenish));
+    }
+
+    /// Fill in the rest of the week until day 7 (sunday)
+    int daysToAdd = 0;
+
+    while(runningActivitiesTime.length != 7 && cyclingActivitiesTime.length != 7 && climbingActivitiesTime.length != 7){
+
+      runningActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          runningTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.blueGreenis));
+      cyclingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          cyclingTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.orange));
+      climbingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          climbingTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.yellowGreenish));
+
+      daysToAdd++;
     }
 
     if (runningActivitiesTime.isNotEmpty) {
