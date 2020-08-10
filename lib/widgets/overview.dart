@@ -32,7 +32,7 @@ class OverviewWidget extends StatelessWidget{
         case 0:
           {
             expressionToEvaluate = (dateTime
-                .compareTo(DateTime.now().subtract(Duration(days: DateTime.now().weekday-1))) >
+                .compareTo(DateTime.now().subtract(Duration(days: DateTime.now().weekday))) >
                 0);
           }
           break;

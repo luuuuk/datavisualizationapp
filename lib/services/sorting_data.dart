@@ -119,7 +119,7 @@ class SortingDataService {
 
     /// Go through all activties from today-weekday-1 to today
     /// (weekday starts at 1)
-    for (int i = 0; i < (DateTime.now().weekday -1); i++) {
+    for (int i = 0; i < (DateTime.now().weekday); i++) {
       /// Check if activities match the date
       for (RecordedActivity activity in recAct) {
         List stringDateSplitted = activity.date.split(".");
@@ -233,7 +233,7 @@ class SortingDataService {
     return series;
   }
 
-  /// Method to get series containing only activities from the past week
+  /// Method to get series containing only activity times from the past 12 weeks
   List<charts.Series<ActivitiesDataDateTime, DateTime>> getActivityTimePast12Weeks(
       List<RecordedActivity> recAct) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> series =
@@ -257,13 +257,35 @@ class SortingDataService {
         DateTime dateTime = DateTime(int.parse(stringDateSplitted[2]),
             int.parse(stringDateSplitted[1]), int.parse(stringDateSplitted[0]));
 
+        /// Check if activity happened this week
+        if(i < DateTime.now().weekday && dateTime.compareTo(DateTime(DateTime.now().year,
+            DateTime.now().month, DateTime.now().day).subtract(Duration(days: i))) == 0){
+
+          /// Add duration to current week
+          List stringDurationSplitted = activity.duration.split(":");
+          double durationInMin =
+              int.parse(stringDurationSplitted[0]).toDouble() +
+                  int.parse(stringDurationSplitted[1]) / 60;
+
+          switch (activity.activityType) {
+            case "Running":
+              runningTimePerWeek[0] += durationInMin;
+              break;
+            case "Cycling":
+              cyclingTimePerWeek[0] += durationInMin;
+              break;
+            case "Climbing":
+              climbingTimePerWeek[0] += durationInMin;
+          }
+        }
+
         /// Check if the activity happened on the given date
         if (dateTime.compareTo(DateTime(DateTime.now().year,
             DateTime.now().month, DateTime.now().day)
-            .subtract(Duration(days: 7*i))) <=
+            .subtract(Duration(days: 7*i + DateTime.now().weekday))) <=
             0 && dateTime.compareTo(DateTime(DateTime.now().year,
             DateTime.now().month, DateTime.now().day)
-            .subtract(Duration(days: 7*(i+1)))) >=
+            .subtract(Duration(days: 7*(i+1) + DateTime.now().weekday))) >=
             0) {
           List stringDurationSplitted = activity.duration.split(":");
           double durationInMin =
@@ -272,35 +294,35 @@ class SortingDataService {
 
           switch (activity.activityType) {
             case "Running":
-              runningTimePerWeek[i] += durationInMin;
+              runningTimePerWeek[i+1] += durationInMin;
               break;
             case "Cycling":
-              cyclingTimePerWeek[i] += durationInMin;
+              cyclingTimePerWeek[i+1] += durationInMin;
               break;
             case "Climbing":
-              climbingTimePerWeek[i] += durationInMin;
+              climbingTimePerWeek[i+1] += durationInMin;
           }
         }
       }
     }
 
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 12; i++) {
       runningActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7*i)),
+              .subtract(Duration(days: 7*i + DateTime.now().weekday) ),
           runningTimePerWeek[i],
           ThemeColors.lightBlue));
       cyclingActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7*i)),
+              .subtract(Duration(days: 7*i + DateTime.now().weekday)),
           cyclingTimePerWeek[i],
           ThemeColors.orange));
       climbingActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7*i)),
+              .subtract(Duration(days: 7*i + DateTime.now().weekday)),
           climbingTimePerWeek[i],
           ThemeColors.yellowGreenish));
     }
@@ -340,7 +362,7 @@ class SortingDataService {
     return series;
   }
 
-  /// Method to get series containing only activities from the past week
+  /// Method to get series containing only activity distances from the past 12 weeks
   List<charts.Series<ActivitiesDataDateTime, DateTime>> getActivityDistancePast12Weeks(
       List<RecordedActivity> recAct) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> series =
@@ -361,39 +383,57 @@ class SortingDataService {
         DateTime dateTime = DateTime(int.parse(stringDateSplitted[2]),
             int.parse(stringDateSplitted[1]), int.parse(stringDateSplitted[0]));
 
+        /// Check if activity happened this week
+        if(i < DateTime.now().weekday && dateTime.compareTo(DateTime(DateTime.now().year,
+            DateTime.now().month, DateTime.now().day).subtract(Duration(days: i))) == 0){
+
+          /// Add distance to current week
+          int distanceKm = activity.distance;
+
+          switch (activity.activityType) {
+            case "Running":
+              runningDistancePerWeek[0] += distanceKm;
+              break;
+            case "Cycling":
+              cyclingDistancePerWeek[0] += distanceKm;
+              break;
+          }
+        }
+
+
         /// Check if the activity happened on the given date
         if (dateTime.compareTo(DateTime(DateTime.now().year,
             DateTime.now().month, DateTime.now().day)
-            .subtract(Duration(days: 7*i))) <=
+            .subtract(Duration(days: 7*i + DateTime.now().weekday))) <=
             0 && dateTime.compareTo(DateTime(DateTime.now().year,
             DateTime.now().month, DateTime.now().day)
-            .subtract(Duration(days: 7*(i+1)))) >=
+            .subtract(Duration(days: 7*(i+1) + DateTime.now().weekday))) >=
             0) {
           int distanceKm = activity.distance;
 
           switch (activity.activityType) {
             case "Running":
-              runningDistancePerWeek[i] += distanceKm;
+              runningDistancePerWeek[i+1] += distanceKm;
               break;
             case "Cycling":
-              cyclingDistancePerWeek[i] += distanceKm;
+              cyclingDistancePerWeek[i+1] += distanceKm;
               break;
           }
         }
       }
     }
 
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 12; i++) {
       runningActivitiesDistance.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7*i)),
+              .subtract(Duration(days: 7*i + DateTime.now().weekday)),
           runningDistancePerWeek[i],
           ThemeColors.lightBlue));
       cyclingActivitiesDistance.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7*i)),
+              .subtract(Duration(days: 7*i + DateTime.now().weekday)),
           cyclingDistancePerWeek[i],
           ThemeColors.orange));
     }
