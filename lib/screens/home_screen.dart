@@ -1,3 +1,4 @@
+import 'package:data_visualization_app/models/activity_goal.dart';
 import 'package:data_visualization_app/models/recorded_activity.dart';
 import 'package:data_visualization_app/screens/activity_list_screen.dart';
 import 'package:data_visualization_app/screens/add_data_screen.dart';
@@ -21,8 +22,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool hasData = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   return ListView(
                     children: [
                       BorderContainerWidget(
-                          _weeklyOverviewWidget(snapshot.data), "This Week"),
+                          _weeklyOverviewWidget(snapshot.data),
+                          "Weekly Activity Overview"),
                       BorderContainerWidget(
-                        OverviewWidget(snapshot.data, 1),
+                        _monthlyOverviewWidget(snapshot.data),
                         "Monthly Activity Overview: " + _getCurrentMonthName(),
                       ),
                       BorderContainerWidget(
@@ -61,39 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           _buildAverageSpeedProgression(snapshot.data, 0),
                           "Average Speed Progression in Running"),
                       BorderContainerWidget(
-                        Column(
-                          children: [
-                            OverviewWidget(snapshot.data, 2),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                            ),
-                            Divider(thickness: 1,),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                              child: Text(
-                                "Total Activity Time " +
-                                    DateTime.now().year.toString(),
-                                style:
-                                GoogleFonts.montserrat(color: Colors.white),
-                              ),
-                            ),
-                            _buildYearlyDurationChart(snapshot.data),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                            ),
-                            Divider(thickness: 1,),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                            ),
-                            Text(
-                              "Total Activity Distance " +
-                                  DateTime.now().year.toString(),
-                              style:
-                                  GoogleFonts.montserrat(color: Colors.white),
-                            ),
-                            _buildYearlyDistanceChart(snapshot.data),
-                          ],
-                        ),
+                        _yearlyOverviewWidget(snapshot.data),
                         "Yearly Activity Overview",
                       ),
                       Container(
@@ -135,7 +103,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           backgroundColor: ThemeColors.orange,
           onTap: () {
-            Navigator.pushNamed(context, ActivityListScreen.routeName);
+            Navigator.pushNamed(context, ActivityListScreen.routeName).then((value) {
+              setState(() {
+
+              });
+            });
           },
         ),
         // FAB 2
@@ -146,18 +118,26 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           backgroundColor: ThemeColors.orange,
           onTap: () {
-            Navigator.pushNamed(context, AddDataScreen.routeName);
+            Navigator.pushNamed(context, AddDataScreen.routeName).then((value) {
+              setState(() {
+
+              });
+            });
           },
         ),
         // FAB 3
         SpeedDialChild(
           child: Icon(
-            Icons.flag_outlined,
+            Icons.flag,
             color: Colors.white,
           ),
           backgroundColor: ThemeColors.orange,
           onTap: () {
-            Navigator.pushNamed(context, GoalsScreen.routeName);
+            Navigator.pushNamed(context, GoalsScreen.routeName).then((value) {
+              setState(() {
+
+              });
+            });
           },
         ),
       ],
@@ -168,17 +148,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<List<RecordedActivity>> getActivityData() async {
     DatabaseManager dbManager = new DatabaseManager();
     List<RecordedActivity> activities = await dbManager.getActivities();
-
-    if (activities == null || activities.isEmpty) {
-      setState(() {
-        hasData = false;
-      });
-      return null;
-    } else {
-      setState(() {
-        hasData = true;
-      });
-    }
 
     return activities;
   }
@@ -297,18 +266,125 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _weeklyOverviewWidget(List<RecordedActivity> activities) {
     return Column(children: <Widget>[
       OverviewWidget(activities, 0),
+      Container(padding: EdgeInsets.fromLTRB(0, 8, 0, 0), child: Divider()),
       Container(
         padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+        child: Text(
+          "Activity Time in h",
+          style: GoogleFonts.montserrat(color: Colors.white),
+        ),
       ),
-      Text(
-        "Activity Time in h",
-        style: GoogleFonts.montserrat(color: Colors.white),
-      ),
-      _buildWeeklyActivityChart(activities),
       Container(
         padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+        child: _buildWeeklyActivityChart(activities),
+      ),
+      Container(
+        padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+        child: _buildGoalList(0),
       ),
     ]);
+  }
+
+  Widget _monthlyOverviewWidget(List<RecordedActivity> activities) {
+    return Column(children: <Widget>[
+        OverviewWidget(activities, 1),
+      Container(
+        padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+        child: _buildGoalList(1),
+      ),
+    ]);
+  }
+
+  /// Method to assemble the yearly overview
+  Widget _yearlyOverviewWidget(List<RecordedActivity> activities) {
+    return Column(
+      children: [
+        OverviewWidget(activities, 2),
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+          child: Divider(
+            thickness: 1,
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+          child: Text(
+            "Total Activity Time " +
+                DateTime.now().year.toString(),
+            style:
+            GoogleFonts.montserrat(color: Colors.white),
+          ),
+        ),
+        _buildYearlyDurationChart(activities),
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+          child: Divider(
+            thickness: 1,
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+          child: Text(
+            "Total Activity Distance " +
+                DateTime.now().year.toString(),
+            style:
+            GoogleFonts.montserrat(color: Colors.white),
+          ),
+        ),
+        _buildYearlyDistanceChart(activities),
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+          child: _buildGoalList(2),
+        ),
+      ],
+    );
+  }
+
+  /// Method to return a list view containing the goals for the specified time span
+  /// where 0: week, 1: month, 2: year
+  Widget _buildGoalList(int timeSpan){
+    return FutureBuilder<List<ActivityGoal>>(
+        future: getGoalData(timeSpan),
+        builder: (context, AsyncSnapshot<List<ActivityGoal>> snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: <Widget>[
+                Divider(),
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+                  child: Text(
+                    "Personal Goals",
+                    style: GoogleFonts.montserrat(color: Colors.white),
+                  ),
+                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      return FutureBuilder<double>(
+                          future:
+                          _getCurrentGoalProgress(snapshot.data[index]),
+                          builder: (context,
+                              AsyncSnapshot<double> goalProgress) {
+                            if (goalProgress.hasData) {
+                              return GoalWidget(
+                                  snapshot.data[index].goalNumber
+                                      .toDouble(),
+                                  goalProgress.data,
+                                  snapshot.data[index].goalTitle,
+                                  snapshot.data[index].goalType,
+                                  snapshot.data[index].activityType);
+                            } else {
+                              return Container();
+                            }
+                          });
+                    }),
+              ],
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 
   _build12WeeksActivityTimeChart(List<RecordedActivity> activities) {
@@ -463,6 +539,53 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     }
+  }
+
+  Future<List<ActivityGoal>> getGoalData(int timeFrame) async {
+    DatabaseManager dbManager = new DatabaseManager();
+
+    List<ActivityGoal> allGoals = await dbManager.getGoals();
+    List<ActivityGoal> returnGoals = new List();
+
+    for (ActivityGoal goal in allGoals) {
+      if (goal.timeFrame == timeFrame) {
+        returnGoals.add(goal);
+      }
+    }
+
+    return returnGoals;
+  }
+
+  Future<double> _getCurrentGoalProgress(ActivityGoal goal) async {
+    DatabaseManager dbManager = new DatabaseManager();
+    List<RecordedActivity> activities = await dbManager.getActivities();
+
+    List data =
+        SortingDataService().getOverviewData(activities, goal.timeFrame);
+
+    double goalProgress = 0.0;
+
+    /// 0: distance, 1: duration
+    switch (goal.goalType) {
+      case 0:
+        {
+          goalProgress = data[goal.activityType][2].toDouble();
+        }
+        break;
+      case 1:
+        {
+          goalProgress =
+          (data[goal.activityType][0] + data[goal.activityType][1] / 60).toDouble();
+        }
+        break;
+      default:
+        {
+          goalProgress = data[goal.activityType][2].toDouble();
+        }
+        break;
+    }
+
+    return goalProgress;
   }
 
   /// Method to return the name of the current month

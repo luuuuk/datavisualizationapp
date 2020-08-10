@@ -533,6 +533,102 @@ class SortingDataService {
 
   }
 
+  List<List<int>> getOverviewData(List<RecordedActivity> activities, int overviewCode) {
+
+    /// Hours, Minutes, Seconds, Distance
+    List<int> cyclingTime = [0, 0, 0, 0];
+    List<int> runningTime = [0, 0, 0, 0];
+    List<int> climbingTime = [0, 0, 0];
+    List<List<int>> returnList = new List();
+    bool expressionToEvaluate;
+
+    for (RecordedActivity activity in activities) {
+      List stringDateSplitted = activity.date.split(".");
+      DateTime dateTime = DateTime(int.parse(stringDateSplitted[2]),
+          int.parse(stringDateSplitted[1]), int.parse(stringDateSplitted[0]));
+
+      switch (overviewCode) {
+        case 0:
+          {
+            expressionToEvaluate = (dateTime
+                .compareTo(DateTime.now().subtract(Duration(days: DateTime
+                .now()
+                .weekday))) >
+                0);
+          }
+          break;
+        case 1:
+          {
+            expressionToEvaluate = (dateTime.month == DateTime
+                .now()
+                .month);
+          }
+          break;
+        case 2:
+          {
+            expressionToEvaluate = (dateTime.year == DateTime
+                .now()
+                .year);
+          }
+          break;
+        default:
+          expressionToEvaluate =
+          (dateTime.compareTo(DateTime.now().subtract(Duration(days: 7))) >
+              0);
+      }
+
+      /// If older than a week, do not include
+      if (expressionToEvaluate) {
+        List stringDurationSplitted = activity.duration.split(":");
+        int durationInHours = int.parse(stringDurationSplitted[0]);
+        int durationInMinutes = int.parse(stringDurationSplitted[1]);
+
+        /// Add up duration and distance per activity type
+        switch (activity.activityType) {
+          case "Running":
+            {
+              runningTime[0] += durationInHours;
+              runningTime[1] += durationInMinutes;
+              runningTime[2] += activity.distance;
+              runningTime[3]++;
+            }
+            break;
+          case "Cycling":
+            {
+              cyclingTime[0] += durationInHours;
+              cyclingTime[1] += durationInMinutes;
+              cyclingTime[2] += activity.distance;
+              cyclingTime[3]++;
+            }
+            break;
+          case "Climbing":
+            {
+              climbingTime[0] += durationInHours;
+              climbingTime[1] += durationInMinutes;
+              climbingTime[2]++;
+            }
+        }
+      }
+    }
+
+    /// Calculate sum of time
+    int fullRunningHoursToAdd = runningTime[1] ~/ 60;
+    int fullCyclingHoursToAdd = cyclingTime[1] ~/ 60;
+    int fullClimbingHoursToAdd = climbingTime[1] ~/ 60;
+    runningTime[0] += fullRunningHoursToAdd;
+    runningTime[1] -= fullRunningHoursToAdd * 60;
+    cyclingTime[0] += fullCyclingHoursToAdd;
+    cyclingTime[1] -= fullCyclingHoursToAdd * 60;
+    climbingTime[0] += fullClimbingHoursToAdd;
+    climbingTime[1] -= fullClimbingHoursToAdd * 60;
+
+    returnList.add(runningTime);
+    returnList.add(cyclingTime);
+    returnList.add(climbingTime);
+
+    return returnList;
+  }
+
 }
 
 class ActivitiesData {

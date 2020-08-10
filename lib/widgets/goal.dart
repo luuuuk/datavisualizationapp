@@ -26,7 +26,7 @@ class GoalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.transparent,
-      elevation: 4.0,
+      elevation: 1.0,
       child: Container(
         padding: EdgeInsets.all(8),
         width: double.maxFinite,

@@ -55,7 +55,16 @@ class DatabaseManager {
       print("Opening existing database");
     }
     // open the database
-    return await openDatabase(path);
+    return await openDatabase(path, onUpgrade: _onUpgrade, version: 2);
+  }
+
+  /// Create new table for goals on database upgrade
+  Future<void> _onUpgrade(Database db, int ancientVersion, int newVersion) async {
+    if(newVersion == 2){
+      db.execute(
+        "CREATE TABLE goals(id INTEGER, number INTEGER, title TEXT, type INTEGER, activity INTEGER, span INTEGER)",
+      );
+    }
   }
 
   /// Method to get all activities

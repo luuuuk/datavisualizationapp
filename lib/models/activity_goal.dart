@@ -30,7 +30,7 @@ class ActivityGoal {
   }
 
   String toString() {
-    return "ActivityGoal: \n\tGoal: " + goalNumber.toString() + "\n\Title: " +
+    return "ActivityGoal: \n\tID: " + id.toString() + "\n\tGoal: " + goalNumber.toString() + "\n\tTitle: " +
         goalTitle + "\n\tType: " + goalType.toString() + "\n\tActivity type: " +
         activityType.toString() + "\n\tTime Frame: " + timeFrame.toString();
   }
