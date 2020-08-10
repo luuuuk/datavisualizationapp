@@ -4,15 +4,17 @@
 /// The [activityType] defines the activity the goal is dedicated to, where
 /// activityType == 0 : running, activityType == 1 : cycling
 /// activityType == 2 : others
+/// The [timeFrame] defines the span of the goal, where 0: week, 1: month, 2: year
 class ActivityGoal {
   final int id;
   final int goalNumber;
   final String goalTitle;
   final int goalType;
   final int activityType;
+  final int timeFrame;
 
   ActivityGoal(
-      this.id, this.goalNumber, this.goalTitle, this.goalType, this.activityType);
+      this.id, this.goalNumber, this.goalTitle, this.goalType, this.activityType, this.timeFrame);
 
   Map<String, dynamic> toMap() {
 
@@ -22,6 +24,7 @@ class ActivityGoal {
     map['title'] = goalTitle;
     map['type'] = goalType;
     map['activity'] = activityType;
+    map['span'] = timeFrame;
 
     return map;
   }
@@ -29,6 +32,6 @@ class ActivityGoal {
   String toString() {
     return "ActivityGoal: \n\tGoal: " + goalNumber.toString() + "\n\Title: " +
         goalTitle + "\n\tType: " + goalType.toString() + "\n\tActivity type: " +
-        activityType.toString();
+        activityType.toString() + "\n\tTime Frame: " + timeFrame.toString();
   }
 }

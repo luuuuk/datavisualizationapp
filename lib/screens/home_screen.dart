@@ -1,6 +1,7 @@
 import 'package:data_visualization_app/models/recorded_activity.dart';
 import 'package:data_visualization_app/screens/activity_list_screen.dart';
 import 'package:data_visualization_app/screens/add_data_screen.dart';
+import 'package:data_visualization_app/screens/goals_screen.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/services/sorting_data.dart';
 import 'package:data_visualization_app/theme.dart';
@@ -146,6 +147,17 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: ThemeColors.orange,
           onTap: () {
             Navigator.pushNamed(context, AddDataScreen.routeName);
+          },
+        ),
+        // FAB 3
+        SpeedDialChild(
+          child: Icon(
+            Icons.flag_outlined,
+            color: Colors.white,
+          ),
+          backgroundColor: ThemeColors.orange,
+          onTap: () {
+            Navigator.pushNamed(context, GoalsScreen.routeName);
           },
         ),
       ],
