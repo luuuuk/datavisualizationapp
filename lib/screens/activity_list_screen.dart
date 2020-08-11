@@ -78,22 +78,30 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                           padding: EdgeInsets.all(5.0),
                           child: Column(
                             children: [
-                              Divider(color: Colors.white,thickness: 1,),
-                              ListTile(
-                                leading: _getActivityIcon(snapshot.data[index]),
-                                title: Text(snapshot.data[index].activityType + " : " + snapshot.data[index].date, style: GoogleFonts.montserrat(
-                                    color: Colors.white),),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Duration: " + snapshot.data[index].duration, style: GoogleFonts.montserrat(
-                                        color: Colors.white),),
-                                    snapshot.data[index].activityType == "Climbing" ? Container() : Text("Distance: " + snapshot.data[index].distance.toString()+ " km", style: GoogleFonts.montserrat(
-                                        color: Colors.white),),
-                                  ],
+                              Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      ThemeColors.darkBlue,
+                                      ThemeColors.blueGreenis.withOpacity(0.5)
+                                    ]
+                                  ),
+                                ),
+                                child: ListTile(
+                                  leading: _getActivityIcon(snapshot.data[index]),
+                                  title: Text(snapshot.data[index].activityType + " : " + snapshot.data[index].date, style: GoogleFonts.montserrat(
+                                      color: Colors.white),),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Duration: " + snapshot.data[index].duration, style: GoogleFonts.montserrat(
+                                          color: Colors.white),),
+                                      snapshot.data[index].activityType == "Climbing" ? Container() : Text("Distance: " + snapshot.data[index].distance.toString()+ " km", style: GoogleFonts.montserrat(
+                                          color: Colors.white),),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Divider(color: Colors.white,thickness: 1,),
                             ],
                           ),
                         ),
