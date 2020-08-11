@@ -358,6 +358,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
@@ -499,7 +500,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _buildAverageSpeedProgression(List<RecordedActivity> activities, int type) {
-    var data = SortingDataService().getAverageSpeedData(activities, 8, type);
+    var data = SortingDataService().getAverageSpeedData(activities, 9, type);
 
     if (data.isNotEmpty) {
       return SizedBox(
