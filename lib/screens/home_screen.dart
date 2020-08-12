@@ -375,14 +375,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   snapshot.data[index].goalType,
                                   snapshot.data[index].activityType);
                             } else {
-                              return Container();
+                              return Container(child: Text("You have not yet defined a personal goal."));
                             }
                           });
                     }),
               ],
             );
           } else {
-            return Container();
+            return Container(child: Text("You have not yet defined a personal goal."),);
           }
         });
   }
