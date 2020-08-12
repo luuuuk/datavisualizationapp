@@ -16,7 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/HomeScreen';
   @override
   _HomeScreenState createState() => new _HomeScreenState();
 }
