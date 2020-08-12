@@ -43,6 +43,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
           builder: (context, AsyncSnapshot<List<RecordedActivity>> snapshot) {
             if (snapshot.hasData) {
               return Container(
+                padding: EdgeInsets.only(top: 2, bottom: 2),
                   color: ThemeColors.darkBlue,
                   child: ListView.builder(
                     itemCount: snapshot.data.length,
@@ -75,25 +76,34 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                           ),
                         ],
                         child: Container(
-                          padding: EdgeInsets.all(5.0),
+                          padding: EdgeInsets.all(2.0),
                           child: Column(
                             children: [
-                              Divider(color: Colors.white,thickness: 1,),
-                              ListTile(
-                                leading: _getActivityIcon(snapshot.data[index]),
-                                title: Text(snapshot.data[index].activityType + " : " + snapshot.data[index].date, style: GoogleFonts.montserrat(
-                                    color: Colors.white),),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Duration: " + snapshot.data[index].duration, style: GoogleFonts.montserrat(
-                                        color: Colors.white),),
-                                    snapshot.data[index].activityType == "Climbing" ? Container() : Text("Distance: " + snapshot.data[index].distance.toString()+ " km", style: GoogleFonts.montserrat(
-                                        color: Colors.white),),
-                                  ],
+                              Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      ThemeColors.darkBlue,
+                                      ThemeColors.blueGreenis.withOpacity(0.5)
+                                    ]
+                                  ),
+                                ),
+                                child: ListTile(
+                                  leading: _getActivityIcon(snapshot.data[index]),
+                                  title: Text(snapshot.data[index].activityType + " " + snapshot.data[index].date, style: GoogleFonts.montserrat(
+                                      color: Colors.white),),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("\t\t\tDuration: " + snapshot.data[index].duration, style: GoogleFonts.montserrat(
+                                          color: Colors.white),),
+                                      snapshot.data[index].activityType == "Climbing" ? Text("\t\t\tDistance: - km", style: GoogleFonts.montserrat(
+                                          color: Colors.white),) : Text("\t\t\tDistance: " + snapshot.data[index].distance.toString()+ " km", style: GoogleFonts.montserrat(
+                                          color: Colors.white),),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Divider(color: Colors.white,thickness: 1,),
                             ],
                           ),
                         ),

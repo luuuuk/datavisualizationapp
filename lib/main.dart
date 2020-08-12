@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Data Visualization',
+      title: 'Data Visualizer',
       debugShowCheckedModeBanner: false,
       theme: VisualizationTheme().theme,
       initialRoute: HomeScreen.routeName,

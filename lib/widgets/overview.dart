@@ -31,9 +31,15 @@ class OverviewWidget extends StatelessWidget{
           children: <Widget>[
             Column(
               children: <Widget>[
-                Icon(
-                  Icons.directions_run,
-                  color: ThemeColors.lightBlue,
+                Row(
+                  children: <Widget>[
+                    Text(runningTime[3].toString() + " x ",style: GoogleFonts.montserrat(
+                        color: Colors.white, fontSize: 14),),
+                    Icon(
+                      Icons.directions_run,
+                      color: ThemeColors.lightBlue,
+                    ),
+                  ],
                 ),
                 Container(
                   padding: EdgeInsets.all(8.0),
@@ -68,9 +74,15 @@ class OverviewWidget extends StatelessWidget{
             ),
             Column(
               children: <Widget>[
-                Icon(
-                  Icons.directions_bike,
-                  color: ThemeColors.orange,
+                Row(
+                  children: <Widget>[
+                    Text(cyclingTime[3].toString() + " x ",style: GoogleFonts.montserrat(
+                        color: Colors.white, fontSize: 14),),
+                    Icon(
+                      Icons.directions_bike,
+                      color: ThemeColors.orange,
+                    ),
+                  ],
                 ),
                 Container(
                   padding: EdgeInsets.all(8.0),
@@ -105,9 +117,15 @@ class OverviewWidget extends StatelessWidget{
             ),
             Column(
               children: <Widget>[
-                Icon(
-                  Icons.filter_hdr,
-                  color: ThemeColors.yellowGreenish,
+                Row(
+                  children: <Widget>[
+                    Text(climbingTime[2].toString() + " x ",style: GoogleFonts.montserrat(
+                        color: Colors.white, fontSize: 14),),
+                    Icon(
+                      Icons.filter_hdr,
+                      color: ThemeColors.yellowGreenish,
+                    ),
+                  ],
                 ),
                 Container(
                   padding: EdgeInsets.all(8.0),

@@ -15,7 +15,7 @@ class BorderContainerWidget extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
    return Container(
-     margin: EdgeInsets.fromLTRB(8, 16, 8, 0),
+     margin: EdgeInsets.fromLTRB(8  , 16, 8, 0),
      decoration: BoxDecoration(
          color: ThemeColors.lightBlue,
          borderRadius: BorderRadius.circular(12)),

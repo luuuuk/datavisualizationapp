@@ -358,12 +358,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
                       return FutureBuilder<double>(
                           future:
-                          _getCurrentGoalProgress(snapshot.data[index]),
+                          SortingDataService().getCurrentGoalProgress(snapshot.data[index]),
                           builder: (context,
                               AsyncSnapshot<double> goalProgress) {
                             if (goalProgress.hasData) {
@@ -499,7 +500,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _buildAverageSpeedProgression(List<RecordedActivity> activities, int type) {
-    var data = SortingDataService().getAverageSpeedData(activities, 8, type);
+    var data = SortingDataService().getAverageSpeedData(activities, 9, type);
 
     if (data.isNotEmpty) {
       return SizedBox(
@@ -554,38 +555,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return returnGoals;
-  }
-
-  Future<double> _getCurrentGoalProgress(ActivityGoal goal) async {
-    DatabaseManager dbManager = new DatabaseManager();
-    List<RecordedActivity> activities = await dbManager.getActivities();
-
-    List data =
-        SortingDataService().getOverviewData(activities, goal.timeFrame);
-
-    double goalProgress = 0.0;
-
-    /// 0: distance, 1: duration
-    switch (goal.goalType) {
-      case 0:
-        {
-          goalProgress = data[goal.activityType][2].toDouble();
-        }
-        break;
-      case 1:
-        {
-          goalProgress =
-          (data[goal.activityType][0] + data[goal.activityType][1] / 60).toDouble();
-        }
-        break;
-      default:
-        {
-          goalProgress = data[goal.activityType][2].toDouble();
-        }
-        break;
-    }
-
-    return goalProgress;
   }
 
   /// Method to return the name of the current month

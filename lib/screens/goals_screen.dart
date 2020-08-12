@@ -1,6 +1,7 @@
 import 'package:data_visualization_app/models/activity_goal.dart';
 import 'package:data_visualization_app/models/recorded_activity.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
+import 'package:data_visualization_app/services/sorting_data.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
 import 'package:data_visualization_app/widgets/goal.dart';
 import 'package:flutter/cupertino.dart';
@@ -119,12 +120,23 @@ class _GoalsScreenState extends State<GoalsScreen> {
                                       child: Container(
                                         width: MediaQuery.of(context).size.width * 0.7,
                                         height: 110,
-                                        child: GoalWidget(
-                                            snapshot.data[index].goalNumber.toDouble(),
-                                            0,
-                                            snapshot.data[index].goalTitle,
-                                            snapshot.data[index].goalType,
-                                            snapshot.data[index].activityType),
+                                        child: FutureBuilder<double>(
+                                      future:
+                                      SortingDataService().getCurrentGoalProgress(snapshot.data[index]),
+                                        builder: (context,
+                                            AsyncSnapshot<double> goalProgress) {
+                                          if (goalProgress.hasData) {
+                                            return GoalWidget(
+                                                snapshot.data[index].goalNumber
+                                                    .toDouble(),
+                                                goalProgress.data,
+                                                snapshot.data[index].goalTitle,
+                                                snapshot.data[index].goalType,
+                                                snapshot.data[index].activityType);
+                                          } else {
+                                            return Container();
+                                          }
+                                        })
                                       ),
                                     );
                                   }),

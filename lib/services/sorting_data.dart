@@ -1,7 +1,9 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:data_visualization_app/models/activity_goal.dart';
 import 'dart:ui';
 
 import 'package:data_visualization_app/models/recorded_activity.dart';
+import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -627,6 +629,38 @@ class SortingDataService {
     returnList.add(climbingTime);
 
     return returnList;
+  }
+
+  Future<double> getCurrentGoalProgress(ActivityGoal goal) async {
+    DatabaseManager dbManager = new DatabaseManager();
+    List<RecordedActivity> activities = await dbManager.getActivities();
+
+    List data =
+    SortingDataService().getOverviewData(activities, goal.timeFrame);
+
+    double goalProgress = 0.0;
+
+    /// 0: distance, 1: duration
+    switch (goal.goalType) {
+      case 0:
+        {
+          goalProgress = data[goal.activityType][2].toDouble();
+        }
+        break;
+      case 1:
+        {
+          goalProgress =
+              (data[goal.activityType][0] + data[goal.activityType][1] / 60).toDouble();
+        }
+        break;
+      default:
+        {
+          goalProgress = data[goal.activityType][2].toDouble();
+        }
+        break;
+    }
+
+    return goalProgress;
   }
 
 }
