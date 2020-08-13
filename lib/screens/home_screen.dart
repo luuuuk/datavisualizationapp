@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       BorderContainerWidget(
                         _yearlyOverviewWidget(snapshot.data),
-                        "Yearly Activity Overview",
+                        "Yearly Activity Overview " + DateTime.now().year.toString(),
                         false,
                       ),
                       SizedBox(
@@ -318,18 +318,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  TableRow _buildTableRow(String listOfNames) {
-    return TableRow(
-      children: listOfNames.split(',').map((name) {
-        return Container(
-          alignment: Alignment.center,
-          child: Text(name, style: GoogleFonts.montserrat(color: Colors.white)),
-          padding: EdgeInsets.all(8.0),
-        );
-      }).toList(),
-    );
-  }
-
   /// Method to assemble the weekly overview
   Widget _weeklyOverviewWidget(List<RecordedActivity> activities) {
     return Column(children: <Widget>[
@@ -371,7 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       Container(
-        margin: EdgeInsets.fromLTRB(8, 8, 8, 16),
+        margin: EdgeInsets.fromLTRB(8, 8, 8, 32),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(32),
@@ -402,7 +390,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: <Widget>[
           OverviewWidget(activities, 1),
           Container(
-            margin: EdgeInsets.fromLTRB(8, 16, 8, 16),
+            margin: EdgeInsets.fromLTRB(8, 16, 8, 32),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(32),
@@ -502,7 +490,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(8, 16, 8, 16),
+          margin: EdgeInsets.fromLTRB(8, 16, 8, 32),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(32),
@@ -626,84 +614,88 @@ class _HomeScreenState extends State<HomeScreen> {
       double height,
       bool inverseColors) {
     if (data.isNotEmpty) {
-      return SizedBox(
-        height: height,
-        child: new charts.TimeSeriesChart(
-          data,
-          animate: false,
-          defaultRenderer: new charts.LineRendererConfig(
-            includePoints: true,
-            includeArea: true,
-          ),
-          domainAxis: new charts.DateTimeAxisSpec(
-              renderSpec: charts.GridlineRendererSpec(
-                axisLineStyle: charts.LineStyleSpec(
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette
-                          .white, // this also doesn't change the Y axis labels
-                ),
-                labelStyle: new charts.TextStyleSpec(
-                  fontSize: 10,
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette.white,
-                ),
-                lineStyle: charts.LineStyleSpec(
-                  thickness: 1,
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette.white,
-                ),
-              ),
-              tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
-                  hour: new charts.TimeFormatterSpec(
-                format: 'H',
-                transitionFormat: 'H',
-              ))),
-          primaryMeasureAxis: charts.NumericAxisSpec(
-              renderSpec: charts.GridlineRendererSpec(
-                  labelStyle: charts.TextStyleSpec(
-                      fontSize: 10,
-                      color: inverseColors
-                          ? charts.Color.fromHex(code: "#2D274CFF")
-                          : charts.MaterialPalette.white),
+      return Container(
+        padding: EdgeInsets.all(4.0),
+        margin: EdgeInsets.only(bottom: 32),
+        child: SizedBox(
+          height: height,
+          child: new charts.TimeSeriesChart(
+            data,
+            animate: false,
+            defaultRenderer: new charts.LineRendererConfig(
+              includePoints: true,
+              includeArea: true,
+            ),
+            domainAxis: new charts.DateTimeAxisSpec(
+                renderSpec: charts.GridlineRendererSpec(
+                  axisLineStyle: charts.LineStyleSpec(
+                    color: inverseColors
+                        ? charts.Color.fromHex(code: "#2D274CFF")
+                        : charts.MaterialPalette
+                            .white, // this also doesn't change the Y axis labels
+                  ),
+                  labelStyle: new charts.TextStyleSpec(
+                    fontSize: 10,
+                    color: inverseColors
+                        ? charts.Color.fromHex(code: "#2D274CFF")
+                        : charts.MaterialPalette.white,
+                  ),
                   lineStyle: charts.LineStyleSpec(
-                      thickness: 1,
-                      color: inverseColors
-                          ? charts.Color.fromHex(code: "#2D274CFF")
-                          : charts.MaterialPalette.white))),
-          behaviors: [
-            new charts.SeriesLegend(
-              // Positions for "start" and "end" will be left and right respectively
-              // for widgets with a build context that has directionality ltr.
-              // For rtl, "start" and "end" will be right and left respectively.
-              // Since this example has directionality of ltr, the legend is
-              // positioned on the right side of the chart.
-              position: charts.BehaviorPosition.bottom,
-              // For a legend that is positioned on the left or right of the chart,
-              // setting the justification for [endDrawArea] is aligned to the
-              // bottom of the chart draw area.
-              outsideJustification: charts.OutsideJustification.middleDrawArea,
-              // By default, if the position of the chart is on the left or right of
-              // the chart, [horizontalFirst] is set to false. This means that the
-              // legend entries will grow as new rows first instead of a new column.
-              horizontalFirst: true,
-              // By setting this value to 2, the legend entries will grow up to two
-              // rows before adding a new column.
-              desiredMaxRows: 2,
-              // This defines the padding around each legend entry.
-              cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
-              // Render the legend entry text with custom styles.
-              entryTextStyle: charts.TextStyleSpec(
-                color: inverseColors
-                    ? charts.Color.fromHex(code: "#2D274CFF")
-                    : charts.Color.white,
-                fontFamily: 'Montserrat',
-                fontSize: 11,
-              ),
-            )
-          ],
+                    thickness: 2,
+                    color: inverseColors
+                        ? charts.Color.fromHex(code: "#2D274CFF")
+                        : charts.MaterialPalette.white,
+                  ),
+                ),
+                tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+                    hour: new charts.TimeFormatterSpec(
+                  format: 'H',
+                  transitionFormat: 'H',
+                ))),
+            primaryMeasureAxis: charts.NumericAxisSpec(
+                renderSpec: charts.GridlineRendererSpec(
+                    labelStyle: charts.TextStyleSpec(
+                        fontSize: 10,
+                        color: inverseColors
+                            ? charts.Color.fromHex(code: "#2D274CFF")
+                            : charts.MaterialPalette.white),
+                    lineStyle: charts.LineStyleSpec(
+                        thickness: 2,
+                        color: inverseColors
+                            ? charts.Color.fromHex(code: "#2D274CFF")
+                            : charts.MaterialPalette.white))),
+            behaviors: [
+              new charts.SeriesLegend(
+                // Positions for "start" and "end" will be left and right respectively
+                // for widgets with a build context that has directionality ltr.
+                // For rtl, "start" and "end" will be right and left respectively.
+                // Since this example has directionality of ltr, the legend is
+                // positioned on the right side of the chart.
+                position: charts.BehaviorPosition.bottom,
+                // For a legend that is positioned on the left or right of the chart,
+                // setting the justification for [endDrawArea] is aligned to the
+                // bottom of the chart draw area.
+                outsideJustification: charts.OutsideJustification.middleDrawArea,
+                // By default, if the position of the chart is on the left or right of
+                // the chart, [horizontalFirst] is set to false. This means that the
+                // legend entries will grow as new rows first instead of a new column.
+                horizontalFirst: true,
+                // By setting this value to 2, the legend entries will grow up to two
+                // rows before adding a new column.
+                desiredMaxRows: 2,
+                // This defines the padding around each legend entry.
+                cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
+                // Render the legend entry text with custom styles.
+                entryTextStyle: charts.TextStyleSpec(
+                  color: inverseColors
+                      ? charts.Color.fromHex(code: "#2D274CFF")
+                      : charts.Color.white,
+                  fontFamily: 'Montserrat',
+                  fontSize: 11,
+                ),
+              )
+            ],
+          ),
         ),
       );
     } else {
@@ -722,47 +714,50 @@ class _HomeScreenState extends State<HomeScreen> {
         SortingDataService().getAverageSpeedData(activities, 9, type, true);
 
     if (data.isNotEmpty) {
-      return SizedBox(
-        height: 200.0,
-        child: charts.BarChart(
-          data,
-          animate: false,
-          domainAxis: charts.AxisSpec<String>(
-            renderSpec: charts.GridlineRendererSpec(
-              lineStyle: charts.LineStyleSpec(
-                thickness: 1,
-                color: inverseColors
-                    ? charts.Color.fromHex(code: "#2D274CFF")
-                    : charts.MaterialPalette.white,
-              ),
-              labelStyle: new charts.TextStyleSpec(
-                fontSize: 10,
-                color: inverseColors
-                    ? charts.Color.fromHex(code: "#2D274CFF")
-                    : charts.MaterialPalette.white,
-              ),
-            ),
-          ),
-          primaryMeasureAxis: charts.NumericAxisSpec(
-            renderSpec: charts.GridlineRendererSpec(
-              labelStyle: charts.TextStyleSpec(
+      return Container(
+        margin: EdgeInsets.only(bottom: 32),
+        child: SizedBox(
+          height: 200.0,
+          child: charts.BarChart(
+            data,
+            animate: false,
+            domainAxis: charts.AxisSpec<String>(
+              renderSpec: charts.GridlineRendererSpec(
+                lineStyle: charts.LineStyleSpec(
+                  thickness: 2,
+                  color: inverseColors
+                      ? charts.Color.fromHex(code: "#2D274CFF")
+                      : charts.MaterialPalette.white,
+                ),
+                labelStyle: new charts.TextStyleSpec(
                   fontSize: 10,
                   color: inverseColors
                       ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette.white),
-              lineStyle: charts.LineStyleSpec(
-                  thickness: 1,
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette.white),
+                      : charts.MaterialPalette.white,
+                ),
+              ),
             ),
+            primaryMeasureAxis: charts.NumericAxisSpec(
+              renderSpec: charts.GridlineRendererSpec(
+                labelStyle: charts.TextStyleSpec(
+                    fontSize: 10,
+                    color: inverseColors
+                        ? charts.Color.fromHex(code: "#2D274CFF")
+                        : charts.MaterialPalette.white),
+                lineStyle: charts.LineStyleSpec(
+                    thickness: 2,
+                    color: inverseColors
+                        ? charts.Color.fromHex(code: "#2D274CFF")
+                        : charts.MaterialPalette.white),
+              ),
+            ),
+            customSeriesRenderers: [
+              new charts.BarTargetLineRendererConfig<String>(
+                  // ID used to link series to this renderer.
+                  customRendererId: 'customTargetLine',
+                  groupingType: charts.BarGroupingType.stacked)
+            ],
           ),
-          customSeriesRenderers: [
-            new charts.BarTargetLineRendererConfig<String>(
-                // ID used to link series to this renderer.
-                customRendererId: 'customTargetLine',
-                groupingType: charts.BarGroupingType.stacked)
-          ],
         ),
       );
     } else {

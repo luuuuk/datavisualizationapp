@@ -23,207 +23,213 @@ class OverviewWidget extends StatelessWidget {
     List<int> cyclingTime = dataList[1];
     List<int> climbingTime = dataList[2];
 
-    return Container(
+    return AnimatedContainer(
+      duration: Duration(seconds: 2),
       padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(left: 4, right: 4),
-              padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
-              decoration: BoxDecoration(
-                color: ThemeColors.darkBlue,
-                borderRadius: BorderRadius.all(Radius.circular(32)),
-                gradient: LinearGradient(
-                  colors: [
-                    ThemeColors.darkBlue,
-                    ThemeColors.darkBlue.withOpacity(.5),
+      child: GestureDetector(
+        onTap: () {
+
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(left: 4, right: 4),
+                padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
+                decoration: BoxDecoration(
+                  color: ThemeColors.darkBlue,
+                  borderRadius: BorderRadius.all(Radius.circular(32)),
+                  gradient: LinearGradient(
+                    colors: [
+                      ThemeColors.darkBlue,
+                      ThemeColors.darkBlue.withOpacity(.5),
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(0.0, 2.0), //(x,y)
+                      blurRadius: 2,
+                    ),
                   ],
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(0.0, 2.0), //(x,y)
-                    blurRadius: 2,
-                  ),
-                ],
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          runningTime[3].toString() + " x ",
+                          style: GoogleFonts.montserrat(
+                              color: Colors.white, fontSize: 12),
+                        ),
+                        Icon(
+                          Icons.directions_run,
+                          color: ThemeColors.lightBlue,
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        runningTime[0].toString() +
+                            " h : " +
+                            runningTime[1].toString() +
+                            " m",
+                        style: GoogleFonts.montserrat(
+                            color: Colors.white, fontSize: 12),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: Text(
+                        runningTime[2].toString() + " km",
+                        style: GoogleFonts.montserrat(
+                            color: Colors.white, fontSize: 12),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: Text(
+                        runningTime[3] == 0
+                            ? "- km/run"
+                            : (runningTime[2] / runningTime[3])
+                                    .toStringAsPrecision(2) +
+                                " km/run",
+                        style: GoogleFonts.montserrat(
+                            color: Colors.white, fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        runningTime[3].toString() + " x ",
+            ),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(left: 4, right: 4),
+                padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(32)),
+                  gradient: LinearGradient(
+                    colors: [
+                      ThemeColors.darkBlue,
+                      ThemeColors.darkBlue.withOpacity(.5),
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(0.0, 2.0), //(x,y)
+                      blurRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          cyclingTime[3].toString() + " x ",
+                          style: GoogleFonts.montserrat(
+                              color: Colors.white, fontSize: 12),
+                        ),
+                        Icon(
+                          Icons.directions_bike,
+                          color: ThemeColors.orange,
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        cyclingTime[0].toString() +
+                            " h : " +
+                            cyclingTime[1].toString() +
+                            " m",
+                        style: GoogleFonts.montserrat(
+                            color: Colors.white, fontSize: 12),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: Text(
+                        cyclingTime[2].toString() + " km",
                         style: GoogleFonts.montserrat(
                             color: Colors.white, fontSize: 14),
                       ),
-                      Icon(
-                        Icons.directions_run,
-                        color: ThemeColors.lightBlue,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: Text(
+                        cyclingTime[3] == 0
+                            ? "- km/ride"
+                            : (cyclingTime[2] / cyclingTime[3])
+                                    .toStringAsPrecision(2) +
+                                " km/ride",
+                        style: GoogleFonts.montserrat(
+                            color: Colors.white, fontSize: 12),
                       ),
-                    ],
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      runningTime[0].toString() +
-                          " h : " +
-                          runningTime[1].toString() +
-                          " m",
-                      style: GoogleFonts.montserrat(
-                          color: Colors.white, fontSize: 14),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                    child: Text(
-                      runningTime[2].toString() + " km",
-                      style: GoogleFonts.montserrat(
-                          color: Colors.white, fontSize: 14),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                    child: Text(
-                      runningTime[3] == 0
-                          ? "- km/run"
-                          : (runningTime[2] / runningTime[3])
-                                  .toStringAsPrecision(2) +
-                              " km/run",
-                      style: GoogleFonts.montserrat(
-                          color: Colors.white, fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(left: 4, right: 4),
-              padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(32)),
-                gradient: LinearGradient(
-                  colors: [
-                    ThemeColors.darkBlue,
-                    ThemeColors.darkBlue.withOpacity(.5),
                   ],
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(0.0, 2.0), //(x,y)
-                    blurRadius: 2,
-                  ),
-                ],
-              ),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        cyclingTime[3].toString() + " x ",
-                        style: GoogleFonts.montserrat(
-                            color: Colors.white, fontSize: 14),
-                      ),
-                      Icon(
-                        Icons.directions_bike,
-                        color: ThemeColors.orange,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      cyclingTime[0].toString() +
-                          " h : " +
-                          cyclingTime[1].toString() +
-                          " m",
-                      style: GoogleFonts.montserrat(
-                          color: Colors.white, fontSize: 14),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                    child: Text(
-                      cyclingTime[2].toString() + " km",
-                      style: GoogleFonts.montserrat(
-                          color: Colors.white, fontSize: 14),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                    child: Text(
-                      cyclingTime[3] == 0
-                          ? "- km/ride"
-                          : (cyclingTime[2] / cyclingTime[3])
-                                  .toStringAsPrecision(2) +
-                              " km/ride",
-                      style: GoogleFonts.montserrat(
-                          color: Colors.white, fontSize: 14),
-                    ),
-                  ),
-                ],
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(left: 4, right: 4),
-              padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(32)),
-                gradient: LinearGradient(
-                  colors: [
-                    ThemeColors.darkBlue,
-                    ThemeColors.darkBlue.withOpacity(.5),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(left: 4, right: 4),
+                padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(32)),
+                  gradient: LinearGradient(
+                    colors: [
+                      ThemeColors.darkBlue,
+                      ThemeColors.darkBlue.withOpacity(.5),
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(0.0, 2.0), //(x,y)
+                      blurRadius: 2,
+                    ),
                   ],
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(0.0, 2.0), //(x,y)
-                    blurRadius: 2,
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        climbingTime[2].toString() + " x ",
-                        style: GoogleFonts.montserrat(
-                            color: Colors.white, fontSize: 14),
-                      ),
-                      Icon(
-                        Icons.filter_hdr,
-                        color: ThemeColors.yellowGreenish,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      climbingTime[0].toString() +
-                          " h : " +
-                          climbingTime[1].toString() +
-                          " m",
-                      style: GoogleFonts.montserrat(
-                          color: Colors.white, fontSize: 14),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          climbingTime[2].toString() + " x ",
+                          style: GoogleFonts.montserrat(
+                              color: Colors.white, fontSize: 12),
+                        ),
+                        Icon(
+                          Icons.filter_hdr,
+                          color: ThemeColors.yellowGreenish,
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        climbingTime[0].toString() +
+                            " h : " +
+                            climbingTime[1].toString() +
+                            " m",
+                        style: GoogleFonts.montserrat(
+                            color: Colors.white, fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
