@@ -23,20 +23,36 @@ class OverviewWidget extends StatelessWidget {
     List<int> cyclingTime = dataList[1];
     List<int> climbingTime = dataList[2];
 
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(16),
+    return Container(
+      padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(left: 4, right: 4),
+              padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
               decoration: BoxDecoration(
                 color: ThemeColors.darkBlue,
                 borderRadius: BorderRadius.all(Radius.circular(32)),
+                gradient: LinearGradient(
+                  colors: [
+                    ThemeColors.darkBlue,
+                    ThemeColors.darkBlue.withOpacity(.5),
+                  ],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    offset: Offset(0.0, 2.0), //(x,y)
+                    blurRadius: 2,
+                  ),
+                ],
               ),
               child: Column(
                 children: <Widget>[
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
                         runningTime[3].toString() + " x ",
@@ -83,15 +99,31 @@ class OverviewWidget extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(16),
+          ),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(left: 4, right: 4),
+              padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
               decoration: BoxDecoration(
-                color: ThemeColors.darkBlue,
                 borderRadius: BorderRadius.all(Radius.circular(32)),
+                gradient: LinearGradient(
+                  colors: [
+                    ThemeColors.darkBlue,
+                    ThemeColors.darkBlue.withOpacity(.5),
+                  ],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    offset: Offset(0.0, 2.0), //(x,y)
+                    blurRadius: 2,
+                  ),
+                ],
               ),
               child: Column(
                 children: <Widget>[
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
                         cyclingTime[3].toString() + " x ",
@@ -138,16 +170,32 @@ class OverviewWidget extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(16),
+          ),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(left: 4, right: 4),
+              padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
               decoration: BoxDecoration(
-                color: ThemeColors.darkBlue,
                 borderRadius: BorderRadius.all(Radius.circular(32)),
+                gradient: LinearGradient(
+                  colors: [
+                    ThemeColors.darkBlue,
+                    ThemeColors.darkBlue.withOpacity(.5),
+                  ],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    offset: Offset(0.0, 2.0), //(x,y)
+                    blurRadius: 2,
+                  ),
+                ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
                         climbingTime[2].toString() + " x ",
@@ -174,9 +222,9 @@ class OverviewWidget extends StatelessWidget {
                 ],
               ),
             ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

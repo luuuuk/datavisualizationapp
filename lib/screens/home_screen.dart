@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 alignment: Alignment.topLeft,
                                 icon: Icon(
-                                  Icons.chevron_left,
+                                  Icons.keyboard_arrow_left,
                                   color: Colors.white,
                                   size: 32,
                                 ),
@@ -337,10 +337,22 @@ class _HomeScreenState extends State<HomeScreen> {
       Container(
         margin: EdgeInsets.fromLTRB(8, 16, 8, 8),
         decoration: BoxDecoration(
-          color: ThemeColors.darkBlue,
           borderRadius: BorderRadius.all(
             Radius.circular(32),
           ),
+          gradient: LinearGradient(
+            colors: [
+              ThemeColors.darkBlue,
+              ThemeColors.darkBlue.withOpacity(.5),
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              offset: Offset(0.0, 2.0), //(x,y)
+              blurRadius: 2,
+            ),
+          ],
         ),
         child: Column(
           children: [
@@ -361,10 +373,22 @@ class _HomeScreenState extends State<HomeScreen> {
       Container(
         margin: EdgeInsets.fromLTRB(8, 8, 8, 16),
         decoration: BoxDecoration(
-          color: ThemeColors.darkBlue,
           borderRadius: BorderRadius.all(
             Radius.circular(32),
           ),
+          gradient: LinearGradient(
+            colors: [
+              ThemeColors.darkBlue,
+              ThemeColors.darkBlue.withOpacity(.5),
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              offset: Offset(0.0, 2.0), //(x,y)
+              blurRadius: 2,
+            ),
+          ],
         ),
         padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
         child: _buildGoalList(0),
@@ -380,10 +404,22 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             margin: EdgeInsets.fromLTRB(8, 16, 8, 16),
             decoration: BoxDecoration(
-              color: ThemeColors.darkBlue,
               borderRadius: BorderRadius.all(
                 Radius.circular(32),
               ),
+              gradient: LinearGradient(
+                colors: [
+                  ThemeColors.darkBlue,
+                  ThemeColors.darkBlue.withOpacity(.5),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black,
+                  offset: Offset(0.0, 2.0), //(x,y)
+                  blurRadius: 2,
+                ),
+              ],
             ),
             padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
             child: _buildGoalList(1),
@@ -401,10 +437,22 @@ class _HomeScreenState extends State<HomeScreen> {
           margin: EdgeInsets.fromLTRB(8, 16, 8, 8),
           padding: EdgeInsets.only(bottom: 16),
           decoration: BoxDecoration(
-            color: ThemeColors.darkBlue,
             borderRadius: BorderRadius.all(
               Radius.circular(32),
             ),
+            gradient: LinearGradient(
+              colors: [
+                ThemeColors.darkBlue,
+                ThemeColors.darkBlue.withOpacity(.5),
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black,
+                offset: Offset(0.0, 2.0), //(x,y)
+                blurRadius: 2,
+              ),
+            ],
           ),
           child: Column(
             children: [
@@ -423,10 +471,22 @@ class _HomeScreenState extends State<HomeScreen> {
           margin: EdgeInsets.fromLTRB(8, 16, 8, 8),
           padding: EdgeInsets.fromLTRB(8, 0, 0, 16),
           decoration: BoxDecoration(
-            color: ThemeColors.darkBlue,
             borderRadius: BorderRadius.all(
               Radius.circular(32),
             ),
+            gradient: LinearGradient(
+              colors: [
+                ThemeColors.darkBlue,
+                ThemeColors.darkBlue.withOpacity(.5),
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black,
+                offset: Offset(0.0, 2.0), //(x,y)
+                blurRadius: 2,
+              ),
+            ],
           ),
           child: Column(
             children: [
@@ -444,10 +504,22 @@ class _HomeScreenState extends State<HomeScreen> {
         Container(
           margin: EdgeInsets.fromLTRB(8, 16, 8, 16),
           decoration: BoxDecoration(
-            color: ThemeColors.darkBlue,
             borderRadius: BorderRadius.all(
               Radius.circular(32),
             ),
+            gradient: LinearGradient(
+              colors: [
+                ThemeColors.darkBlue,
+                ThemeColors.darkBlue.withOpacity(.5),
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black,
+                offset: Offset(0.0, 2.0), //(x,y)
+                blurRadius: 2,
+              ),
+            ],
           ),
           padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
           child: _buildGoalList(2),

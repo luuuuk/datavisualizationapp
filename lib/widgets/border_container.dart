@@ -23,7 +23,6 @@ class BorderContainerWidget extends StatelessWidget{
            borderRadius: alignmentRight ? BorderRadius.only(topLeft: Radius.circular(80), bottomLeft: Radius.circular(80))
                : BorderRadius.only(topRight: Radius.circular(80), bottomRight: Radius.circular(80))),
        child: Column(
-         crossAxisAlignment: CrossAxisAlignment.stretch,
          children: [
            Container(
              alignment: alignmentRight ? Alignment.topRight : Alignment.topLeft,
@@ -32,7 +31,7 @@ class BorderContainerWidget extends StatelessWidget{
                  fontFamily: 'Montserrat',
                  color: ThemeColors.darkBlue,
                  fontWeight: FontWeight.bold,
-                 fontSize: 18.0),),
+                 fontSize: 16.0),),
            ),
            Container(
              margin: EdgeInsets.fromLTRB(0, 32, 0, 0),
