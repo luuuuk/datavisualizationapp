@@ -157,7 +157,7 @@ class OverviewWidget extends StatelessWidget {
                       child: Text(
                         cyclingTime[2].toString() + " km",
                         style: GoogleFonts.montserrat(
-                            color: Colors.white, fontSize: 14),
+                            color: Colors.white, fontSize: 12),
                       ),
                     ),
                     Container(
