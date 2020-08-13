@@ -467,7 +467,7 @@ class SortingDataService {
   /// Method to get series only containing the total activity distance
   /// type 0: Running, type 1: Cycling
   List<charts.Series<ActivitiesPrecisionData, String>> getAverageSpeedData(
-      List<RecordedActivity> recAct, int noOfActivities, int type) {
+      List<RecordedActivity> recAct, int noOfActivities, int type, bool inverseColors) {
 
     List<charts.Series<ActivitiesPrecisionData, String>> series =
     new List<charts.Series<ActivitiesPrecisionData, String>>();
@@ -507,7 +507,9 @@ class SortingDataService {
         targetSpeeds.add(ActivitiesPrecisionData(
           splittedDate[0] + "." + splittedDate[1],
           type == 0 ? 10 : 30,
-        Colors.white));
+            inverseColors
+                ? ThemeColors.darkBlue
+                : Colors.white));
 
         noOfIncludedActivities++;
 

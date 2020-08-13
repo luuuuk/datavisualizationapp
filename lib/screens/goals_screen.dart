@@ -141,7 +141,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                                     );
                                   }),
                             ),
-                        "Your Goals");
+                        "Your Goals", true);
                   } else {
                     return BorderContainerWidget(
                         Container(
@@ -150,7 +150,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                             child: Text("No goals defined."),
                           ),
                         ),
-                        "Your Goals");
+                        "Your Goals", true);
                   }
                 }),
             BorderContainerWidget(
@@ -168,7 +168,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       });
                     }),
               ),
-              "Activity Type",
+              "Activity Type", true,
             ),
             BorderContainerWidget(
               Container(
@@ -184,7 +184,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       });
                     }),
               ),
-              "Goal Type",
+              "Goal Type", true,
             ),
             BorderContainerWidget(
               Container(
@@ -199,7 +199,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       });
                     }),
               ),
-              "Goal Time Span",
+              "Goal Time Span", true,
             ),
             BorderContainerWidget(
               TextFormField(
@@ -222,6 +222,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 ),
               ),
               segmentedGoalGroupValue == 0 ? "Distance in km" : "Duration in h",
+              true,
             ),
             BorderContainerWidget(
               TextFormField(
@@ -243,6 +244,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 ),
               ),
               "Title",
+              true,
             ),
             Container(
               margin: EdgeInsets.fromLTRB(0, 24, 0, 0),

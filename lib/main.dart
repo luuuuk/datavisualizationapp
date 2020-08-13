@@ -1,12 +1,7 @@
 import 'package:data_visualization_app/router.dart';
-import 'package:data_visualization_app/screens/activity_list_screen.dart';
-import 'package:data_visualization_app/screens/add_data_screen.dart';
-import 'package:data_visualization_app/screens/goals_screen.dart';
-import 'package:data_visualization_app/screens/test_screen.dart';
 import 'package:data_visualization_app/screens/welcome_screen.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
 
 void main() => runApp(MyApp());
 

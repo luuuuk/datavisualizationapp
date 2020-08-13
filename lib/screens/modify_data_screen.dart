@@ -101,6 +101,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                     });
                   }),
               "Activity Type",
+              true,
             ),
             BorderContainerWidget(
               GestureDetector(
@@ -120,6 +121,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                 ),
               ),
               "Date",
+              true,
             ),
             BorderContainerWidget(
               GestureDetector(
@@ -139,6 +141,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                 ),
               ),
               "Duration",
+              true,
             ),
             AnimatedOpacity(
               duration: Duration(seconds: 1),
@@ -162,6 +165,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                   ),
                 ),
                 "Distance",
+                true
               ),
             ),
             Container(

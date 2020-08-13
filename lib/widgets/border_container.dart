@@ -9,35 +9,37 @@ class BorderContainerWidget extends StatelessWidget{
 
   final Widget child;
   final String title;
+  final bool alignmentRight;
 
-  BorderContainerWidget(this.child, this.title);
+  BorderContainerWidget(this.child, this.title, this.alignmentRight);
 
   @override
   Widget build(BuildContext context) {
    return Container(
-     margin: EdgeInsets.fromLTRB(8  , 16, 8, 0),
-     decoration: BoxDecoration(
-         color: ThemeColors.lightBlue,
-         borderRadius: BorderRadius.circular(12)),
-     padding: EdgeInsets.all(2.0),
-     child: Container(
-       padding: EdgeInsets.all(20.0),
+     margin: alignmentRight ? EdgeInsets.only(left: 32) : EdgeInsets.only(right: 32),
+       padding: EdgeInsets.fromLTRB(0, 32, 0, 32),
        decoration: BoxDecoration(
-           color: ThemeColors.darkBlue,
-           borderRadius: BorderRadius.circular(10)),
+           color: !alignmentRight ? ThemeColors.yellowGreenish : ThemeColors.blueGreenis,
+           borderRadius: alignmentRight ? BorderRadius.only(topLeft: Radius.circular(80), bottomLeft: Radius.circular(80))
+               : BorderRadius.only(topRight: Radius.circular(80), bottomRight: Radius.circular(80))),
        child: Column(
          crossAxisAlignment: CrossAxisAlignment.stretch,
          children: [
            Container(
-             child: Text(title, style: GoogleFonts.montserrat(color: Colors.white, fontSize: 14),textAlign: TextAlign.left,),
+             alignment: alignmentRight ? Alignment.topRight : Alignment.topLeft,
+             padding: alignmentRight ? EdgeInsets.only(right: 16) : EdgeInsets.only(left: 16),
+             child: Text(title, style: TextStyle(
+                 fontFamily: 'Montserrat',
+                 color: ThemeColors.darkBlue,
+                 fontWeight: FontWeight.bold,
+                 fontSize: 18.0),),
            ),
            Container(
-             margin: EdgeInsets.fromLTRB(0, 14, 0, 0),
+             margin: EdgeInsets.fromLTRB(0, 32, 0, 0),
              child: child,
            ),
          ],
        ),
-     ),
    );
   }
 

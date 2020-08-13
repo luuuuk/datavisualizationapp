@@ -1,7 +1,6 @@
 import 'package:data_visualization_app/screens/activity_list_screen.dart';
 import 'package:data_visualization_app/screens/add_data_screen.dart';
 import 'package:data_visualization_app/screens/home_screen.dart';
-import 'package:data_visualization_app/screens/test_screen.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -51,9 +50,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       setState(() {});
     });
 
-    _container1controller.animateTo(300);
-    _container2controller.animateTo(300);
-    _container3controller.animateTo(300);
+    _container1controller.animateTo(200);
+    _container2controller.animateTo(200);
+    _container3controller.animateTo(200);
   }
 
   void dispose() {

@@ -77,7 +77,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                       i == 2 ? isClimbing = true : isClimbing = false;
                     });
                   }),
-              "Activity Type",
+              "Activity Type", true
             ),
             BorderContainerWidget(
               GestureDetector(
@@ -97,6 +97,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                 ),
               ),
               "Date",
+              true,
             ),
             BorderContainerWidget(
               GestureDetector(
@@ -116,6 +117,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                 ),
               ),
               "Duration",
+              true,
             ),
             AnimatedOpacity(
               duration: Duration(seconds: 1),
@@ -139,6 +141,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                   ),
                 ),
                 "Distance",
+                true,
               ),
             ),
             Container(
