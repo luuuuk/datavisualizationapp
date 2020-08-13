@@ -16,7 +16,8 @@ class BorderContainerWidget extends StatefulWidget {
       new _BorderContainerWidgetState(child, title, alignmentRight);
 }
 
-class _BorderContainerWidgetState extends State<BorderContainerWidget> {
+class _BorderContainerWidgetState extends State<BorderContainerWidget>
+    with TickerProviderStateMixin {
   final Widget child;
   final String title;
   final bool alignmentRight;
@@ -24,17 +25,53 @@ class _BorderContainerWidgetState extends State<BorderContainerWidget> {
 
   _BorderContainerWidgetState(this.child, this.title, this.alignmentRight);
 
+  AnimationController _controller;
+  Animation _animation;
+  CurvedAnimation _curve;
+
+  @override
+  void initState() {
+
+    ///An animation controller lets you control the
+    ///duration of an animation
+    ///Here the ticker for vsync provider is provided
+    ///by the SingleTickerProviderStateMixin
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+
+    ///Providing our animation with a curve (Parent here is the controller
+    ///above)
+    _curve = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+
+    ///Creating a Tween animation with start and end values for the
+    ///opacity and providing it with our animation controller
+    _animation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_curve);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    ///Don't forget to clean up resources when you are done using it
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         setState(() {
           showDetails = !showDetails;
+          showDetails ? _controller.forward() : _controller.reverse();
         });
       },
-      child: AnimatedContainer(
-        duration: Duration(seconds: 2),
-        curve: Curves.fastOutSlowIn,
+      child: Container(
         margin: alignmentRight
             ? EdgeInsets.only(left: 32)
             : EdgeInsets.only(right: 32),
@@ -50,45 +87,54 @@ class _BorderContainerWidgetState extends State<BorderContainerWidget> {
                   topRight: Radius.circular(80),
                   bottomRight: Radius.circular(80)),
         ),
-        child: showDetails
-            ? Column(
-                children: [
-                  Container(
-                    alignment:
-                        alignmentRight ? Alignment.topRight : Alignment.topLeft,
-                    padding: alignmentRight
-                        ? EdgeInsets.only(right: 16)
-                        : EdgeInsets.only(left: 16),
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          color: ThemeColors.darkBlue,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0),
-                    ),
+        child: AnimatedSize(
+          vsync: this,
+          duration: Duration(seconds: 1),
+          curve: Curves.fastOutSlowIn,
+          child: showDetails
+              ? FadeTransition(
+            opacity: _animation,
+                child: Column(
+                    children: [
+                      Container(
+                        alignment: alignmentRight
+                            ? Alignment.topRight
+                            : Alignment.topLeft,
+                        padding: alignmentRight
+                            ? EdgeInsets.only(right: 16)
+                            : EdgeInsets.only(left: 16),
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: ThemeColors.darkBlue,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 32, 0, 0),
+                        child: child,
+                      ),
+                    ],
                   ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 32, 0, 0),
-                    child: child,
-                  ),
-                ],
               )
-            : Container(
-                alignment:
-                    alignmentRight ? Alignment.topRight : Alignment.topLeft,
-                padding: alignmentRight
-                    ? EdgeInsets.only(right: 16)
-                    : EdgeInsets.only(left: 16),
-                child: Text(
-                  title,
-                  style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      color: ThemeColors.darkBlue,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0),
+              : Container(
+                  alignment:
+                      alignmentRight ? Alignment.topRight : Alignment.topLeft,
+                  padding: alignmentRight
+                      ? EdgeInsets.only(right: 16)
+                      : EdgeInsets.only(left: 16),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: ThemeColors.darkBlue,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0),
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
