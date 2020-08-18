@@ -1,5 +1,6 @@
 import 'package:data_visualization_app/screens/activity_list_screen.dart';
 import 'package:data_visualization_app/screens/add_data_screen.dart';
+import 'package:data_visualization_app/screens/goals_screen.dart';
 import 'package:data_visualization_app/screens/home_screen.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +76,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               _container3controller.animateBack(0);
               _container1controller
                   .animateTo(MediaQuery.of(context).size.height)
-                  .whenComplete(() => Navigator.pushNamed(
+                  .whenComplete(() => Navigator.popAndPushNamed(
                       context, HomeScreen.routeName));
             },
             child: Container(
@@ -111,16 +112,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
           ),
           GestureDetector(
-            /*
             onTap: () {
               _container1controller.animateBack(0);
               _container3controller.animateBack(0);
               _container2controller
                   .animateTo(MediaQuery.of(context).size.height)
-                  .whenComplete(() => Navigator.pushNamed(
-                  context, AddDataScreen.routeName));
+                  .whenComplete(() => Navigator.popAndPushNamed(
+                  context, GoalsScreen.routeName));
             },
-             */
             child: Container(
               height: _container2controller.value,
               child: Center(
@@ -128,7 +127,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Add',
+                      'Your',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           color: Colors.white,
@@ -136,7 +135,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     ),
                     SizedBox(width: 10.0),
                     Text(
-                      'New Activity',
+                      'Goals',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           color: Colors.white,
@@ -154,7 +153,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               _container2controller.animateBack(0);
               _container3controller
                   .animateTo(MediaQuery.of(context).size.height)
-                  .whenComplete(() => Navigator.pushNamed(
+                  .whenComplete(() => Navigator.popAndPushNamed(
                   context, ActivityListScreen.routeName));
             },
             child: Container(

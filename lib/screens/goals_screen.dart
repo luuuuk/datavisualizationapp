@@ -1,5 +1,6 @@
 import 'package:data_visualization_app/models/activity_goal.dart';
 import 'package:data_visualization_app/models/recorded_activity.dart';
+import 'package:data_visualization_app/screens/welcome_screen.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/services/sorting_data.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
@@ -77,7 +78,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.popAndPushNamed(context, WelcomeScreen.routeName);
           },
         ),
         backgroundColor: ThemeColors.lightBlue,
