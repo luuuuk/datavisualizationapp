@@ -13,6 +13,7 @@ class ThemeColors {
   static const orange = const Color(0xFFF06A25);
 }
 
+
 class VisualizationTheme {
   ThemeData theme = ThemeData(
     brightness: Brightness.dark,
@@ -20,12 +21,13 @@ class VisualizationTheme {
     accentColor: ThemeColors.yellowGreenish,
 
     // Define the default font family.
-    fontFamily: 'Roboto',
+    fontFamily: 'Montserrat',
     cupertinoOverrideTheme: CupertinoThemeData(
       textTheme: CupertinoTextThemeData(
         dateTimePickerTextStyle:
-            TextStyle(color: ThemeColors.orange, fontSize: 16),
+            TextStyle(color: Colors.white, fontSize: 16),
         pickerTextStyle: TextStyle(color: Colors.white, fontSize: 12),
+        primaryColor: ThemeColors.blueGreenisShade1,
       ),
     ),
   );

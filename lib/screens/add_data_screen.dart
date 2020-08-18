@@ -32,7 +32,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
       style: GoogleFonts.montserrat(),
     ),
   };
-  int segmentedControlGroupValue = 0;
+  int activityTypeValue = 0;
   TextEditingController _dateController = new TextEditingController();
   TextEditingController _timeController = new TextEditingController();
   TextEditingController _distanceController = new TextEditingController();
@@ -40,10 +40,13 @@ class _AddDataScreenState extends State<AddDataScreen> {
   Duration selectedDuration = new Duration();
   bool isClimbing = false;
   int selectedDistance = 0;
+  Color selectedColor = ThemeColors.darkBlue;
+  Color unselectedColor = ThemeColors.blueGreenisShade1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       body: Stack(
         children: [
@@ -101,7 +104,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         print("Please navigate me to the goals");
                       },
                       child: SizedBox(
@@ -141,7 +144,8 @@ class _AddDataScreenState extends State<AddDataScreen> {
           Column(
             children: [
               Container(
-                margin: EdgeInsets.fromLTRB(32, MediaQuery.of(context).size.height * 0.2, 32, 0),
+                margin: EdgeInsets.fromLTRB(
+                    16, MediaQuery.of(context).size.height * 0.2, 16, 0),
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(32)),
@@ -181,13 +185,20 @@ class _AddDataScreenState extends State<AddDataScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             GestureDetector(
-                              onTap: (){
-                                print("Mark this item as selected");
+                              onTap: () {
+                                setState(() {
+                                  activityTypeValue = 0;
+                                });
                               },
-                              child: Container(
+                              child: AnimatedContainer(
+                                curve: Curves.fastOutSlowIn,
+                                duration: Duration(milliseconds: 500),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                                  color: ThemeColors.blueGreenisShade1,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16)),
+                                  color: activityTypeValue == 0
+                                      ? selectedColor
+                                      : unselectedColor,
                                 ),
                                 padding: EdgeInsets.all(16),
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -217,13 +228,20 @@ class _AddDataScreenState extends State<AddDataScreen> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){
-                                print("Mark this item as selected");
+                              onTap: () {
+                                setState(() {
+                                  activityTypeValue = 1;
+                                });
                               },
-                              child: Container(
+                              child: AnimatedContainer(
+                                curve: Curves.fastOutSlowIn,
+                                duration: Duration(milliseconds: 500),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                                  color: ThemeColors.blueGreenisShade1,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16)),
+                                  color: activityTypeValue == 1
+                                      ? selectedColor
+                                      : unselectedColor,
                                 ),
                                 padding: EdgeInsets.all(16),
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -253,13 +271,20 @@ class _AddDataScreenState extends State<AddDataScreen> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){
-                                print("Mark this item as selected");
+                              onTap: () {
+                                setState(() {
+                                  activityTypeValue = 2;
+                                });
                               },
-                              child: Container(
+                              child: AnimatedContainer(
+                                curve: Curves.fastOutSlowIn,
+                                duration: Duration(milliseconds: 500),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                                  color: ThemeColors.blueGreenisShade1,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16)),
+                                  color: activityTypeValue == 2
+                                      ? selectedColor
+                                      : unselectedColor,
                                 ),
                                 padding: EdgeInsets.all(16),
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -289,13 +314,20 @@ class _AddDataScreenState extends State<AddDataScreen> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){
-                                print("Mark this item as selected");
+                              onTap: () {
+                                setState(() {
+                                  activityTypeValue = 3;
+                                });
                               },
-                              child: Container(
+                              child: AnimatedContainer(
+                                curve: Curves.fastOutSlowIn,
+                                duration: Duration(milliseconds: 500),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                                  color: ThemeColors.blueGreenisShade1,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16)),
+                                  color: activityTypeValue == 3
+                                      ? selectedColor
+                                      : unselectedColor,
                                 ),
                                 padding: EdgeInsets.all(16),
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -331,127 +363,172 @@ class _AddDataScreenState extends State<AddDataScreen> {
                   ],
                 ),
               ),
+              Container(
+                margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  color: ThemeColors.blueGreenisShade1,
+                ),
+                padding: EdgeInsets.all(16),
+                child: GestureDetector(
+                  onTap: () => _selectDate(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            'Activity',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                                fontSize: 18.0),
+                          ),
+                          SizedBox(width: 10.0),
+                          Text(
+                            'Date: ',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: AbsorbPointer(
+                          child: TextField(
+                            controller: _dateController,
+                            decoration: InputDecoration.collapsed(hintText: "Activity Date"),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  color: ThemeColors.blueGreenisShade1,
+                ),
+                padding: EdgeInsets.all(16),
+                child: GestureDetector(
+                  onTap: () => _selectTime(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            'Activity',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                                fontSize: 18.0),
+                          ),
+                          SizedBox(width: 10.0),
+                          Text(
+                            'Duration: ',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: AbsorbPointer(
+                          child: TextField(
+                            controller: _timeController,
+                            decoration: InputDecoration.collapsed(hintText: "Activity Duration"),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  color: ThemeColors.blueGreenisShade1,
+                ),
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          'Activity',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.white,
+                              fontSize: 18.0),
+                        ),
+                        SizedBox(width: 10.0),
+                        Text(
+                          'Distance: ',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: TextFormField(
+                        onChanged: (String enteredDistance) => {
+                          setState(() {
+                            selectedDistance = int.parse(enteredDistance);
+                            _distanceController.value = TextEditingValue(text: enteredDistance);
+                          })
+                        },
+                        controller: _distanceController,
+                        decoration: InputDecoration.collapsed(hintText: "Activity Distance"),
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.done,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
+          ),
+          GestureDetector(
+            onTap: () => saveEntries(),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+                  color: ThemeColors.blueGreenisShade1,
+                ),
+                padding: EdgeInsets.fromLTRB(64, 12, 64, 12),
+                child: Text(
+                  'Save',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      color: Colors.white,
+                      fontSize: 18.0),
+                ),
+              ),
+            ),
           ),
         ],
       ),
-      /*
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.popAndPushNamed(context, WelcomeScreen.routeName);
-          },
-        ),
-        backgroundColor: ThemeColors.lightBlue,
-        title: Text(
-          "Add Data",
-          style: GoogleFonts.montserrat(color: Colors.white),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-        color: ThemeColors.blueGreenis,
-        child: ListView(
-          children: [
-            BorderContainerWidget(
-              CupertinoSlidingSegmentedControl(
-                  backgroundColor: ThemeColors.lightBlue,
-                  groupValue: segmentedControlGroupValue,
-                  children: type,
-                  thumbColor: ThemeColors.orange,
-                  onValueChanged: (i) {
-                    setState(() {
-                      segmentedControlGroupValue = i;
-                      i == 2 ? isClimbing = true : isClimbing = false;
-                    });
-                  }),
-              "Activity Type", true
-            ),
-            BorderContainerWidget(
-              GestureDetector(
-                onTap: () => _selectDate(context),
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    controller: _dateController,
-                    keyboardType: TextInputType.datetime,
-                    decoration: InputDecoration(
-                      hintText: 'Activity Date',
-                      prefixIcon: Icon(
-                        Icons.calendar_today_outlined,
-                        color: ThemeColors.orange,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              "Date",
-              true,
-            ),
-            BorderContainerWidget(
-              GestureDetector(
-                onTap: () => _selectTime(context),
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    controller: _timeController,
-                    keyboardType: TextInputType.datetime,
-                    decoration: InputDecoration(
-                      hintText: 'Activity Duration',
-                      prefixIcon: Icon(
-                        Icons.timelapse,
-                        color: ThemeColors.orange,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              "Duration",
-              true,
-            ),
-            AnimatedOpacity(
-              duration: Duration(seconds: 1),
-              opacity: isClimbing ? 0.0 : 1.0,
-              child: BorderContainerWidget(
-                TextFormField(
-                  onChanged: (String enteredDistance) => {
-                    setState(() {
-                      selectedDistance = int.parse(enteredDistance);
-                      _distanceController.value = TextEditingValue(text: enteredDistance);
-                    })
-                  },
-                  controller: _distanceController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: 'Activity Distance',
-                    prefixIcon: Icon(
-                      Icons.add_road_outlined,
-                      color: ThemeColors.orange,
-                    ),
-                  ),
-                ),
-                "Distance",
-                true,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 24, 0, 0),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: ThemeColors.orange,
-        onPressed: () => saveEntries(),
-        tooltip: 'Save data',
-        child: Icon(
-          Icons.save,
-          color: Colors.white,
-        ),
-      ),*/
-      //floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -463,6 +540,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
           return Container(
             height: MediaQuery.of(context).copyWith().size.height / 3,
             child: CupertinoDatePicker(
+              backgroundColor: ThemeColors.blueGreenisShade1,
               initialDateTime: DateTime.now(),
               onDateTimeChanged: (DateTime newdate) {
                 setState(() {
@@ -510,7 +588,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
   /// Method to save the entries on the screen
   Future<void> saveEntries() async {
     String activityType;
-    switch (segmentedControlGroupValue) {
+    switch (activityTypeValue) {
       case 0:
         activityType = "Running";
         break;
@@ -519,6 +597,9 @@ class _AddDataScreenState extends State<AddDataScreen> {
         break;
       case 2:
         activityType = "Climbing";
+        break;
+      case 3:
+        activityType = "Hiking";
         break;
       default:
         activityType = "Running";
