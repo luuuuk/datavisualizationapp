@@ -1,4 +1,5 @@
 import 'package:data_visualization_app/models/recorded_activity.dart';
+import 'package:data_visualization_app/screens/welcome_screen.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,6 +45,297 @@ class _AddDataScreenState extends State<AddDataScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      body: Stack(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 16),
+                        color: ThemeColors.blueGreenisShade2,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.popAndPushNamed(
+                                        context, WelcomeScreen.routeName);
+                                  },
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Add',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 25.0),
+                                    ),
+                                    SizedBox(width: 10.0),
+                                    Text(
+                                      'New Activity',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25.0),
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        print("Please navigate me to the goals");
+                      },
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        child: Container(
+                          padding: EdgeInsets.only(top: 8),
+                          color: ThemeColors.blueGreenisShade1,
+                          child: Center(
+                            child: RotatedBox(
+                              quarterTurns: 3,
+                              child: Text(
+                                'Goals',
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.75,
+                  child: Container(
+                    color: ThemeColors.blueGreenis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(32, MediaQuery.of(context).size.height * 0.2, 32, 0),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(32)),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          'Activity',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: ThemeColors.darkBlue,
+                              fontSize: 18.0),
+                        ),
+                        SizedBox(width: 10.0),
+                        Text(
+                          'Type',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: ThemeColors.darkBlue,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 16),
+                      child: SizedBox(
+                        height: 140,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: (){
+                                print("Mark this item as selected");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                                  color: ThemeColors.blueGreenisShade1,
+                                ),
+                                padding: EdgeInsets.all(16),
+                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Text(
+                                        'Running',
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Icon(
+                                        Icons.directions_run,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                print("Mark this item as selected");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                                  color: ThemeColors.blueGreenisShade1,
+                                ),
+                                padding: EdgeInsets.all(16),
+                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Text(
+                                        'Cycling',
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Icon(
+                                        Icons.directions_bike,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                print("Mark this item as selected");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                                  color: ThemeColors.blueGreenisShade1,
+                                ),
+                                padding: EdgeInsets.all(16),
+                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Text(
+                                        'Climbing',
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Icon(
+                                        Icons.filter_hdr,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                print("Mark this item as selected");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                                  color: ThemeColors.blueGreenisShade1,
+                                ),
+                                padding: EdgeInsets.all(16),
+                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Text(
+                                        'Hiking',
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Icon(
+                                        Icons.directions_walk,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      /*
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
@@ -51,7 +343,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.popAndPushNamed(context, WelcomeScreen.routeName);
           },
         ),
         backgroundColor: ThemeColors.lightBlue,
@@ -62,7 +354,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
         centerTitle: true,
       ),
       body: Container(
-        color: ThemeColors.darkBlue,
+        color: ThemeColors.blueGreenis,
         child: ListView(
           children: [
             BorderContainerWidget(
@@ -158,8 +450,8 @@ class _AddDataScreenState extends State<AddDataScreen> {
           Icons.save,
           color: Colors.white,
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      ),*/
+      //floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -218,17 +510,26 @@ class _AddDataScreenState extends State<AddDataScreen> {
   /// Method to save the entries on the screen
   Future<void> saveEntries() async {
     String activityType;
-    switch(segmentedControlGroupValue){
-      case 0: activityType = "Running";
-      break;
-      case 1: activityType = "Cycling";
-      break;
-      case 2: activityType = "Climbing";
-      break;
-      default: activityType = "Running";
+    switch (segmentedControlGroupValue) {
+      case 0:
+        activityType = "Running";
+        break;
+      case 1:
+        activityType = "Cycling";
+        break;
+      case 2:
+        activityType = "Climbing";
+        break;
+      default:
+        activityType = "Running";
     }
 
-    RecordedActivity newActivity = RecordedActivity(DateTime.now().hashCode, activityType, DateFormat('dd.MM.yyyy').format(selectedDate).toString(), format(selectedDuration).toString(), selectedDistance);
+    RecordedActivity newActivity = RecordedActivity(
+        DateTime.now().hashCode,
+        activityType,
+        DateFormat('dd.MM.yyyy').format(selectedDate).toString(),
+        format(selectedDuration).toString(),
+        selectedDistance);
 
     DatabaseManager dbManager = new DatabaseManager();
     int success = await dbManager.saveActivity(newActivity);
@@ -238,18 +539,20 @@ class _AddDataScreenState extends State<AddDataScreen> {
 
   /// Method to show the snack bar
   void showSnackBar(bool success) {
-
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(
-        backgroundColor: success ? Colors.green : Colors.red, // Set color depending on success
-        content: success? const Text(
-          'Activity has been saved.',
-          style: TextStyle(color: Colors.white),
-        )
-            :const Text(
-          'There has been a problem while saving your activity.',
-          style: TextStyle(color: Colors.white),
-        ),
+        backgroundColor: success
+            ? Colors.green
+            : Colors.red, // Set color depending on success
+        content: success
+            ? const Text(
+                'Activity has been saved.',
+                style: TextStyle(color: Colors.white),
+              )
+            : const Text(
+                'There has been a problem while saving your activity.',
+                style: TextStyle(color: Colors.white),
+              ),
         //action: SnackBarAction(
         //    label: 'DISMISS', onPressed: ,),
       ),
