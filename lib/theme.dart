@@ -12,6 +12,7 @@ class ThemeColors {
   static const yellowGreenish = const Color(0xFFF6F2CB);
   static const orange = const Color(0xFFF06A25);
   static const darkGrey = const Color(0xFF2E405F);
+  static const mediumBlue = const Color(0xFF3A3654);
 }
 
 

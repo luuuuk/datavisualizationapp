@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 32,
                       ),
                       BorderContainerWidget(
-                        _buildAverageSpeedProgression(snapshot.data, 1, true),
+                        _buildAverageSpeedProgression(snapshot.data, 1, false),
                         "Average Speed Progression in Cycling",
                         true,
                       ),
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 32,
                       ),
                       BorderContainerWidget(
-                        _buildAverageSpeedProgression(snapshot.data, 0, true),
+                        _buildAverageSpeedProgression(snapshot.data, 0, false),
                         "Average Speed Progression in Running",
                         true,
                       ),
@@ -373,19 +373,6 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.all(
             Radius.circular(32),
           ),
-          gradient: LinearGradient(
-            colors: [
-              ThemeColors.darkBlue,
-              ThemeColors.darkBlue.withOpacity(.5),
-            ],
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black,
-              offset: Offset(0.0, 2.0), //(x,y)
-              blurRadius: 2,
-            ),
-          ],
         ),
         child: Column(
           children: [
@@ -404,24 +391,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       Container(
-        margin: EdgeInsets.fromLTRB(8, 8, 8, 32),
+        margin: EdgeInsets.fromLTRB(8, 0, 8, 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(32),
           ),
-          gradient: LinearGradient(
-            colors: [
-              ThemeColors.darkBlue,
-              ThemeColors.darkBlue.withOpacity(.5),
-            ],
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black,
-              offset: Offset(0.0, 2.0), //(x,y)
-              blurRadius: 2,
-            ),
-          ],
         ),
         padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
         child: _buildGoalList(0),
@@ -440,19 +414,6 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: BorderRadius.all(
                 Radius.circular(32),
               ),
-              gradient: LinearGradient(
-                colors: [
-                  ThemeColors.darkBlue,
-                  ThemeColors.darkBlue.withOpacity(.5),
-                ],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(0.0, 2.0), //(x,y)
-                  blurRadius: 2,
-                ),
-              ],
             ),
             padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
             child: _buildGoalList(1),
@@ -473,19 +434,6 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.all(
               Radius.circular(32),
             ),
-            gradient: LinearGradient(
-              colors: [
-                ThemeColors.darkBlue,
-                ThemeColors.darkBlue.withOpacity(.5),
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black,
-                offset: Offset(0.0, 2.0), //(x,y)
-                blurRadius: 2,
-              ),
-            ],
           ),
           child: Column(
             children: [
@@ -507,19 +455,6 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.all(
               Radius.circular(32),
             ),
-            gradient: LinearGradient(
-              colors: [
-                ThemeColors.darkBlue,
-                ThemeColors.darkBlue.withOpacity(.5),
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black,
-                offset: Offset(0.0, 2.0), //(x,y)
-                blurRadius: 2,
-              ),
-            ],
           ),
           child: Column(
             children: [
@@ -540,19 +475,6 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.all(
               Radius.circular(32),
             ),
-            gradient: LinearGradient(
-              colors: [
-                ThemeColors.darkBlue,
-                ThemeColors.darkBlue.withOpacity(.5),
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black,
-                offset: Offset(0.0, 2.0), //(x,y)
-                blurRadius: 2,
-              ),
-            ],
           ),
           padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
           child: _buildGoalList(2),
@@ -571,7 +493,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Column(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(bottom: 16),
+                  padding: EdgeInsets.only(bottom: 8),
                   child: Text(
                     "Personal Goals",
                     style: GoogleFonts.montserrat(color: Colors.white),
@@ -626,7 +548,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
         SortingDataService().getActivityTimePast12Weeks(activities);
 
-    return _buildLineGraphWithAreaAndPoints(data, 200, true);
+    return _buildLineGraphWithAreaAndPoints(data, 200, false);
   }
 
   _build12WeeksCyclingDistanceChart(List<RecordedActivity> activities) {
@@ -635,7 +557,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     data.removeAt(0);
 
-    return _buildLineGraphWithAreaAndPoints(data, 200, true);
+    return _buildLineGraphWithAreaAndPoints(data, 200, false);
   }
 
   _build12WeeksRunningDistanceChart(List<RecordedActivity> activities) {
@@ -644,7 +566,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     data.removeAt(1);
 
-    return _buildLineGraphWithAreaAndPoints(data, 200, true);
+    return _buildLineGraphWithAreaAndPoints(data, 200, false);
   }
 
   Widget _buildWeeklyActivityChart(List<RecordedActivity> activities) {
@@ -757,7 +679,7 @@ class _HomeScreenState extends State<HomeScreen> {
   _buildAverageSpeedProgression(
       List<RecordedActivity> activities, int type, bool inverseColors) {
     var data =
-        SortingDataService().getAverageSpeedData(activities, 9, type, true);
+        SortingDataService().getAverageSpeedData(activities, 9, type, false);
 
     if (data.isNotEmpty) {
       return Container(

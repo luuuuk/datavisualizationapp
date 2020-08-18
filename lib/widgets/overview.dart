@@ -35,19 +35,6 @@ class OverviewWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: ThemeColors.darkBlue,
                 borderRadius: BorderRadius.all(Radius.circular(32)),
-                gradient: LinearGradient(
-                  colors: [
-                    ThemeColors.darkBlue,
-                    ThemeColors.darkBlue.withOpacity(.5),
-                  ],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(0.0, 2.0), //(x,y)
-                    blurRadius: 2,
-                  ),
-                ],
               ),
               child: Column(
                 children: <Widget>[
@@ -106,19 +93,7 @@ class OverviewWidget extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(32)),
-                gradient: LinearGradient(
-                  colors: [
-                    ThemeColors.darkBlue,
-                    ThemeColors.darkBlue.withOpacity(.5),
-                  ],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(0.0, 2.0), //(x,y)
-                    blurRadius: 2,
-                  ),
-                ],
+                color: ThemeColors.darkBlue,
               ),
               child: Column(
                 children: <Widget>[
@@ -176,20 +151,8 @@ class OverviewWidget extends StatelessWidget {
               margin: EdgeInsets.only(left: 4, right: 4),
               padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
               decoration: BoxDecoration(
+                color: ThemeColors.darkBlue,
                 borderRadius: BorderRadius.all(Radius.circular(32)),
-                gradient: LinearGradient(
-                  colors: [
-                    ThemeColors.darkBlue,
-                    ThemeColors.darkBlue.withOpacity(.5),
-                  ],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(0.0, 2.0), //(x,y)
-                    blurRadius: 2,
-                  ),
-                ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.max,

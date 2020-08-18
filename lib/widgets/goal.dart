@@ -25,7 +25,7 @@ class GoalWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.transparent,
+      color: ThemeColors.darkBlue,
       elevation: 1.0,
       child: Container(
         padding: EdgeInsets.all(8),
@@ -75,7 +75,7 @@ class GoalWidget extends StatelessWidget {
               ),
               trailing: _getActivityIcon(),
               linearStrokeCap: LinearStrokeCap.roundAll,
-              backgroundColor: ThemeColors.darkBlue,
+              backgroundColor: ThemeColors.darkGrey,
               progressColor: _getActivityColor(),
             ),
           ],
