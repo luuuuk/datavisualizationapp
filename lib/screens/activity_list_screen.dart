@@ -21,16 +21,169 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       key: _key,
       body: FutureBuilder<List<RecordedActivity>>(
         future: getActivityData(),
         builder: (context, AsyncSnapshot<List<RecordedActivity>> snapshot) {
           if (snapshot.hasData) {
             return Container(
-              padding: EdgeInsets.only(top: 2),
+              padding: EdgeInsets.only(top: 32),
                 color: ThemeColors.blueGreenisShade2,
-                child: ListView(
-                  shrinkWrap: true,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, WelcomeScreen.routeName);
+                                },
+                                alignment: Alignment.topLeft,
+                                icon: Icon(
+                                  Icons.keyboard_arrow_left,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Your',
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        color: Colors.white,
+                                        fontSize: 25.0),
+                                  ),
+                                  SizedBox(width: 10.0),
+                                  Text(
+                                    'Activities',
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25.0),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, AddDataScreen.routeName);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(8,8,8,0),
+                          child: DottedBorder(
+                            padding: EdgeInsets.all(8),
+                            borderType: BorderType.RRect,
+                            radius: Radius.circular(16),
+                            color: ThemeColors.darkBlue,
+                            child: ListTile(
+                              leading: Icon(Icons.add_circle_outline, color: ThemeColors.darkBlue, size: 32,),
+                              title: Row(
+                                children: [
+                                  Text(
+                                    'Add',
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        color: ThemeColors.darkBlue,
+                                        fontSize: 18.0),
+                                  ),
+                                  SizedBox(width: 10.0),
+                                  Text(
+                                    'New Activity',
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        color: ThemeColors.darkBlue,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          return Slidable(
+                            actionPane: SlidableDrawerActionPane(),
+                            actionExtentRatio: 0.25,
+                            secondaryActions: <Widget>[
+                              IconSlideAction(
+                                  caption: 'Edit',
+                                  color: Colors.amberAccent,
+                                  icon: Icons.edit,
+                                  onTap: () {
+                                    /// Open ModifyActivityScreen
+                                    Navigator.pop(context);
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => ModifyDataScreen(
+                                            snapshot.data[index])));
+                                  }),
+                              IconSlideAction(
+                                caption: 'Delete',
+                                color: Colors.red,
+                                icon: Icons.delete,
+                                onTap: () {
+                                  setState(() {
+                                    deleteData(snapshot.data[index]);
+                                    snapshot.data.removeAt(index);
+                                  });
+                                },
+                              ),
+                            ],
+                            child: Card(
+                              margin: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                              shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                              elevation: 0,
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: ThemeColors.darkBlue,
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: ListTile(
+                                  leading: _getActivityIcon(snapshot.data[index]),
+                                  title: Text(snapshot.data[index].activityType + " " + snapshot.data[index].date, style: GoogleFonts.montserrat(
+                                      color: Colors.white),),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Text("\t\t\tDuration: " + snapshot.data[index].duration, style: GoogleFonts.montserrat(
+                                          color: Colors.white),),
+                                      snapshot.data[index].activityType == "Climbing" ? Text("\t\t\tDistance: - km", style: GoogleFonts.montserrat(
+                                          color: Colors.white),) : Text("\t\t\tDistance: " + snapshot.data[index].distance.toString()+ " km", style: GoogleFonts.montserrat(
+                                          color: Colors.white),),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ));
+          } else {
+            return Container(
+                padding: EdgeInsets.only(top: 32),
+                color: ThemeColors.blueGreenisShade2,
+                child: Column(
                   children: [
                     Container(
                       padding: EdgeInsets.all(16),
@@ -111,80 +264,8 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                         ),
                       ),
                     ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        return Slidable(
-                          actionPane: SlidableDrawerActionPane(),
-                          actionExtentRatio: 0.25,
-                          secondaryActions: <Widget>[
-                            IconSlideAction(
-                                caption: 'Edit',
-                                color: Colors.amberAccent,
-                                icon: Icons.edit,
-                                onTap: () {
-                                  /// Open ModifyActivityScreen
-                                  Navigator.pop(context);
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => ModifyDataScreen(
-                                          snapshot.data[index])));
-                                }),
-                            IconSlideAction(
-                              caption: 'Delete',
-                              color: Colors.red,
-                              icon: Icons.delete,
-                              onTap: () {
-                                setState(() {
-                                  deleteData(snapshot.data[index]);
-                                  snapshot.data.removeAt(index);
-                                });
-                              },
-                            ),
-                          ],
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                            elevation: 0,
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: ThemeColors.darkBlue,
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: ListTile(
-                                leading: _getActivityIcon(snapshot.data[index]),
-                                title: Text(snapshot.data[index].activityType + " " + snapshot.data[index].date, style: GoogleFonts.montserrat(
-                                    color: Colors.white),),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: [
-                                    Text("\t\t\tDuration: " + snapshot.data[index].duration, style: GoogleFonts.montserrat(
-                                        color: Colors.white),),
-                                    snapshot.data[index].activityType == "Climbing" ? Text("\t\t\tDistance: - km", style: GoogleFonts.montserrat(
-                                        color: Colors.white),) : Text("\t\t\tDistance: " + snapshot.data[index].distance.toString()+ " km", style: GoogleFonts.montserrat(
-                                        color: Colors.white),),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
                   ],
                 ));
-          } else {
-            return Center(
-              child: Text(
-                "You have not yet entered any data to be displayed. \nStart getting active now!",
-                style: GoogleFonts.montserrat(
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            );
           }
         },
       ),
