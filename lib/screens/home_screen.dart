@@ -44,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: <Widget>[
                               IconButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, WelcomeScreen.routeName);
+                                  Navigator.pushNamed(
+                                      context, WelcomeScreen.routeName);
                                 },
                                 alignment: Alignment.topLeft,
                                 icon: Icon(
@@ -134,7 +135,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       BorderContainerWidget(
                         _yearlyOverviewWidget(snapshot.data),
-                        "Yearly Activity Overview " + DateTime.now().year.toString(),
+                        "Yearly Activity Overview " +
+                            DateTime.now().year.toString(),
                         false,
                       ),
                       SizedBox(
@@ -143,15 +145,59 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   );
                 } else {
-                  return Center(
-                    child: Text(
-                      "You have not yet entered any data to be displayed. \nStart by using the button down here in the right corner.",
-                      style: GoogleFonts.montserrat(
-                        color: Colors.white,
+                  return ListView(children: [
+                    Container(
+                      padding: EdgeInsets.all(32),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, WelcomeScreen.routeName);
+                              },
+                              alignment: Alignment.topLeft,
+                              icon: Icon(
+                                Icons.keyboard_arrow_left,
+                                color: Colors.white,
+                                size: 32,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Your',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: Colors.white,
+                                      fontSize: 25.0),
+                                ),
+                                SizedBox(width: 10.0),
+                                Text(
+                                  'Statistics',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25.0),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  );
+                    Center(
+                      child: Text(
+                        "You have not yet entered any data to be displayed. \nStart getting active today!",
+                        style: GoogleFonts.montserrat(
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ]);
                 }
               }),
         ),
@@ -674,7 +720,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 // For a legend that is positioned on the left or right of the chart,
                 // setting the justification for [endDrawArea] is aligned to the
                 // bottom of the chart draw area.
-                outsideJustification: charts.OutsideJustification.middleDrawArea,
+                outsideJustification:
+                    charts.OutsideJustification.middleDrawArea,
                 // By default, if the position of the chart is on the left or right of
                 // the chart, [horizontalFirst] is set to false. This means that the
                 // legend entries will grow as new rows first instead of a new column.
