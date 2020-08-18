@@ -28,7 +28,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
           if (snapshot.hasData) {
             return Container(
               padding: EdgeInsets.only(top: 2),
-                color: ThemeColors.yellowGreenish,
+                color: ThemeColors.blueGreenisShade2,
                 child: ListView(
                   shrinkWrap: true,
                   children: [
@@ -46,7 +46,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                               alignment: Alignment.topLeft,
                               icon: Icon(
                                 Icons.keyboard_arrow_left,
-                                color: ThemeColors.darkBlue,
+                                color: Colors.white,
                                 size: 32,
                               ),
                             ),
@@ -56,7 +56,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                                   'Your',
                                   style: TextStyle(
                                       fontFamily: 'Montserrat',
-                                      color: ThemeColors.darkBlue,
+                                      color: Colors.white,
                                       fontSize: 25.0),
                                 ),
                                 SizedBox(width: 10.0),
@@ -64,7 +64,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                                   'Activities',
                                   style: TextStyle(
                                       fontFamily: 'Montserrat',
-                                      color: ThemeColors.darkBlue,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 25.0),
                                 ),
@@ -146,7 +146,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                             shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
-                            elevation: 4,
+                            elevation: 0,
                             child: Container(
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(

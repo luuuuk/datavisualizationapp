@@ -84,13 +84,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(_borderRadius)),
                 color: ThemeColors.darkBlue,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(0.0, 1.0), //(x,y)
-                    blurRadius: 6,
-                  ),
-                ],
               ),
               child: Center(
                 child: Row(
@@ -118,6 +111,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
           ),
           GestureDetector(
+            /*
             onTap: () {
               _container1controller.animateBack(0);
               _container3controller.animateBack(0);
@@ -126,6 +120,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   .whenComplete(() => Navigator.pushNamed(
                   context, AddDataScreen.routeName));
             },
+             */
             child: Container(
               height: _container2controller.value,
               child: Center(
@@ -167,24 +162,17 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               decoration: BoxDecoration(
                 borderRadius:
                     BorderRadius.only(topRight: Radius.circular(_borderRadius)),
-                color: ThemeColors.yellowGreenish,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(0.0, 1.0), //(x,y)
-                    blurRadius: 6,
-                  ),
-                ],
+                color: ThemeColors.blueGreenisShade2,
               ),
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Recent',
+                      'Your',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
-                          color: ThemeColors.darkBlue,
+                          color: Colors.white,
                           fontSize: 25.0),
                     ),
                     SizedBox(width: 10.0),
@@ -192,7 +180,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       'Activities',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
-                          color: ThemeColors.darkBlue,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 25.0),
                     ),
