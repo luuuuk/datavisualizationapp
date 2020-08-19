@@ -223,7 +223,10 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 }),
             GestureDetector(
               onTap: (){
-                Navigator.pushNamed(context, AddGoalScreen.routeName);
+                Navigator.pushNamed(context, AddGoalScreen.routeName).then((value) {
+                  setState(() {
+                  });
+                });
               },
               child: Container(
                 margin: EdgeInsets.fromLTRB(32, 0, 0, 16),
