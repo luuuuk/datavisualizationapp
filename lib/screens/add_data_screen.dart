@@ -1,4 +1,5 @@
 import 'package:data_visualization_app/models/recorded_activity.dart';
+import 'package:data_visualization_app/screens/goals_screen.dart';
 import 'package:data_visualization_app/screens/welcome_screen.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
@@ -46,7 +47,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       key: _scaffoldKey,
       body: Stack(
         children: [
@@ -104,9 +105,8 @@ class _AddDataScreenState extends State<AddDataScreen> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                        print("Please navigate me to the goals");
-                      },
+                      onTap: () => Navigator.pushNamed(
+                          context, GoalsScreen.routeName),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.25,
                         height: MediaQuery.of(context).size.height * 0.25,
@@ -162,7 +162,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                           style: TextStyle(
                               fontFamily: 'Montserrat',
                               color: ThemeColors.darkBlue,
-                              fontSize: 18.0),
+                              fontSize: 14.0),
                         ),
                         SizedBox(width: 10.0),
                         Text(
@@ -369,7 +369,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                   color: ThemeColors.blueGreenisShade1,
                 ),
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
                 child: GestureDetector(
                   onTap: () => _selectDate(context),
                   child: Row(
@@ -383,7 +383,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 color: Colors.white,
-                                fontSize: 18.0),
+                                fontSize: 16.0),
                           ),
                           SizedBox(width: 10.0),
                           Text(
@@ -392,7 +392,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                 fontFamily: 'Montserrat',
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
+                                fontSize: 16.0),
                           ),
                         ],
                       ),
@@ -415,7 +415,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                   color: ThemeColors.blueGreenisShade1,
                 ),
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
                 child: GestureDetector(
                   onTap: () => _selectTime(context),
                   child: Row(
@@ -429,7 +429,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 color: Colors.white,
-                                fontSize: 18.0),
+                                fontSize: 16.0),
                           ),
                           SizedBox(width: 10.0),
                           Text(
@@ -438,7 +438,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                 fontFamily: 'Montserrat',
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
+                                fontSize: 16.0),
                           ),
                         ],
                       ),
@@ -461,7 +461,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                   color: ThemeColors.blueGreenisShade1,
                 ),
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -473,7 +473,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                           style: TextStyle(
                               fontFamily: 'Montserrat',
                               color: Colors.white,
-                              fontSize: 18.0),
+                              fontSize: 16.0),
                         ),
                         SizedBox(width: 10.0),
                         Text(
@@ -482,7 +482,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                               fontFamily: 'Montserrat',
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 18.0),
+                              fontSize: 16.0),
                         ),
                       ],
                     ),

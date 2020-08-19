@@ -78,7 +78,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.popAndPushNamed(context, WelcomeScreen.routeName);
+            Navigator.pop(context);
           },
         ),
         backgroundColor: ThemeColors.lightBlue,

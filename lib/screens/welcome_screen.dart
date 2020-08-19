@@ -112,6 +112,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
           ),
           GestureDetector(
+            /*
             onTap: () {
               _container1controller.animateBack(0);
               _container3controller.animateBack(0);
@@ -120,6 +121,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   .whenComplete(() => Navigator.popAndPushNamed(
                   context, GoalsScreen.routeName));
             },
+             */
             child: Container(
               height: _container2controller.value,
               child: Center(
