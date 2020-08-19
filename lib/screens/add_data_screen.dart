@@ -60,22 +60,21 @@ class _AddDataScreenState extends State<AddDataScreen> {
         child: Stack(
           children: [
             Container(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.25,
-                        width: MediaQuery.of(context).size.width * 0.75,
-                        child: Container(
-                          padding: EdgeInsets.only(left: 16),
-                          color: ThemeColors.blueGreenisShade2,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          width: MediaQuery.of(context).size.width * 0.75,
+                          child: Container(
+                            padding: EdgeInsets.only(left: 16),
+                            color: ThemeColors.blueGreenisShade2,
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () => saveEntries(),
-                        child: SizedBox(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.25,
                           height: MediaQuery.of(context).size.height * 0.25,
                           child: Container(
@@ -84,17 +83,17 @@ class _AddDataScreenState extends State<AddDataScreen> {
                             child: Container(),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.75,
-                    child: Container(
-                      color: ThemeColors.blueGreenis,
+                      ],
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.75,
+                      child: Container(
+                        color: ThemeColors.blueGreenis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             SingleChildScrollView(
@@ -145,17 +144,20 @@ class _AddDataScreenState extends State<AddDataScreen> {
                           ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(0, 64, 42, 0),
-                        child: Center(
-                          child: RotatedBox(
-                            quarterTurns: 3,
-                            child: Text(
-                              'Save',
-                              style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                color: Colors.white,
-                                fontSize: 20.0,
+                      GestureDetector(
+                        onTap: () => saveEntries(),
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(0, 64, 42, 0),
+                          child: Center(
+                            child: RotatedBox(
+                              quarterTurns: 3,
+                              child: Text(
+                                'Save',
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                ),
                               ),
                             ),
                           ),
