@@ -40,505 +40,508 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
       key: _scaffoldKey,
       body: Container(
         color: ThemeColors.blueGreenisShade1,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 32),
-                    padding: EdgeInsets.all(16),
-                    child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 32),
+                padding: EdgeInsets.all(16),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        alignment: Alignment.topLeft,
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 32,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Add',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                                fontSize: 25.0),
+                          ),
+                          SizedBox(width: 10.0),
+                          Text(
+                            'New Goal',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25.0),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(32, 0, 0, 16),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(32),
+                      bottomLeft: Radius.circular(32.0)),
+                ),
+                alignment: Alignment.topRight,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Goal',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  color: ThemeColors.mediumBlue,
+                                  fontSize: 16.0),
+                            ),
+                            SizedBox(width: 10.0),
+                            Text(
+                              'Activity',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  color: ThemeColors.mediumBlue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 16),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                goalActivityValue = 0;
+                                FocusScope.of(context).unfocus();
+                              });
                             },
-                            alignment: Alignment.topLeft,
-                            icon: Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 32,
+                            child: AnimatedContainer(
+                              curve: Curves.fastOutSlowIn,
+                              duration: Duration(milliseconds: 500),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                                color: goalActivityValue == 0
+                                    ? selectedColor
+                                    : unselectedColor,
+                              ),
+                              padding: EdgeInsets.all(16),
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child: Icon(
+                                Icons.directions_run,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                goalActivityValue = 1;
+                                FocusScope.of(context).unfocus();
+                              });
+                            },
+                            child: AnimatedContainer(
+                              curve: Curves.fastOutSlowIn,
+                              duration: Duration(milliseconds: 500),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                                color: goalActivityValue == 1
+                                    ? selectedColor
+                                    : unselectedColor,
+                              ),
+                              padding: EdgeInsets.all(16),
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child: Icon(
+                                Icons.directions_bike,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                goalActivityValue = 2;
+                                FocusScope.of(context).unfocus();
+                              });
+                            },
+                            child: AnimatedContainer(
+                              curve: Curves.fastOutSlowIn,
+                              duration: Duration(milliseconds: 500),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                                color: goalActivityValue == 2
+                                    ? selectedColor
+                                    : unselectedColor,
+                              ),
+                              padding: EdgeInsets.all(16),
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child: Icon(
+                                Icons.filter_hdr,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                goalActivityValue = 3;
+                                FocusScope.of(context).unfocus();
+                              });
+                            },
+                            child: AnimatedContainer(
+                              curve: Curves.fastOutSlowIn,
+                              duration: Duration(milliseconds: 500),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                                color: goalActivityValue == 3
+                                    ? selectedColor
+                                    : unselectedColor,
+                              ),
+                              padding: EdgeInsets.all(16),
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child: Icon(
+                                Icons.directions_walk,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
                           Row(
                             children: [
                               Text(
-                                'Add',
+                                'Goal',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
-                                    color: Colors.white,
-                                    fontSize: 25.0),
+                                    color: ThemeColors.mediumBlue,
+                                    fontSize: 16.0),
                               ),
                               SizedBox(width: 10.0),
                               Text(
-                                'New Goal',
+                                'Period',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
-                                    color: Colors.white,
+                                    color: ThemeColors.mediumBlue,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 25.0),
+                                    fontSize: 16.0),
                               ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(32, 0, 0, 16),
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(32),
-                          bottomLeft: Radius.circular(32.0)),
-                    ),
-                    alignment: Alignment.topRight,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Goal',
-                                  style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      color: ThemeColors.mediumBlue,
-                                      fontSize: 16.0),
-                                ),
-                                SizedBox(width: 10.0),
-                                Text(
-                                  'Activity',
-                                  style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      color: ThemeColors.mediumBlue,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.0),
-                                ),
-                              ],
+                    Container(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                goalTimeFrameValue = 0;
+                                FocusScope.of(context).unfocus();
+                              });
+                            },
+                            child: AnimatedContainer(
+                              curve: Curves.fastOutSlowIn,
+                              duration: Duration(milliseconds: 500),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                                color: goalTimeFrameValue == 0
+                                    ? selectedColor
+                                    : unselectedColor,
+                              ),
+                              padding: EdgeInsets.all(16),
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child: Text(
+                                "Weekly",
+                                style:  TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.white,
+                                    fontSize: 16.0),
+                              ),
+                              ),
                             ),
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(top: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    goalActivityValue = 0;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  curve: Curves.fastOutSlowIn,
-                                  duration: Duration(milliseconds: 500),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
-                                    color: goalActivityValue == 0
-                                        ? selectedColor
-                                        : unselectedColor,
-                                  ),
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                  child: Icon(
-                                    Icons.directions_run,
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                goalTimeFrameValue = 1;
+                                FocusScope.of(context).unfocus();
+                              });
+                            },
+                            child: AnimatedContainer(
+                              curve: Curves.fastOutSlowIn,
+                              duration: Duration(milliseconds: 500),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                                color: goalTimeFrameValue == 1
+                                    ? selectedColor
+                                    : unselectedColor,
+                              ),
+                              padding: EdgeInsets.all(16),
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child:  Text(
+                                "Monthly",
+                                style:  TextStyle(
+                                    fontFamily: 'Montserrat',
                                     color: Colors.white,
-                                  ),
-                                ),
+                                    fontSize: 16.0),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    goalActivityValue = 1;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  curve: Curves.fastOutSlowIn,
-                                  duration: Duration(milliseconds: 500),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
-                                    color: goalActivityValue == 1
-                                        ? selectedColor
-                                        : unselectedColor,
-                                  ),
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                  child: Icon(
-                                    Icons.directions_bike,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                goalTimeFrameValue = 2;
+                                FocusScope.of(context).unfocus();
+                              });
+                            },
+                            child: AnimatedContainer(
+                              curve: Curves.fastOutSlowIn,
+                              duration: Duration(milliseconds: 500),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                                color: goalTimeFrameValue == 2
+                                    ? selectedColor
+                                    : unselectedColor,
+                              ),
+                              padding: EdgeInsets.all(16),
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child:  Text(
+                                "Annual",
+                                style:  TextStyle(
+                                    fontFamily: 'Montserrat',
                                     color: Colors.white,
-                                  ),
-                                ),
+                                    fontSize: 16.0),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    goalActivityValue = 2;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  curve: Curves.fastOutSlowIn,
-                                  duration: Duration(milliseconds: 500),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
-                                    color: goalActivityValue == 2
-                                        ? selectedColor
-                                        : unselectedColor,
-                                  ),
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                  child: Icon(
-                                    Icons.filter_hdr,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Goal',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    color: ThemeColors.mediumBlue,
+                                    fontSize: 16.0),
+                              ),
+                              SizedBox(width: 10.0),
+                              Text(
+                                'Type',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    color: ThemeColors.mediumBlue,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                goalTypeValue = 0;
+                                FocusScope.of(context).unfocus();
+                              });
+                            },
+                            child: AnimatedContainer(
+                              curve: Curves.fastOutSlowIn,
+                              duration: Duration(milliseconds: 500),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                                color: goalTypeValue == 0
+                                    ? selectedColor
+                                    : unselectedColor,
+                              ),
+                              padding: EdgeInsets.all(16),
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child: Text(
+                                "Distance",
+                                style:  TextStyle(
+                                    fontFamily: 'Montserrat',
                                     color: Colors.white,
-                                  ),
-                                ),
+                                    fontSize: 16.0),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    goalActivityValue = 3;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  curve: Curves.fastOutSlowIn,
-                                  duration: Duration(milliseconds: 500),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
-                                    color: goalActivityValue == 3
-                                        ? selectedColor
-                                        : unselectedColor,
-                                  ),
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                  child: Icon(
-                                    Icons.directions_walk,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                goalTypeValue = 1;
+                                FocusScope.of(context).unfocus();
+                              });
+                            },
+                            child: AnimatedContainer(
+                              curve: Curves.fastOutSlowIn,
+                              duration: Duration(milliseconds: 500),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                                color: goalTypeValue == 1
+                                    ? selectedColor
+                                    : unselectedColor,
+                              ),
+                              padding: EdgeInsets.all(16),
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child:  Text(
+                                "Time",
+                                style:  TextStyle(
+                                    fontFamily: 'Montserrat',
                                     color: Colors.white,
-                                  ),
-                                ),
+                                    fontSize: 16.0),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(top: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(32, 0, 0, 16),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(32),
+                      bottomLeft: Radius.circular(32.0)),
+                ),
+                alignment: Alignment.topRight,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 16, bottom: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    'Goal',
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: ThemeColors.mediumBlue,
-                                        fontSize: 16.0),
-                                  ),
-                                  SizedBox(width: 10.0),
-                                  Text(
-                                    'Period',
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: ThemeColors.mediumBlue,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
-                                  ),
-                                ],
+                              Text(
+                                'Goal',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    color: ThemeColors.mediumBlue,
+                                    fontSize: 16.0),
+                              ),
+                              SizedBox(width: 10.0),
+                              Text(
+                                'Target Value',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    color: ThemeColors.mediumBlue,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0),
                               ),
                             ],
                           ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(top: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    goalTimeFrameValue = 0;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  curve: Curves.fastOutSlowIn,
-                                  duration: Duration(milliseconds: 500),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
-                                    color: goalTimeFrameValue == 0
-                                        ? selectedColor
-                                        : unselectedColor,
-                                  ),
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                  child: Text(
-                                    "Weekly",
-                                    style:  TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: Colors.white,
-                                        fontSize: 16.0),
-                                  ),
-                                  ),
-                                ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    goalTimeFrameValue = 1;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  curve: Curves.fastOutSlowIn,
-                                  duration: Duration(milliseconds: 500),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
-                                    color: goalTimeFrameValue == 1
-                                        ? selectedColor
-                                        : unselectedColor,
-                                  ),
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                  child:  Text(
-                                    "Monthly",
-                                    style:  TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: Colors.white,
-                                        fontSize: 16.0),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    goalTimeFrameValue = 2;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  curve: Curves.fastOutSlowIn,
-                                  duration: Duration(milliseconds: 500),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
-                                    color: goalTimeFrameValue == 2
-                                        ? selectedColor
-                                        : unselectedColor,
-                                  ),
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                  child:  Text(
-                                    "Annual",
-                                    style:  TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: Colors.white,
-                                        fontSize: 16.0),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(top: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    'Goal',
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: ThemeColors.mediumBlue,
-                                        fontSize: 16.0),
-                                  ),
-                                  SizedBox(width: 10.0),
-                                  Text(
-                                    'Type',
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: ThemeColors.mediumBlue,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(top: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    goalTypeValue = 0;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  curve: Curves.fastOutSlowIn,
-                                  duration: Duration(milliseconds: 500),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
-                                    color: goalTypeValue == 0
-                                        ? selectedColor
-                                        : unselectedColor,
-                                  ),
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                  child: Text(
-                                    "Distance",
-                                    style:  TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: Colors.white,
-                                        fontSize: 16.0),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    goalTypeValue = 1;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  curve: Curves.fastOutSlowIn,
-                                  duration: Duration(milliseconds: 500),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
-                                    color: goalTypeValue == 1
-                                        ? selectedColor
-                                        : unselectedColor,
-                                  ),
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                  child:  Text(
-                                    "Time",
-                                    style:  TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: Colors.white,
-                                        fontSize: 16.0),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        ],
+                      ),
+                    ),
+                    TextField(
+                      onEditingComplete: () => FocusScope.of(context).unfocus(),
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
                       ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(32, 0, 0, 16),
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(32),
-                          bottomLeft: Radius.circular(32.0)),
-                    ),
-                    alignment: Alignment.topRight,
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(top: 16, bottom: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    'Goal',
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: ThemeColors.mediumBlue,
-                                        fontSize: 16.0),
-                                  ),
-                                  SizedBox(width: 10.0),
-                                  Text(
-                                    'Type',
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: ThemeColors.mediumBlue,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        TextField(
-                          onEditingComplete: () => FocusScope.of(context).unfocus(),
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          autofocus: true,
-                          onChanged: (String enteredDistance) => {
-                            setState(() {
-                              selectedGoalValue = int.parse(enteredDistance);
-                              _goalValueController.value =
-                                  TextEditingValue(text: enteredDistance);
-                            })
-                          },
-                          controller: _goalValueController,
-                          keyboardType: TextInputType.numberWithOptions(),
-                          decoration: InputDecoration.collapsed(
-                            hintText: goalTypeValue == 0
-                                ? 'Enter Distance in km'
-                                : 'Enter Duration in h',
-                            hintStyle: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  color: ThemeColors.mediumBlue,
-                                  fontSize: 12.0),
-                          ),
-                          textInputAction: TextInputAction.done,
-                          cursorColor: ThemeColors.mediumBlue,
-                          style: TextStyle(
+                      onChanged: (String enteredDistance) => {
+                        setState(() {
+                          selectedGoalValue = int.parse(enteredDistance);
+                          _goalValueController.value =
+                              TextEditingValue(text: enteredDistance);
+                        })
+                      },
+                      controller: _goalValueController,
+                      keyboardType: TextInputType.numberWithOptions(),
+                      decoration: InputDecoration.collapsed(
+                        hintText: goalTypeValue == 0
+                            ? 'Enter Distance in km'
+                            : 'Enter Duration in h',
+                        hintStyle: TextStyle(
                               fontFamily: 'Montserrat',
                               color: ThemeColors.mediumBlue,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0),
-                        ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => saveEntries(),
-                    child: Container(
-                      alignment: Alignment.bottomRight,
-                      margin: EdgeInsets.only(left: MediaQuery.of(context).size.width / 1.5),
-                      padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(32), bottomLeft: Radius.circular(32)),
-                        color: ThemeColors.mediumBlue
+                              fontSize: 12.0),
                       ),
-                      child:Text(
-                        'Save',
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            color: Colors.white,
-                            fontSize: 16.0),
-                      ),
+                      textInputAction: TextInputAction.done,
+                      cursorColor: ThemeColors.mediumBlue,
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: ThemeColors.mediumBlue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              GestureDetector(
+                onTap: () => saveEntries(),
+                child: Container(
+                  alignment: Alignment.bottomRight,
+                  margin: EdgeInsets.only(left: MediaQuery.of(context).size.width / 1.5, bottom: 32),
+                  padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(32), bottomLeft: Radius.circular(32)),
+                    color: ThemeColors.mediumBlue
+                  ),
+                  child:Text(
+                    'Save',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontSize: 16.0),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

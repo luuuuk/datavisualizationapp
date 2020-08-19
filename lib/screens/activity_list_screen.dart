@@ -29,7 +29,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
           if (snapshot.hasData) {
             return Container(
               padding: EdgeInsets.only(top: 32),
-                color: ThemeColors.blueGreenisShade2,
+                color: ThemeColors.darkGrey,
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -89,16 +89,16 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                             padding: EdgeInsets.all(8),
                             borderType: BorderType.RRect,
                             radius: Radius.circular(16),
-                            color: ThemeColors.darkBlue,
+                            color: Colors.white,
                             child: ListTile(
-                              leading: Icon(Icons.add_circle_outline, color: ThemeColors.darkBlue, size: 32,),
+                              leading: Icon(Icons.add_circle_outline, color: Colors.white, size: 32,),
                               title: Row(
                                 children: [
                                   Text(
                                     'Add',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
-                                        color: ThemeColors.darkBlue,
+                                        color: Colors.white,
                                         fontSize: 18.0),
                                   ),
                                   SizedBox(width: 10.0),
@@ -106,7 +106,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                                     'New Activity',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
-                                        color: ThemeColors.darkBlue,
+                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18.0),
                                   ),

@@ -112,16 +112,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
           ),
           GestureDetector(
-            /*
             onTap: () {
               _container1controller.animateBack(0);
               _container3controller.animateBack(0);
               _container2controller
                   .animateTo(MediaQuery.of(context).size.height)
                   .whenComplete(() => Navigator.popAndPushNamed(
-                  context, GoalsScreen.routeName));
+                  context, ActivityListScreen.routeName));
             },
-             */
             child: Container(
               height: _container2controller.value,
               child: Center(
@@ -137,7 +135,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     ),
                     SizedBox(width: 10.0),
                     Text(
-                      'Goals',
+                      'Activities',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           color: Colors.white,
@@ -156,14 +154,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               _container3controller
                   .animateTo(MediaQuery.of(context).size.height)
                   .whenComplete(() => Navigator.popAndPushNamed(
-                  context, ActivityListScreen.routeName));
+                  context, GoalsScreen.routeName));
             },
             child: Container(
               height: _container3controller.value,
               decoration: BoxDecoration(
                 borderRadius:
                     BorderRadius.only(topRight: Radius.circular(_borderRadius)),
-                color: ThemeColors.blueGreenisShade2,
+                color: ThemeColors.blueGreenisShade1,
               ),
               child: Center(
                 child: Row(
@@ -178,7 +176,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     ),
                     SizedBox(width: 10.0),
                     Text(
-                      'Activities',
+                      'Goals',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           color: Colors.white,

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:data_visualization_app/models/activity_goal.dart';
 import 'package:data_visualization_app/screens/add_goal_screen.dart';
+import 'package:data_visualization_app/screens/welcome_screen.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/services/sorting_data.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
@@ -83,7 +84,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   children: <Widget>[
                     IconButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.popAndPushNamed(context, WelcomeScreen.routeName);
                       },
                       alignment: Alignment.topLeft,
                       icon: Icon(
@@ -122,6 +123,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   if (snapshot.hasData) {
                     return Container(
                       margin: EdgeInsets.fromLTRB(32, 0, 0, 16),
+                      padding: EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
