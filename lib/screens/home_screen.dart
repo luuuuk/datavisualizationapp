@@ -517,7 +517,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     goalProgress.data,
                                     snapshot.data[index].goalTitle,
                                     snapshot.data[index].goalType,
-                                    snapshot.data[index].activityType),
+                                    snapshot.data[index].activityType,
+                                    snapshot.data[index].timeFrame),
                               );
                             } else {
                               return Container(

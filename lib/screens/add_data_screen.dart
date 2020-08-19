@@ -74,8 +74,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                     color: Colors.white,
                                   ),
                                   onPressed: () {
-                                    Navigator.popAndPushNamed(
-                                        context, WelcomeScreen.routeName);
+                                    Navigator.pop(context);
                                   },
                                 ),
                                 Row(

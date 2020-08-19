@@ -77,7 +77,11 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, AddDataScreen.routeName);
+                          Navigator.pushNamed(context, AddDataScreen.routeName).then((value) {
+                            setState(() {
+
+                            });
+                          });
                         },
                         child: Container(
                           margin: EdgeInsets.fromLTRB(8,8,8,0),
