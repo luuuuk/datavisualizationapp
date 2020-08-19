@@ -154,26 +154,29 @@ class _AddDataScreenState extends State<AddDataScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Text(
-                          'Activity',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              color: ThemeColors.darkBlue,
-                              fontSize: 14.0),
-                        ),
-                        SizedBox(width: 10.0),
-                        Text(
-                          'Type',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              color: ThemeColors.darkBlue,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0),
-                        ),
-                      ],
+                    Container(
+                      padding: EdgeInsets.only(right: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            'Activity',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: ThemeColors.darkBlue,
+                                fontSize: 16.0),
+                          ),
+                          SizedBox(width: 10.0),
+                          Text(
+                            'Type',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: ThemeColors.darkBlue,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 16),
@@ -456,7 +459,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                margin: EdgeInsets.fromLTRB(16, 16, 16, 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                   color: ThemeColors.blueGreenisShade1,
@@ -497,7 +500,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                         },
                         controller: _distanceController,
                         decoration: InputDecoration.collapsed(hintText: "Activity Distance"),
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.numberWithOptions(),
                         textInputAction: TextInputAction.done,
                       ),
                     ),

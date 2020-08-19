@@ -127,10 +127,11 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                                   icon: Icons.edit,
                                   onTap: () {
                                     /// Open ModifyActivityScreen
-                                    Navigator.pop(context);
                                     Navigator.of(context).push(MaterialPageRoute(
                                         builder: (context) => ModifyDataScreen(
-                                            snapshot.data[index])));
+                                            snapshot.data[index]))).then((value) {
+                                              setState(() {});
+                                    });
                                   }),
                               IconSlideAction(
                                 caption: 'Delete',

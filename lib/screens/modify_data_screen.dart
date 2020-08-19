@@ -1,4 +1,5 @@
 import 'package:data_visualization_app/models/recorded_activity.dart';
+import 'package:data_visualization_app/screens/welcome_screen.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,7 +37,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
       style: GoogleFonts.montserrat(),
     ),
   };
-  int segmentedControlGroupValue = 0;
+  int activityTypeValue = 0;
   TextEditingController _dateController = new TextEditingController();
   TextEditingController _timeController = new TextEditingController();
   TextEditingController _distanceController = new TextEditingController();
@@ -45,11 +46,14 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
   bool isClimbing = false;
   int selectedDistance = 0;
 
+  Color selectedColor = ThemeColors.darkBlue;
+  Color unselectedColor = ThemeColors.blueGreenisShade1;
+
   @override
   void initState() {
     super.initState();
 
-    segmentedControlGroupValue = _getActivityType();
+    activityTypeValue = _getActivityType();
     _dateController.value = TextEditingValue(text: widget.activityToUpdate.date);
     _timeController.value = TextEditingValue(text: widget.activityToUpdate.duration);
     _distanceController.value = TextEditingValue(text: widget.activityToUpdate.distance.toString());
@@ -64,126 +68,470 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       key: _scaffoldKey,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.close,
-            color: Colors.white,
+      body: Stack(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 16),
+                        color: ThemeColors.blueGreenisShade2,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context);
+                                  },
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Modify',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 25.0),
+                                    ),
+                                    SizedBox(width: 10.0),
+                                    Text(
+                                      'Activity',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25.0),
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => updateEntries(),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        child: Container(
+                          padding: EdgeInsets.only(top: 8),
+                          color: ThemeColors.blueGreenisShade1,
+                          child: Center(
+                            child: RotatedBox(
+                              quarterTurns: 3,
+                              child: Text(
+                                'Update',
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.75,
+                  child: Container(
+                    color: ThemeColors.blueGreenis,
+                  ),
+                ),
+              ],
+            ),
           ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        backgroundColor: ThemeColors.lightBlue,
-        title: Text(
-          "Modify Activity",
-          style: GoogleFonts.montserrat(color: Colors.white),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-        color: ThemeColors.darkBlue,
-        child: ListView(
-          children: [
-            BorderContainerWidget(
-              CupertinoSlidingSegmentedControl(
-                  backgroundColor: ThemeColors.lightBlue,
-                  groupValue: segmentedControlGroupValue,
-                  children: type,
-                  thumbColor: ThemeColors.orange,
-                  onValueChanged: (i) {
-                    setState(() {
-                      segmentedControlGroupValue = i;
-                      i == 2 ? isClimbing = true : isClimbing = false;
-                    });
-                  }),
-              "Activity Type",
-              true,
-            ),
-            BorderContainerWidget(
-              GestureDetector(
-                onTap: () => _selectDate(context),
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    controller: _dateController,
-                    keyboardType: TextInputType.datetime,
-                    decoration: InputDecoration(
-                      hintText: 'Activity Date',
-                      prefixIcon: Icon(
-                        Icons.calendar_today_outlined,
-                        color: ThemeColors.orange,
+          Column(
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(
+                    16, MediaQuery.of(context).size.height * 0.2, 16, 0),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(32)),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(right: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            'Activity',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: ThemeColors.darkBlue,
+                                fontSize: 16.0),
+                          ),
+                          SizedBox(width: 10.0),
+                          Text(
+                            'Type',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: ThemeColors.darkBlue,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ),
-              ),
-              "Date",
-              true,
-            ),
-            BorderContainerWidget(
-              GestureDetector(
-                onTap: () => _selectTime(context),
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    controller: _timeController,
-                    keyboardType: TextInputType.datetime,
-                    decoration: InputDecoration(
-                      hintText: 'Activity Duration',
-                      prefixIcon: Icon(
-                        Icons.timelapse,
-                        color: ThemeColors.orange,
+                    Container(
+                      margin: EdgeInsets.only(top: 16),
+                      child: SizedBox(
+                        height: 140,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  activityTypeValue = 0;
+                                });
+                              },
+                              child: AnimatedContainer(
+                                curve: Curves.fastOutSlowIn,
+                                duration: Duration(milliseconds: 500),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                                  color: activityTypeValue == 0
+                                      ? selectedColor
+                                      : unselectedColor,
+                                ),
+                                padding: EdgeInsets.all(16),
+                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Text(
+                                        'Running',
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Icon(
+                                        Icons.directions_run,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  activityTypeValue = 1;
+                                });
+                              },
+                              child: AnimatedContainer(
+                                curve: Curves.fastOutSlowIn,
+                                duration: Duration(milliseconds: 500),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                                  color: activityTypeValue == 1
+                                      ? selectedColor
+                                      : unselectedColor,
+                                ),
+                                padding: EdgeInsets.all(16),
+                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Text(
+                                        'Cycling',
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Icon(
+                                        Icons.directions_bike,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  activityTypeValue = 2;
+                                });
+                              },
+                              child: AnimatedContainer(
+                                curve: Curves.fastOutSlowIn,
+                                duration: Duration(milliseconds: 500),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                                  color: activityTypeValue == 2
+                                      ? selectedColor
+                                      : unselectedColor,
+                                ),
+                                padding: EdgeInsets.all(16),
+                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Text(
+                                        'Climbing',
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Icon(
+                                        Icons.filter_hdr,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  activityTypeValue = 3;
+                                });
+                              },
+                              child: AnimatedContainer(
+                                curve: Curves.fastOutSlowIn,
+                                duration: Duration(milliseconds: 500),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                                  color: activityTypeValue == 3
+                                      ? selectedColor
+                                      : unselectedColor,
+                                ),
+                                padding: EdgeInsets.all(16),
+                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Text(
+                                        'Hiking',
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Icon(
+                                        Icons.directions_walk,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  color: ThemeColors.blueGreenisShade1,
+                ),
+                padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+                child: GestureDetector(
+                  onTap: () => _selectDate(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            'Activity',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                                fontSize: 16.0),
+                          ),
+                          SizedBox(width: 10.0),
+                          Text(
+                            'Date: ',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: AbsorbPointer(
+                          child: TextField(
+                            controller: _dateController,
+                            decoration: InputDecoration.collapsed(hintText: "Activity Date"),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              "Duration",
-              true,
-            ),
-            AnimatedOpacity(
-              duration: Duration(seconds: 1),
-              opacity: isClimbing ? 0.0 : 1.0,
-              child: BorderContainerWidget(
-                TextFormField(
-                  onChanged: (String enteredDistance) => {
-                    setState(() {
-                      selectedDistance = int.parse(enteredDistance);
-                      _distanceController.value = TextEditingValue(text: enteredDistance);
-                    })
-                  },
-                  controller: _distanceController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: 'Activity Distance',
-                    prefixIcon: Icon(
-                      Icons.add_road_outlined,
-                      color: ThemeColors.orange,
+              Container(
+                margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  color: ThemeColors.blueGreenisShade1,
+                ),
+                padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+                child: GestureDetector(
+                  onTap: () => _selectTime(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            'Activity',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                                fontSize: 16.0),
+                          ),
+                          SizedBox(width: 10.0),
+                          Text(
+                            'Duration: ',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: AbsorbPointer(
+                          child: TextField(
+                            controller: _timeController,
+                            decoration: InputDecoration.collapsed(hintText: "Activity Duration"),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  color: ThemeColors.blueGreenisShade1,
+                ),
+                padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          'Activity',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.white,
+                              fontSize: 16.0),
+                        ),
+                        SizedBox(width: 10.0),
+                        Text(
+                          'Distance: ',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0),
+                        ),
+                      ],
                     ),
-                  ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: TextFormField(
+                        onChanged: (String enteredDistance) => {
+                          setState(() {
+                            selectedDistance = int.parse(enteredDistance);
+                            _distanceController.value = TextEditingValue(text: enteredDistance);
+                          })
+                        },
+                        controller: _distanceController,
+                        decoration: InputDecoration.collapsed(hintText: "Activity Distance"),
+                        keyboardType: TextInputType.numberWithOptions(),
+                        textInputAction: TextInputAction.done,
+                      ),
+                    ),
+                  ],
                 ),
-                "Distance",
-                true
               ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 24, 0, 0),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: ThemeColors.orange,
-        onPressed: () => updateEntries(),
-        tooltip: 'Update data',
-        child: Icon(
-          Icons.update_outlined,
-          color: Colors.white,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -195,6 +543,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
           return Container(
             height: MediaQuery.of(context).copyWith().size.height / 3,
             child: CupertinoDatePicker(
+              backgroundColor: ThemeColors.blueGreenisShade1,
               initialDateTime: DateTime.now(),
               onDateTimeChanged: (DateTime newdate) {
                 setState(() {
@@ -241,7 +590,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
 
   /// Method to save the entries on the screen
   Future<void> updateEntries() async {
-    String activityType = changeActivityType(segmentedControlGroupValue);
+    String activityType = changeActivityType(activityTypeValue);
 
     RecordedActivity updateActivity = RecordedActivity(widget.activityToUpdate.id, activityType, DateFormat('dd.MM.yyyy').format(selectedDate).toString(), format(selectedDuration).toString(), selectedDistance);
 
@@ -255,12 +604,14 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
   String changeActivityType(int newValue){
     String activityType;
 
-    switch(segmentedControlGroupValue){
+    switch(activityTypeValue){
       case 0: activityType = "Running";
       break;
       case 1: activityType = "Cycling";
       break;
       case 2: activityType = "Climbing";
+      break;
+      case 3:activityType = "Hiking";
       break;
       default: activityType = "Running";
     }
