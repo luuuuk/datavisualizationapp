@@ -95,7 +95,7 @@ class SortingDataService {
       new ActivitiesData('Running', runningTime, ThemeColors.lightBlue),
       new ActivitiesData('Cycling', cyclingTime, ThemeColors.orange),
       new ActivitiesData('Climbing', climbingTime, ThemeColors.yellowGreenish),
-      new ActivitiesData('Hiking', climbingTime, ThemeColors.blueGreenisShade1),
+      new ActivitiesData('Hiking', hikingTime, ThemeColors.blueGreenisShade1),
     ];
 
 
@@ -286,10 +286,13 @@ class SortingDataService {
     new List<ActivitiesDataDateTime>();
     List<ActivitiesDataDateTime> climbingActivitiesTime =
     new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> hikingActivitiesTime =
+    new List<ActivitiesDataDateTime>();
 
     List<double> runningTimePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     List<double> cyclingTimePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     List<double> climbingTimePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> hikingTimePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     /// Go through all activties from weeks T-11 to now()
     for (int i = 0; i < 11; i++) {
@@ -318,6 +321,9 @@ class SortingDataService {
               break;
             case "Climbing":
               climbingTimePerWeek[0] += durationInMin;
+              break;
+            case "Hiking":
+              hikingTimePerWeek[0] += durationInMin;
           }
         }
 
@@ -343,6 +349,9 @@ class SortingDataService {
               break;
             case "Climbing":
               climbingTimePerWeek[i+1] += durationInMin;
+              break;
+            case "Hiking":
+              hikingTimePerWeek[i+1] += durationInMin;
           }
         }
       }
@@ -367,6 +376,12 @@ class SortingDataService {
               .subtract(Duration(days: 7*i + DateTime.now().weekday)),
           climbingTimePerWeek[i],
           ThemeColors.yellowGreenish));
+      hikingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: 7*i + DateTime.now().weekday)),
+          hikingTimePerWeek[i],
+          ThemeColors.blueGreenisShade1));
     }
 
     if (runningActivitiesTime.isNotEmpty) {
@@ -400,6 +415,17 @@ class SortingDataService {
         ),
       );
     }
+    if (hikingActivitiesTime.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Hiking',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: hikingActivitiesTime,
+        )
+      );
+    }
 
     return series;
   }
@@ -413,9 +439,12 @@ class SortingDataService {
     new List<ActivitiesDataDateTime>();
     List<ActivitiesDataDateTime> cyclingActivitiesDistance =
     new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> hikingActivitiesDistance =
+    new List<ActivitiesDataDateTime>();
 
     List<double> runningDistancePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     List<double> cyclingDistancePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> hikingDistancePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     /// Go through all activties from weeks T-11 to now()
     for (int i = 0; i < 11; i++) {
@@ -439,6 +468,9 @@ class SortingDataService {
             case "Cycling":
               cyclingDistancePerWeek[0] += distanceKm;
               break;
+            case "Hiking":
+              hikingDistancePerWeek[0] += distanceKm;
+              break;
           }
         }
 
@@ -460,6 +492,9 @@ class SortingDataService {
             case "Cycling":
               cyclingDistancePerWeek[i+1] += distanceKm;
               break;
+            case "Hiking":
+              hikingDistancePerWeek[i+1] += distanceKm;
+              break;
           }
         }
       }
@@ -478,6 +513,12 @@ class SortingDataService {
               .subtract(Duration(days: 7*i + DateTime.now().weekday)),
           cyclingDistancePerWeek[i],
           ThemeColors.orange));
+      hikingActivitiesDistance.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: 7*i + DateTime.now().weekday)),
+          hikingDistancePerWeek[i],
+          ThemeColors.blueGreenisShade1));
     }
 
     if (runningActivitiesDistance.isNotEmpty) {
@@ -497,6 +538,17 @@ class SortingDataService {
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
           data: cyclingActivitiesDistance,
+        ),
+      );
+    }
+    if (hikingActivitiesDistance.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Hiking',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: hikingActivitiesDistance,
         ),
       );
     }
