@@ -28,6 +28,8 @@ class GoalWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width / 4,
+      height: 210,
       decoration: BoxDecoration(
         color: ThemeColors.mediumBlue,
         borderRadius: BorderRadius.circular(16),
@@ -39,34 +41,39 @@ class GoalWidget extends StatelessWidget {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              RotatedBox(
-                quarterTurns: 3,
-                child: Text(
-                  _getGoalTitle(0),
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    color: Colors.white,
-                    fontSize: 12.0,
+              Row(
+                children: [
+                  RotatedBox(
+                    quarterTurns: 3,
+                    child: Text(
+                      _getGoalTitle(0),
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontSize: 12.0,
+                      ),
+                      textAlign: TextAlign.justify,
+                      overflow: TextOverflow.fade,
+                      maxLines: 3,
+                    ),
                   ),
-                  textAlign: TextAlign.justify,
-                  overflow: TextOverflow.fade,
-                  maxLines: 3,
-                ),
-              ),
-              RotatedBox(
-                quarterTurns: 3,
-                child: Text(
-                  _getGoalTitle(1),
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    color: Colors.white,
-                    fontSize: 12.0,
+                  RotatedBox(
+                    quarterTurns: 3,
+                    child: Text(
+                      _getGoalTitle(1),
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontSize: 12.0,
+                      ),
+                      textAlign: TextAlign.justify,
+                      overflow: TextOverflow.fade,
+                      maxLines: 3,
+                    ),
                   ),
-                  textAlign: TextAlign.justify,
-                  overflow: TextOverflow.fade,
-                  maxLines: 3,
-                ),
+                ],
               ),
             ],
           ),
