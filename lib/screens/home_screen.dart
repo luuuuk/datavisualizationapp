@@ -357,6 +357,10 @@ class _HomeScreenState extends State<HomeScreen> {
               Icons.filter_hdr,
               color: ThemeColors.yellowGreenish,
             ),
+            Icon(
+              Icons.directions_walk,
+              color: ThemeColors.blueGreenisShade1,
+            ),
           ],
         ),
       ],
@@ -405,6 +409,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _monthlyOverviewWidget(List<RecordedActivity> activities) {
     return Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           OverviewWidget(activities, 1),
@@ -489,58 +494,87 @@ class _HomeScreenState extends State<HomeScreen> {
     return FutureBuilder<List<ActivityGoal>>(
         future: getGoalData(timeSpan),
         builder: (context, AsyncSnapshot<List<ActivityGoal>> snapshot) {
-          if (snapshot.hasData && snapshot.data.length != 0) {
-            return Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    "Personal Goals",
-                    style: GoogleFonts.montserrat(color: Colors.white),
-                  ),
-                ),
-                ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) {
-                      return FutureBuilder<double>(
-                          future: SortingDataService()
-                              .getCurrentGoalProgress(snapshot.data[index]),
-                          builder:
-                              (context, AsyncSnapshot<double> goalProgress) {
-                            if (goalProgress.hasData) {
-                              return Container(
-                                padding: EdgeInsets.fromLTRB(8, 0, 8, 16),
-                                child: GoalWidget(
-                                    snapshot.data[index].goalNumber.toDouble(),
-                                    goalProgress.data,
-                                    snapshot.data[index].goalTitle,
-                                    snapshot.data[index].goalType,
-                                    snapshot.data[index].activityType,
-                                    snapshot.data[index].timeFrame),
-                              );
-                            } else {
-                              return Container(
-                                child: Text(
-                                  "No Personal Goals found.",
-                                  style: GoogleFonts.montserrat(
-                                      color: Colors.white),
-                                ),
-                              );
-                            }
-                          });
-                    }),
-              ],
-            );
-          } else {
+          if (snapshot.hasData) {
             return Container(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: Text(
-                "No Personal Goals found.",
-                style: GoogleFonts.montserrat(color: Colors.white),
+              margin: EdgeInsets.fromLTRB(32, 0, 0, 16),
+              padding: EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    bottomLeft: Radius.circular(32.0)),
+              ),
+              alignment: Alignment.topRight,
+              height: 280,
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 16, 16, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Active',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: ThemeColors.mediumBlue,
+                              fontSize: 16.0),
+                        ),
+                        SizedBox(width: 10.0),
+                        Text(
+                          'Goals',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: ThemeColors.mediumBlue,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: FutureBuilder<double>(
+                                future: SortingDataService()
+                                    .getCurrentGoalProgress(
+                                        snapshot.data[index]),
+                                builder: (context,
+                                    AsyncSnapshot<double> goalProgress) {
+                                  if (goalProgress.hasData) {
+                                    return GoalWidget(
+                                      snapshot.data[index].goalNumber
+                                          .toDouble(),
+                                      goalProgress.data,
+                                      snapshot.data[index].goalTitle,
+                                      snapshot.data[index].goalType,
+                                      snapshot.data[index].activityType,
+                                      snapshot.data[index].timeFrame,
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                }),
+                          );
+                        }),
+                  ),
+                ],
               ),
             );
+          } else {
+            return BorderContainerWidget(
+                Container(
+                  height: 80,
+                  child: Center(
+                    child: Text("No goals defined."),
+                  ),
+                ),
+                "Your Goals",
+                true);
           }
         });
   }

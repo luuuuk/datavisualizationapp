@@ -2,8 +2,7 @@
 /// The [goalTitle] can be set and a [goalType] shall be provided
 /// where type == 0: distance goal, type == 1 duration goal.
 /// The [activityType] defines the activity the goal is dedicated to, where
-/// activityType == 0 : running, activityType == 1 : cycling
-/// activityType == 2 : others
+/// activityType == 0 : running, 1 : cycling, 2 : climbing, 3 : hiking
 /// The [timeFrame] defines the span of the goal, where 0: week, 1: month, 2: year
 class ActivityGoal {
   final int id;
