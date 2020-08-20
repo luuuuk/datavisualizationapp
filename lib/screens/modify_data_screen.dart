@@ -94,69 +94,15 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                           child: Container(
                             padding: EdgeInsets.only(left: 16),
                             color: ThemeColors.blueGreenisShade2,
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(children: [
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.close,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(
-                                            context);
-                                      },
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Modify',
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              color: Colors.white,
-                                              fontSize: 25.0),
-                                        ),
-                                        SizedBox(width: 10.0),
-                                        Text(
-                                          'Activity',
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 25.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ]),
-                                ],
-                              ),
-                            ),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () => updateEntries(),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            height: MediaQuery.of(context).size.height * 0.25,
-                            child: Container(
-                              padding: EdgeInsets.only(top: 8),
-                              color: ThemeColors.blueGreenisShade1,
-                              child: Center(
-                                child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(
-                                    'Update',
-                                    style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      color: Colors.white,
-                                      fontSize: 20.0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          child: Container(
+                            padding: EdgeInsets.only(top: 8),
+                            color: ThemeColors.blueGreenisShade1,
+                            child: Container(),
                           ),
                         ),
                       ],
@@ -175,9 +121,77 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
             SingleChildScrollView(
               child: Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(left: 16),
+                        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context);
+                                  },
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Modify',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontSize: 25.0),
+                                    ),
+                                    SizedBox(width: 10.0),
+                                    Text(
+                                      'Activity',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25.0),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => updateEntries(),
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(0, 64, 42, 0),
+                          child: Center(
+                            child: RotatedBox(
+                              quarterTurns: 3,
+                              child: Text(
+                                'Update',
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Container(
                     margin: EdgeInsets.fromLTRB(
-                        16, MediaQuery.of(context).size.height * 0.2, 16, 0),
+                        16, 16, 16, 0),
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(32)),
