@@ -33,6 +33,8 @@ dependencies:
   percent_indicator: ^2.1.5
   page_transition: ^1.1.6
   dotted_border: ^1.0.6
+  carousel_slider: ^2.2.1
+  dots_indicator: ^1.2.0
 
 dev_dependencies:
   flutter_test:

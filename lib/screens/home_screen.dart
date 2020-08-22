@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:data_visualization_app/models/activity_goal.dart';
 import 'package:data_visualization_app/models/recorded_activity.dart';
 import 'package:data_visualization_app/screens/activity_list_screen.dart';
@@ -10,6 +11,7 @@ import 'package:data_visualization_app/theme.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
 import 'package:data_visualization_app/widgets/goal.dart';
 import 'package:data_visualization_app/widgets/overview.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -23,6 +25,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  double _currentPosition = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,11 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
               builder:
                   (context, AsyncSnapshot<List<RecordedActivity>> snapshot) {
                 if (snapshot.hasData) {
-                  return ListView(
+                  return Column(
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(32),
-                        child: Center(
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        width: MediaQuery.of(context).size.width / 1.1,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 16),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
@@ -78,6 +84,76 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        width: MediaQuery.of(context).size.width,
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                              height: MediaQuery.of(context).size.height * 0.8,
+                              initialPage: 0,
+                              viewportFraction: 0.95,
+                              enableInfiniteScroll: true,
+                              autoPlay: false,
+                              autoPlayAnimationDuration:
+                                  Duration(milliseconds: 800),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              enlargeCenterPage: true,
+                              scrollDirection: Axis.horizontal,
+                              onPageChanged: (page, reason) {
+                                setState(() {
+                                  _currentPosition = page.toDouble();
+                                });
+                              }),
+                          items: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                //boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(0, 5), blurRadius: 1.0, spreadRadius: 1.0)],
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(32)),
+                              ),
+                              child: _weeklyOverviewWidget(snapshot.data),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(32)),
+                              ),
+                              child: _monthlyOverviewWidget(snapshot.data),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(32)),
+                              ),
+                              child: _annualOverviewWidget(snapshot.data),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: Center(
+                          child: DotsIndicator(
+                            dotsCount: 4,
+                            position: _currentPosition,
+                            axis: Axis.horizontal,
+                            decorator: DotsDecorator(
+                              color: ThemeColors.blueGreenisShade1,
+                              activeColor: ThemeColors.cream,
+                            ),
+                          ),
+                        ),
+                      ),
+                      /*
                       BorderContainerWidget(
                           _weeklyOverviewWidget(snapshot.data),
                           "Weekly Activity Overview",
@@ -134,14 +210,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 32,
                       ),
                       BorderContainerWidget(
-                        _yearlyOverviewWidget(snapshot.data),
-                        "Yearly Activity Overview " +
+                        _annualOverviewWidget(snapshot.data),
+                        "Annual Activity Overview " +
                             DateTime.now().year.toString(),
                         false,
                       ),
                       SizedBox(
                         height: 32,
                       ),
+                      */
                     ],
                   );
                 } else {
@@ -369,42 +446,52 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Method to assemble the weekly overview
   Widget _weeklyOverviewWidget(List<RecordedActivity> activities) {
-    return Column(children: <Widget>[
-      OverviewWidget(activities, 0),
-      Container(
-        margin: EdgeInsets.fromLTRB(8, 16, 8, 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(32),
-          ),
-        ),
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-              child: Text(
-                "Activity Time in h",
-                style: GoogleFonts.montserrat(color: Colors.white),
-              ),
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            child: Column(
+              children: [
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Weekly",
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            color: ThemeColors.darkBlue,
+                            fontSize: 16.0),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Overview",
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            color: ThemeColors.darkBlue,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 8),
+                  child: _buildWeeklyActivityChart(activities),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 8),
+                  child: OverviewWidget(activities, 0),
+                ),
+              ],
             ),
-            Container(
-              padding: EdgeInsets.all(8),
-              child: _buildWeeklyActivityChart(activities),
-            ),
-          ],
-        ),
-      ),
-      Container(
-        margin: EdgeInsets.fromLTRB(8, 0, 8, 16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(32),
           ),
-        ),
-        padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-        child: _buildGoalList(0),
-      ),
-    ]);
+          Container(
+            child: _buildGoalList(0),
+          ),
+        ]);
   }
 
   Widget _monthlyOverviewWidget(List<RecordedActivity> activities) {
@@ -427,7 +514,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   /// Method to assemble the yearly overview
-  Widget _yearlyOverviewWidget(List<RecordedActivity> activities) {
+  Widget _annualOverviewWidget(List<RecordedActivity> activities) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -453,6 +540,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
+        /*
         Container(
           margin: EdgeInsets.fromLTRB(8, 16, 8, 8),
           padding: EdgeInsets.fromLTRB(8, 0, 0, 16),
@@ -474,6 +562,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
+         */
+        /*
         Container(
           margin: EdgeInsets.fromLTRB(8, 16, 8, 32),
           decoration: BoxDecoration(
@@ -484,6 +574,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
           child: _buildGoalList(2),
         ),
+         */
       ],
     );
   }
@@ -496,42 +587,9 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, AsyncSnapshot<List<ActivityGoal>> snapshot) {
           if (snapshot.hasData) {
             return Container(
-              margin: EdgeInsets.fromLTRB(32, 0, 0, 16),
-              padding: EdgeInsets.only(bottom: 12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(32),
-                    bottomLeft: Radius.circular(32.0)),
-              ),
-              alignment: Alignment.topRight,
-              height: 280,
+              height: 140,
               child: Column(
                 children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 16, 16, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Active',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              color: ThemeColors.mediumBlue,
-                              fontSize: 16.0),
-                        ),
-                        SizedBox(width: 10.0),
-                        Text(
-                          'Goals',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              color: ThemeColors.mediumBlue,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0),
-                        ),
-                      ],
-                    ),
-                  ),
                   Expanded(
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -547,14 +605,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     AsyncSnapshot<double> goalProgress) {
                                   if (goalProgress.hasData) {
                                     return GoalWidget(
-                                      snapshot.data[index].goalNumber
-                                          .toDouble(),
-                                      goalProgress.data,
-                                      snapshot.data[index].goalTitle,
-                                      snapshot.data[index].goalType,
-                                      snapshot.data[index].activityType,
-                                      snapshot.data[index].timeFrame,
-                                    );
+                                        snapshot.data[index].goalNumber
+                                            .toDouble(),
+                                        goalProgress.data,
+                                        snapshot.data[index].goalTitle,
+                                        snapshot.data[index].goalType,
+                                        snapshot.data[index].activityType,
+                                        snapshot.data[index].timeFrame,
+                                        true);
                                   } else {
                                     return Container();
                                   }
@@ -566,15 +624,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           } else {
-            return BorderContainerWidget(
-                Container(
-                  height: 80,
-                  child: Center(
-                    child: Text("No goals defined."),
-                  ),
-                ),
-                "Your Goals",
-                true);
+            return Container();
           }
         });
   }
@@ -608,7 +658,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
         SortingDataService().getWeeklyActivity(activities);
 
-    return _buildLineGraphWithAreaAndPoints(data, 140, false);
+    return _buildLineGraphWithAreaAndPoints(data, 160, true);
   }
 
   _buildLineGraphWithAreaAndPoints(
@@ -623,81 +673,58 @@ class _HomeScreenState extends State<HomeScreen> {
           height: height,
           child: new charts.TimeSeriesChart(
             data,
-            animate: false,
-            defaultRenderer: new charts.LineRendererConfig(
-              includePoints: true,
-              includeArea: true,
+            animate: true,
+            defaultRenderer: new charts.BarRendererConfig<DateTime>(
+              cornerStrategy: const charts.ConstCornerStrategy(30),
+              groupingType: charts.BarGroupingType.stacked,
             ),
+            defaultInteractions: false,
             domainAxis: new charts.DateTimeAxisSpec(
-                renderSpec: charts.GridlineRendererSpec(
-                  axisLineStyle: charts.LineStyleSpec(
-                    color: inverseColors
-                        ? charts.Color.fromHex(code: "#2D274CFF")
-                        : charts.MaterialPalette
-                            .white, // this also doesn't change the Y axis labels
-                  ),
-                  labelStyle: new charts.TextStyleSpec(
+              renderSpec: charts.GridlineRendererSpec(
+                axisLineStyle: charts.LineStyleSpec(
+                  color: inverseColors
+                      ? charts.Color.fromHex(code: "#2D274CFF")
+                      : charts.MaterialPalette
+                          .white, // this also doesn't change the Y axis labels
+                ),
+                labelStyle: new charts.TextStyleSpec(
+                  fontSize: 10,
+                  color: inverseColors
+                      ? charts.Color.fromHex(code: "#2D274CFF")
+                      : charts.MaterialPalette.white,
+                ),
+                lineStyle: charts.LineStyleSpec(
+                  thickness: 2,
+                  color: inverseColors
+                      ? charts.Color.fromHex(code: "#2D274CFF")
+                      : charts.MaterialPalette.white,
+                ),
+              ),
+              tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+                hour: new charts.TimeFormatterSpec(
+                  format: 'H',
+                  transitionFormat: 'H',
+                ),
+              ),
+            ),
+            primaryMeasureAxis: charts.NumericAxisSpec(
+              tickFormatterSpec: charts.BasicNumericTickFormatterSpec(
+                  (num value) => '$value h'),
+              tickProviderSpec:
+                  new charts.BasicNumericTickProviderSpec(desiredTickCount: 3),
+              renderSpec: charts.GridlineRendererSpec(
+                labelStyle: charts.TextStyleSpec(
                     fontSize: 10,
                     color: inverseColors
                         ? charts.Color.fromHex(code: "#2D274CFF")
-                        : charts.MaterialPalette.white,
-                  ),
-                  lineStyle: charts.LineStyleSpec(
+                        : charts.MaterialPalette.white),
+                lineStyle: charts.LineStyleSpec(
                     thickness: 2,
                     color: inverseColors
                         ? charts.Color.fromHex(code: "#2D274CFF")
-                        : charts.MaterialPalette.white,
-                  ),
-                ),
-                tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
-                    hour: new charts.TimeFormatterSpec(
-                  format: 'H',
-                  transitionFormat: 'H',
-                ))),
-            primaryMeasureAxis: charts.NumericAxisSpec(
-                renderSpec: charts.GridlineRendererSpec(
-                    labelStyle: charts.TextStyleSpec(
-                        fontSize: 10,
-                        color: inverseColors
-                            ? charts.Color.fromHex(code: "#2D274CFF")
-                            : charts.MaterialPalette.white),
-                    lineStyle: charts.LineStyleSpec(
-                        thickness: 2,
-                        color: inverseColors
-                            ? charts.Color.fromHex(code: "#2D274CFF")
-                            : charts.MaterialPalette.white))),
-            behaviors: [
-              new charts.SeriesLegend(
-                // Positions for "start" and "end" will be left and right respectively
-                // for widgets with a build context that has directionality ltr.
-                // For rtl, "start" and "end" will be right and left respectively.
-                // Since this example has directionality of ltr, the legend is
-                // positioned on the right side of the chart.
-                position: charts.BehaviorPosition.bottom,
-                // For a legend that is positioned on the left or right of the chart,
-                // setting the justification for [endDrawArea] is aligned to the
-                // bottom of the chart draw area.
-                outsideJustification:
-                    charts.OutsideJustification.middleDrawArea,
-                // By default, if the position of the chart is on the left or right of
-                // the chart, [horizontalFirst] is set to false. This means that the
-                // legend entries will grow as new rows first instead of a new column.
-                horizontalFirst: true,
-                // By setting this value to 2, the legend entries will grow up to two
-                // rows before adding a new column.
-                desiredMaxRows: 2,
-                // This defines the padding around each legend entry.
-                cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
-                // Render the legend entry text with custom styles.
-                entryTextStyle: charts.TextStyleSpec(
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.Color.white,
-                  fontFamily: 'Montserrat',
-                  fontSize: 11,
-                ),
-              )
-            ],
+                        : charts.MaterialPalette.white),
+              ),
+            ),
           ),
         ),
       );

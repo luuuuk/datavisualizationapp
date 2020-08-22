@@ -21,107 +21,204 @@ class GoalWidget extends StatelessWidget {
   final int goalType;
   final int activityType;
   final int timeFrame;
+  final bool horizontal;
 
   GoalWidget(this.goalNumber, this.currentNumber, this.goalTitle, this.goalType,
-      this.activityType, this.timeFrame);
+      this.activityType, this.timeFrame, this.horizontal);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width / 4,
-      height: 210,
-      decoration: BoxDecoration(
-        color: ThemeColors.mediumBlue,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.all(16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  RotatedBox(
-                    quarterTurns: 3,
-                    child: Text(
-                      _getGoalTitle(0),
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        color: Colors.white,
-                        fontSize: 12.0,
+    if(!horizontal){
+      return Container(
+        width: MediaQuery.of(context).size.width / 4,
+        height: 210,
+        decoration: BoxDecoration(
+          color: ThemeColors.mediumBlue,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        padding: EdgeInsets.all(8),
+        margin: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: Text(
+                        _getGoalTitle(0),
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: Colors.white,
+                          fontSize: 12.0,
+                        ),
+                        textAlign: TextAlign.justify,
+                        overflow: TextOverflow.fade,
+                        maxLines: 3,
                       ),
-                      textAlign: TextAlign.justify,
-                      overflow: TextOverflow.fade,
-                      maxLines: 3,
                     ),
-                  ),
-                  RotatedBox(
-                    quarterTurns: 3,
-                    child: Text(
-                      _getGoalTitle(1),
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        color: Colors.white,
-                        fontSize: 12.0,
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: Text(
+                        _getGoalTitle(1),
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: Colors.white,
+                          fontSize: 12.0,
+                        ),
+                        textAlign: TextAlign.justify,
+                        overflow: TextOverflow.fade,
+                        maxLines: 3,
                       ),
-                      textAlign: TextAlign.justify,
-                      overflow: TextOverflow.fade,
-                      maxLines: 3,
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 16),
-            child: CircularPercentIndicator(
-              lineWidth: 4,
-              radius: 82.0,
-              percent: (currentNumber / goalNumber) > 1
-                  ? 1.0
-                  : (currentNumber / goalNumber),
-              center: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    (currentNumber / goalNumber) > 1
-                        ? "100%"
-                        : ((currentNumber / goalNumber) * 100)
-                                .toStringAsPrecision(2) +
-                            "%",
-                    style: new TextStyle(fontSize: 12.0, color: Colors.white),
-                  ),
-                  goalType == 0
-                      ? Text(
-                          currentNumber.toInt().toString() +
-                              "/" +
-                              goalNumber.toInt().toString() +
-                              " km",
-                          style: GoogleFonts.montserrat(
-                              color: Colors.white, fontSize: 8),
-                        )
-                      : Text(
-                          currentNumber.toInt().toString() +
-                              "/" +
-                              goalNumber.toInt().toString() +
-                              " h",
-                          style: GoogleFonts.montserrat(
-                              color: Colors.white, fontSize: 8),
-                        )
-                ],
-              ),
-              backgroundColor: Colors.white,
-              progressColor: _getActivityColor(),
+                  ],
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+            Container(
+              padding: EdgeInsets.only(top: 16),
+              child: CircularPercentIndicator(
+                lineWidth: 4,
+                radius: 82.0,
+                percent: (currentNumber / goalNumber) > 1
+                    ? 1.0
+                    : (currentNumber / goalNumber),
+                center: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      (currentNumber / goalNumber) >= 1
+                          ? "100%"
+                          : ((currentNumber / goalNumber) * 100)
+                          .toStringAsPrecision(2) +
+                          "%",
+                      style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                    ),
+                    goalType == 0
+                        ? Text(
+                      currentNumber.toInt().toString() +
+                          "/" +
+                          goalNumber.toInt().toString() +
+                          " km",
+                      style: GoogleFonts.montserrat(
+                          color: Colors.white, fontSize: 8),
+                    )
+                        : Text(
+                      currentNumber.toInt().toString() +
+                          "/" +
+                          goalNumber.toInt().toString() +
+                          " h",
+                      style: GoogleFonts.montserrat(
+                          color: Colors.white, fontSize: 8),
+                    )
+                  ],
+                ),
+                backgroundColor: Colors.white,
+                progressColor: _getActivityColor(),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        width: MediaQuery.of(context).size.width * 0.55,
+        decoration: BoxDecoration(
+          color: ThemeColors.mediumBlue,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        padding: EdgeInsets.all(8),
+        margin: EdgeInsets.all(16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.only(right: 16),
+              child: CircularPercentIndicator(
+                lineWidth: 4,
+                radius: 82.0,
+                percent: (currentNumber / goalNumber) > 1
+                    ? 1.0
+                    : (currentNumber / goalNumber),
+                center: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      (currentNumber / goalNumber) >= 1
+                          ? "100%"
+                          : ((currentNumber / goalNumber) * 100)
+                          .toStringAsPrecision(2) +
+                          "%",
+                      style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                    ),
+                    goalType == 0
+                        ? Text(
+                      currentNumber.toInt().toString() +
+                          "/" +
+                          goalNumber.toInt().toString() +
+                          " km",
+                      style: GoogleFonts.montserrat(
+                          color: Colors.white, fontSize: 8),
+                    )
+                        : Text(
+                      currentNumber.toInt().toString() +
+                          "/" +
+                          goalNumber.toInt().toString() +
+                          " h",
+                      style: GoogleFonts.montserrat(
+                          color: Colors.white, fontSize: 8),
+                    )
+                  ],
+                ),
+                backgroundColor: Colors.white,
+                progressColor: _getActivityColor(),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(right: 16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                          _getGoalTitle(0),
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            color: Colors.white,
+                            fontSize: 12.0,
+                          ),
+                          textAlign: TextAlign.justify,
+                          overflow: TextOverflow.fade,
+                          maxLines: 3,
+                        ),
+                      Text(
+                        _getGoalTitle(1),
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: Colors.white,
+                          fontSize: 12.0,
+                        ),
+                        textAlign: TextAlign.justify,
+                        overflow: TextOverflow.fade,
+                        maxLines: 3,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
   }
 
   /// Method to retrieve the activity type icon
@@ -163,7 +260,7 @@ class GoalWidget extends StatelessWidget {
       case 1:
         return ThemeColors.orange;
       case 2:
-        return ThemeColors.yellowGreenish;
+        return ThemeColors.cream;
       case 3:
         return ThemeColors.blueGreenisShade1;
       default:

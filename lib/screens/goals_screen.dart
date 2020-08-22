@@ -198,6 +198,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                                                       .data[index].activityType,
                                                   snapshot
                                                       .data[index].timeFrame,
+                                                  false
                                                 );
                                               } else {
                                                 return Container();

@@ -13,6 +13,9 @@ class ThemeColors {
   static const orange = const Color(0xFFF06A25);
   static const darkGrey = const Color(0xFF2E405F);
   static const mediumBlue = const Color(0xFF3A3654);
+  static const mediumGrey = const Color(0xFF48475A);
+  static const cream = const Color(0xFFE6D8B4);
+  static const altGreen = const Color(0xFF688C96);
 }
 
 

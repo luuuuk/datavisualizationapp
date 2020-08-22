@@ -175,7 +175,7 @@ class SortingDataService {
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .subtract(Duration(days: i)),
           runningTimePerDay[i],
-          ThemeColors.blueGreenis));
+          ThemeColors.darkBlue));
       cyclingActivitiesTime.insert(0, ActivitiesDataDateTime(
           DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -187,7 +187,7 @@ class SortingDataService {
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .subtract(Duration(days: i)),
           climbingTimePerDay[i],
-          ThemeColors.yellowGreenish));
+          ThemeColors.cream));
       hikingActivitiesTime.insert(0, ActivitiesDataDateTime(
           DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -206,7 +206,7 @@ class SortingDataService {
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .add(Duration(days: daysToAdd+1)),
           runningTimePerDay[DateTime.now().weekday + daysToAdd],
-          ThemeColors.blueGreenis));
+          ThemeColors.darkBlue));
       cyclingActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -218,7 +218,7 @@ class SortingDataService {
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .add(Duration(days: daysToAdd+1)),
           climbingTimePerDay[DateTime.now().weekday + daysToAdd],
-          ThemeColors.yellowGreenish));
+          ThemeColors.cream));
       hikingActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -232,7 +232,7 @@ class SortingDataService {
     if (runningActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
         id: 'Running',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
         domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
         data: runningActivitiesTime,
@@ -263,7 +263,7 @@ class SortingDataService {
     if (hikingActivitiesTime.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Climbing',
+          id: 'Hiking',
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -634,7 +634,7 @@ class SortingDataService {
     /// Hours, Minutes, Seconds, Distance
     List<int> cyclingTime = [0, 0, 0, 0];
     List<int> runningTime = [0, 0, 0, 0];
-    List<int> climbingTime = [0, 0, 0];
+    List<int> climbingTime = [0, 0, 0, 0];
     List<int> hikingTime = [0, 0, 0, 0];
     List<List<int>> returnList = new List();
     bool expressionToEvaluate;
@@ -702,7 +702,7 @@ class SortingDataService {
             {
               climbingTime[0] += durationInHours;
               climbingTime[1] += durationInMinutes;
-              climbingTime[2]++;
+              climbingTime[3]++;
             }
             break;
           case "Hiking":
