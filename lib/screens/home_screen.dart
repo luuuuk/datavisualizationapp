@@ -148,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             axis: Axis.horizontal,
                             decorator: DotsDecorator(
                               color: ThemeColors.blueGreenisShade1,
-                              activeColor: ThemeColors.cream,
+                              activeColor: Colors.white,
                             ),
                           ),
                         ),
@@ -447,7 +447,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Method to assemble the weekly overview
   Widget _weeklyOverviewWidget(List<RecordedActivity> activities) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Container(
             child: Column(
@@ -482,7 +482,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: _buildWeeklyActivityChart(activities),
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: 8),
                   child: OverviewWidget(activities, 0),
                 ),
               ],
@@ -587,7 +586,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, AsyncSnapshot<List<ActivityGoal>> snapshot) {
           if (snapshot.hasData) {
             return Container(
-              height: 140,
+              height: 100,
               child: Column(
                 children: [
                   Expanded(

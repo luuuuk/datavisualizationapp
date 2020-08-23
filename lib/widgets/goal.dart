@@ -131,8 +131,7 @@ class GoalWidget extends StatelessWidget {
           color: ThemeColors.mediumBlue,
           borderRadius: BorderRadius.circular(16),
         ),
-        padding: EdgeInsets.all(8),
-        margin: EdgeInsets.all(16),
+        margin: EdgeInsets.fromLTRB(16,0,16,16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -140,7 +139,7 @@ class GoalWidget extends StatelessWidget {
               padding: EdgeInsets.only(right: 16),
               child: CircularPercentIndicator(
                 lineWidth: 4,
-                radius: 82.0,
+                radius: 68.0,
                 percent: (currentNumber / goalNumber) > 1
                     ? 1.0
                     : (currentNumber / goalNumber),
