@@ -1,20 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:data_visualization_app/models/activity_goal.dart';
 import 'package:data_visualization_app/models/recorded_activity.dart';
-import 'package:data_visualization_app/screens/activity_list_screen.dart';
-import 'package:data_visualization_app/screens/add_data_screen.dart';
-import 'package:data_visualization_app/screens/goals_screen.dart';
 import 'package:data_visualization_app/screens/welcome_screen.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/services/sorting_data.dart';
 import 'package:data_visualization_app/theme.dart';
-import 'package:data_visualization_app/widgets/border_container.dart';
 import 'package:data_visualization_app/widgets/goal.dart';
 import 'package:data_visualization_app/widgets/overview.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -34,190 +29,139 @@ class _HomeScreenState extends State<HomeScreen> {
         color: ThemeColors.darkBlue,
         child: Center(
           child: FutureBuilder<List<RecordedActivity>>(
-              future: getActivityData(),
-              builder:
-                  (context, AsyncSnapshot<List<RecordedActivity>> snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.15,
-                        width: MediaQuery.of(context).size.width / 1.1,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, WelcomeScreen.routeName);
-                                },
-                                alignment: Alignment.topLeft,
-                                icon: Icon(
-                                  Icons.keyboard_arrow_left,
-                                  color: Colors.white,
-                                  size: 32,
+            future: getActivityData(),
+            builder: (context, AsyncSnapshot<List<RecordedActivity>> snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width / 1.1,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, WelcomeScreen.routeName);
+                              },
+                              alignment: Alignment.topLeft,
+                              icon: Icon(
+                                Icons.keyboard_arrow_left,
+                                color: Colors.white,
+                                size: 32,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Your',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: Colors.white,
+                                      fontSize: 25.0),
                                 ),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Your',
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: Colors.white,
-                                        fontSize: 25.0),
-                                  ),
-                                  SizedBox(width: 10.0),
-                                  Text(
-                                    'Statistics',
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25.0),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.8,
-                        width: MediaQuery.of(context).size.width,
-                        child: CarouselSlider(
-                          options: CarouselOptions(
-                              height: MediaQuery.of(context).size.height * 0.8,
-                              initialPage: 0,
-                              viewportFraction: 0.95,
-                              enableInfiniteScroll: true,
-                              autoPlay: false,
-                              autoPlayAnimationDuration:
-                                  Duration(milliseconds: 800),
-                              autoPlayCurve: Curves.fastOutSlowIn,
-                              enlargeCenterPage: true,
-                              scrollDirection: Axis.horizontal,
-                              onPageChanged: (page, reason) {
-                                setState(() {
-                                  _currentPosition = page.toDouble();
-                                });
-                              }),
-                          items: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                //boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(0, 5), blurRadius: 1.0, spreadRadius: 1.0)],
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(32)),
-                              ),
-                              child: _weeklyOverviewWidget(snapshot.data),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(32)),
-                              ),
-                              child: _monthlyOverviewWidget(snapshot.data),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(32)),
-                              ),
-                              child: _last12WeeksOverviewWidget(snapshot.data),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(32)),
-                              ),
-                              child: _annualOverviewWidget(snapshot.data),
+                                SizedBox(width: 10.0),
+                                Text(
+                                  'Statistics',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25.0),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        child: Center(
-                          child: DotsIndicator(
-                            dotsCount: 4,
-                            position: _currentPosition,
-                            axis: Axis.horizontal,
-                            decorator: DotsDecorator(
-                              color: ThemeColors.blueGreenisShade1,
-                              activeColor: Colors.white,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      width: MediaQuery.of(context).size.width,
+                      child: CarouselSlider(
+                        options: CarouselOptions(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            initialPage: 0,
+                            viewportFraction: 0.95,
+                            enableInfiniteScroll: true,
+                            autoPlay: false,
+                            autoPlayAnimationDuration:
+                                Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+                            scrollDirection: Axis.horizontal,
+                            onPageChanged: (page, reason) {
+                              setState(() {
+                                _currentPosition = page.toDouble();
+                              });
+                            }),
+                        items: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              //boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(0, 5), blurRadius: 1.0, spreadRadius: 1.0)],
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(32)),
                             ),
+                            child: _weeklyOverviewWidget(snapshot.data),
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(32)),
+                            ),
+                            child: _monthlyOverviewWidget(snapshot.data),
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(32)),
+                            ),
+                            child: _last12WeeksOverviewWidget(snapshot.data),
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(32)),
+                            ),
+                            child: _annualOverviewWidget(snapshot.data),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: Center(
+                        child: DotsIndicator(
+                          dotsCount: 4,
+                          position: _currentPosition,
+                          axis: Axis.horizontal,
+                          decorator: DotsDecorator(
+                            color: ThemeColors.blueGreenisShade1,
+                            activeColor: Colors.white,
                           ),
                         ),
                       ),
-                      /*
-                      BorderContainerWidget(
-                        _build12WeeksActivityTimeChart(snapshot.data),
-                        "Activity Time last 12 weeks",
-                        true,
-                      ),
-                      SizedBox(
-                        height: 32,
-                      ),
-                      BorderContainerWidget(
-                        _build12WeeksCyclingDistanceChart(snapshot.data),
-                        "Cycling Distance last 12 weeks",
-                        false,
-                      ),
-                      SizedBox(
-                        height: 32,
-                      ),
-                      BorderContainerWidget(
-                        _buildAverageSpeedProgression(snapshot.data, 1, false),
-                        "Average Speed Progression in Cycling",
-                        true,
-                      ),
-                      SizedBox(
-                        height: 32,
-                      ),
-                      BorderContainerWidget(
-                        _build12WeeksRunningDistanceChart(snapshot.data),
-                        "Running Distance last 12 weeks",
-                        false,
-                      ),
-                      SizedBox(
-                        height: 32,
-                      ),
-                      BorderContainerWidget(
-                        _buildAverageSpeedProgression(snapshot.data, 0, false),
-                        "Average Speed Progression in Running",
-                        true,
-                      ),
-                      SizedBox(
-                        height: 32,
-                      ),
-                      BorderContainerWidget(
-                        _annualOverviewWidget(snapshot.data),
-                        "Annual Activity Overview " +
-                            DateTime.now().year.toString(),
-                        false,
-                      ),
-                      SizedBox(
-                        height: 32,
-                      ),
-                      */
-                    ],
-                  );
-                } else {
-                  return ListView(children: [
+                    ),
+                  ],
+                );
+              } else {
+                return ListView(
+                  children: [
                     Container(
                       padding: EdgeInsets.all(32),
                       child: Center(
@@ -269,9 +213,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                  ]);
-                }
-              }),
+                  ],
+                );
+              }
+            },
+          ),
         ),
       ),
     );
@@ -288,25 +234,28 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Method to build the BarChart containing the data for the distance of the given [activities]
   Widget _buildYearlyDistanceChart(List<RecordedActivity> activities) {
     return SizedBox(
-      height: 100.0,
+      height: MediaQuery.of(context).size.height * 0.15,
       child: new charts.BarChart(
         SortingDataService().getYearlyActivitiesDistance(activities),
-        animate: false,
+        animate: true,
         vertical: false,
         domainAxis: charts.AxisSpec<String>(
+          tickFormatterSpec: charts.BasicOrdinalTickFormatterSpec(),
           renderSpec: charts.GridlineRendererSpec(
+            lineStyle: charts.LineStyleSpec(
+                thickness: 1, color: charts.Color.fromHex(code: "#2D274CFF")),
             labelStyle: new charts.TextStyleSpec(
               fontSize: 10,
-              color: charts.MaterialPalette.white,
+              color: charts.Color.fromHex(code: "#2D274CFF"),
             ),
           ),
         ),
         primaryMeasureAxis: charts.NumericAxisSpec(
           renderSpec: charts.GridlineRendererSpec(
             labelStyle: charts.TextStyleSpec(
-                fontSize: 10, color: charts.MaterialPalette.white),
+                fontSize: 10, color: charts.Color.fromHex(code: "#2D274CFF")),
             lineStyle: charts.LineStyleSpec(
-                thickness: 1, color: charts.MaterialPalette.white),
+                thickness: 1, color: charts.Color.fromHex(code: "#2D274CFF")),
           ),
         ),
       ),
@@ -315,257 +264,246 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Method to build the BarChart containing the data for the duration of the given [activities]
   Widget _buildYearlyDurationChart(List<RecordedActivity> activities) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 200.0,
-          child: new charts.PieChart(
-            SortingDataService().getYearlyActivitiesTime(activities),
-            animate: false,
+    List<charts.Series<ActivitiesData, String>> data =
+        SortingDataService().getYearlyActivitiesTime(activities);
+
+    int totalHours = 0;
+
+    for (int i = 0; i < 4; i++) {
+      totalHours += data[0].data[i].number ~/ 60;
+    }
+
+    return SizedBox(
+      height: 140.0,
+      child: Stack(
+        children: [
+          new charts.PieChart(
+            data,
+            animate: true,
             defaultRenderer: new charts.ArcRendererConfig(
-                arcWidth: 45,
-                arcRendererDecorators: [
-                  new charts.ArcLabelDecorator(
-                    labelPosition: charts.ArcLabelPosition.outside,
-                    outsideLabelStyleSpec: charts.TextStyleSpec(
-                        color: charts.Color.white, fontSize: 12),
-                  )
-                ]),
+              arcWidth: 24,
+              arcRendererDecorators: [
+                new charts.ArcLabelDecorator(
+                  labelPosition: charts.ArcLabelPosition.outside,
+                  outsideLabelStyleSpec: charts.TextStyleSpec(
+                      color: charts.Color.fromHex(code: "#2D274CFF"),
+                      fontSize: 12),
+                ),
+              ],
+            ),
           ),
-        ),
-        Container(
-          margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Icon(
-              Icons.directions_run,
-              color: ThemeColors.lightBlue,
+          Center(
+            child: Text(
+              totalHours.toString() + " h",
+              style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: ThemeColors.darkBlue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.0),
             ),
-            Icon(
-              Icons.directions_bike,
-              color: ThemeColors.orange,
-            ),
-            Icon(
-              Icons.filter_hdr,
-              color: ThemeColors.yellowGreenish,
-            ),
-            Icon(
-              Icons.directions_walk,
-              color: ThemeColors.blueGreenisShade1,
-            ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
   /// Method to assemble the weekly overview
   Widget _weeklyOverviewWidget(List<RecordedActivity> activities) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Container(
-            child: Column(
-              children: [
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Weekly",
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            color: ThemeColors.darkBlue,
-                            fontSize: 16.0),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        "Overview",
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            color: ThemeColors.darkBlue,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0),
-                      ),
-                    ],
-                  ),
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Container(
+          child: Column(
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Weekly",
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: ThemeColors.darkBlue,
+                          fontSize: 16.0),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Overview",
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: ThemeColors.darkBlue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0),
+                    ),
+                  ],
                 ),
-                Container(
-                  padding: EdgeInsets.only(top: 8),
-                  child: _buildWeeklyActivityChart(activities),
-                ),
-                Container(
-                  child: OverviewWidget(activities, 0),
-                ),
-              ],
-            ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: _buildWeeklyActivityChart(activities),
+              ),
+              Container(
+                child: OverviewWidget(activities, 0),
+              ),
+            ],
           ),
-          Container(
-            child: _buildGoalList(0),
-          ),
-        ]);
+        ),
+        Container(
+          child: _buildGoalList(0),
+        ),
+      ],
+    );
   }
 
   Widget _monthlyOverviewWidget(List<RecordedActivity> activities) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Container(
-            child: Column(
-              children: [
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Monthly Overview",
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            color: ThemeColors.darkBlue,
-                            fontSize: 16.0),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        _getCurrentMonthName(),
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            color: ThemeColors.darkBlue,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0),
-                      ),
-                    ],
-                  ),
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Container(
+          child: Column(
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Monthly Overview",
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: ThemeColors.darkBlue,
+                          fontSize: 16.0),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      _getCurrentMonthName(),
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: ThemeColors.darkBlue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0),
+                    ),
+                  ],
                 ),
-                Container(
-                  padding: EdgeInsets.only(top: 8),
-                  child: _buildMonthlyActivityChart(activities),
-                ),
-                Container(
-                  child: OverviewWidget(activities, 1),
-                ),
-              ],
-            ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: _buildMonthlyActivityChart(activities),
+              ),
+              Container(
+                child: OverviewWidget(activities, 1),
+              ),
+            ],
           ),
-          Container(
-            child: _buildGoalList(1),
-          ),
-        ]);
+        ),
+        Container(
+          child: _buildGoalList(1),
+        ),
+      ],
+    );
   }
 
   Widget _last12WeeksOverviewWidget(List<RecordedActivity> activities) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Overview",
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            color: ThemeColors.darkBlue,
-                            fontSize: 16.0),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        "Last 12 Weeks",
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            color: ThemeColors.darkBlue,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0),
-                      ),
-                    ],
-                  ),
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Overview",
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: ThemeColors.darkBlue,
+                          fontSize: 16.0),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Last 12 Weeks",
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: ThemeColors.darkBlue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0),
+                    ),
+                  ],
                 ),
-                Container(
-                  padding: EdgeInsets.only(top: 8),
-                  child: _build12WeeksActivityTimeChart(activities),
-                ),
-                Container(child: _build12WeeksCyclingDistanceChart(activities)),
-                Container(child: _build12WeeksRunningDistanceChart(activities)),
-              ],
-            ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: _build12WeeksActivityTimeChart(activities),
+              ),
+              Container(child: _build12WeeksCyclingDistanceChart(activities)),
+              Container(child: _build12WeeksRunningDistanceChart(activities)),
+            ],
           ),
-        ]);
+        ),
+      ],
+    );
   }
 
   /// Method to assemble the yearly overview
   Widget _annualOverviewWidget(List<RecordedActivity> activities) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        OverviewWidget(activities, 2),
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
         Container(
-          margin: EdgeInsets.fromLTRB(8, 16, 8, 8),
-          padding: EdgeInsets.only(bottom: 16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(32),
-            ),
-          ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                child: Text(
-                  "Total Activity Time " + DateTime.now().year.toString(),
-                  style: GoogleFonts.montserrat(color: Colors.white),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Annual Overview",
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: ThemeColors.darkBlue,
+                          fontSize: 16.0),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      DateTime.now().year.toString(),
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          color: ThemeColors.darkBlue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0),
+                    ),
+                  ],
                 ),
               ),
-              _buildYearlyDurationChart(activities),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: OverviewWidget(activities, 2),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: _buildYearlyDurationChart(activities),
+              ),
+              Container(
+                child: _buildYearlyDistanceChart(activities),
+              ),
             ],
           ),
         ),
-        /*
         Container(
-          margin: EdgeInsets.fromLTRB(8, 16, 8, 8),
-          padding: EdgeInsets.fromLTRB(8, 0, 0, 16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(32),
-            ),
-          ),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                child: Text(
-                  "Total Activity Distance " + DateTime.now().year.toString(),
-                  style: GoogleFonts.montserrat(color: Colors.white),
-                ),
-              ),
-              _buildYearlyDistanceChart(activities),
-            ],
-          ),
-        ),
-         */
-        /*
-        Container(
-          margin: EdgeInsets.fromLTRB(8, 16, 8, 32),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(32),
-            ),
-          ),
-          padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
           child: _buildGoalList(2),
         ),
-         */
       ],
     );
   }
@@ -726,20 +664,22 @@ class _HomeScreenState extends State<HomeScreen> {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
         SortingDataService().getWeeklyActivity(activities);
 
-    return _buildActivityBarChart(data, 160, true);
+    return _buildActivityBarChart(data, 160, true, true);
   }
 
   _buildMonthlyActivityChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
         SortingDataService().getMonthlyActivity(activities);
 
-    return _buildActivityBarChart(data, 160, true);
+    return _buildActivityBarChart(data, 160, true, false);
   }
 
   _buildActivityBarChart(
-      List<charts.Series<ActivitiesDataDateTime, DateTime>> data,
-      double height,
-      bool inverseColors) {
+    List<charts.Series<ActivitiesDataDateTime, DateTime>> data,
+    double height,
+    bool inverseColors,
+    bool week,
+  ) {
     if (data.isNotEmpty) {
       return Container(
         padding: EdgeInsets.all(4.0),
@@ -755,6 +695,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             defaultInteractions: false,
             domainAxis: new charts.DateTimeAxisSpec(
+              tickProviderSpec:
+                  charts.DayTickProviderSpec(increments: [week ? 1 : 7]),
               renderSpec: charts.GridlineRendererSpec(
                 axisLineStyle: charts.LineStyleSpec(
                   color: inverseColors
@@ -860,12 +802,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             primaryMeasureAxis: charts.NumericAxisSpec(
-              tickFormatterSpec: charts.BasicNumericTickFormatterSpec(
-                  (num value) {
-                    String valueTronc = value.toStringAsFixed(0);
+              tickFormatterSpec:
+                  charts.BasicNumericTickFormatterSpec((num value) {
+                String valueTronc = value.toStringAsFixed(0);
 
-                    return distance ? valueTronc + " km" : valueTronc + " h";
-                  }),
+                return distance ? valueTronc + " km" : valueTronc + " h";
+              }),
               tickProviderSpec:
                   new charts.BasicNumericTickProviderSpec(desiredTickCount: 3),
               renderSpec: charts.GridlineRendererSpec(
