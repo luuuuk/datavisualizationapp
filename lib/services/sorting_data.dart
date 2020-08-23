@@ -275,7 +275,7 @@ class SortingDataService {
     return series;
   }
 
-  /// Method to get series containing only activities from the past week
+  /// Method to get series containing only activities from the current month
   List<charts.Series<ActivitiesDataDateTime, DateTime>> getMonthlyActivity(
       List<RecordedActivity> recAct) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> series =
@@ -358,7 +358,7 @@ class SortingDataService {
           ThemeColors.blueGreenisShade1));
     }
 
-    /// Fill in the rest of the week until day 7 (sunday)
+    /// Fill in the rest of the week until day 31
     int daysToAdd = 0;
 
     while(runningActivitiesTime.length != 31 && cyclingActivitiesTime.length != 31 && climbingActivitiesTime.length != 31 && hikingActivitiesTime.length != 31){
@@ -367,25 +367,25 @@ class SortingDataService {
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .add(Duration(days: daysToAdd+1)),
-          runningTimePerDay[DateTime.now().weekday + daysToAdd],
+          runningTimePerDay[DateTime.now().day + daysToAdd],
           ThemeColors.darkBlue));
       cyclingActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .add(Duration(days: daysToAdd+1)),
-          cyclingTimePerDay[DateTime.now().weekday + daysToAdd],
+          cyclingTimePerDay[DateTime.now().day + daysToAdd],
           ThemeColors.orange));
       climbingActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .add(Duration(days: daysToAdd+1)),
-          climbingTimePerDay[DateTime.now().weekday + daysToAdd],
+          climbingTimePerDay[DateTime.now().day + daysToAdd],
           ThemeColors.cream));
       hikingActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .add(Duration(days: daysToAdd+1)),
-          hikingTimePerDay[DateTime.now().weekday + daysToAdd],
+          hikingTimePerDay[DateTime.now().day + daysToAdd],
           ThemeColors.blueGreenisShade1));
 
       daysToAdd++;
@@ -784,7 +784,7 @@ class SortingDataService {
       series.add(charts.Series<ActivitiesPrecisionNumData, int>(
         id: type == 0 ? 'Running' : 'Cycling',
         colorFn: (ActivitiesPrecisionNumData sales, __) => sales.color,
-        domainFn: (ActivitiesPrecisionNumData sales, _) => sales.id,
+        domainFn: (ActivitiesPrecisionNumData sales, _) => averageSpeeds.length - sales.id,
         measureFn: (ActivitiesPrecisionNumData sales, _) => sales.number,
         data: averageSpeeds,
       ),);
