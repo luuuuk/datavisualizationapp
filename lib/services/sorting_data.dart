@@ -778,6 +778,7 @@ class SortingDataService {
         measureFn: (ActivitiesPrecisionData sales, _) => sales.number,
         data: averageSpeeds,
       ));
+      /*
       series.add(charts.Series<ActivitiesPrecisionData, String>(
         id: type == 0 ? 'Running' : 'Cycling',
         colorFn: (ActivitiesPrecisionData sales, __) => sales.color,
@@ -785,6 +786,7 @@ class SortingDataService {
         measureFn: (ActivitiesPrecisionData sales, _) => sales.number,
         data: targetSpeeds,
       )..setAttribute(charts.rendererIdKey, 'customTargetLine'),);
+       */
     }
 
     return series;

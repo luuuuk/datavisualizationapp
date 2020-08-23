@@ -140,6 +140,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             child: _annualOverviewWidget(snapshot.data),
                           ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(32)),
+                            ),
+                            child: _progressionWidget(snapshot.data),
+                          ),
                         ],
                       ),
                     ),
@@ -147,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: MediaQuery.of(context).size.height * 0.05,
                       child: Center(
                         child: DotsIndicator(
-                          dotsCount: 4,
+                          dotsCount: 5,
                           position: _currentPosition,
                           axis: Axis.horizontal,
                           decorator: DotsDecorator(
@@ -508,6 +518,52 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _progressionWidget(List<RecordedActivity> activities) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Overview",
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: ThemeColors.darkBlue,
+                        fontSize: 16.0),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Progression",
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: ThemeColors.darkBlue,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0),
+                  ),
+                ],
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: _buildAverageSpeedProgression(activities, 0, true),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: _buildAverageSpeedProgression(activities, 1, true),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   /// Method to return a list view containing the goals for the specified time span
   /// where 0: week, 1: month, 2: year
   Widget _buildGoalList(int timeSpan) {
@@ -762,8 +818,6 @@ class _HomeScreenState extends State<HomeScreen> {
       bool distance) {
     if (data.isNotEmpty) {
       return Container(
-        //padding: EdgeInsets.all(4.0),
-        //margin: EdgeInsets.only(bottom: 32),
         child: SizedBox(
           height: height,
           child: new charts.TimeSeriesChart(
@@ -838,55 +892,92 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _buildAverageSpeedProgression(
       List<RecordedActivity> activities, int type, bool inverseColors) {
-    var data =
-        SortingDataService().getAverageSpeedData(activities, 9, type, false);
+    List<charts.Series<ActivitiesPrecisionData, String>> data =
+        SortingDataService().getAverageSpeedData(activities, 20, type, false);
+
+    double totalAverage = 0;
+    for(int i = 0; i < data[0].data.length; i++){
+      totalAverage +=  data[0].data[i].number;
+    }
+    totalAverage /= data[0].data.length;
 
     if (data.isNotEmpty) {
-      return Container(
-        margin: EdgeInsets.only(bottom: 32),
-        child: SizedBox(
-          height: 200.0,
-          child: charts.BarChart(
-            data,
-            animate: false,
-            domainAxis: charts.AxisSpec<String>(
-              renderSpec: charts.GridlineRendererSpec(
-                lineStyle: charts.LineStyleSpec(
-                  thickness: 2,
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette.white,
-                ),
-                labelStyle: new charts.TextStyleSpec(
-                  fontSize: 10,
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette.white,
-                ),
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          RotatedBox(
+            quarterTurns: 3,
+            child: Text(
+              type == 0 ? "Running" : "Cycling",
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                color: ThemeColors.darkBlue,
+                fontWeight: FontWeight.bold,
+                fontSize: 14.0,
               ),
+              textAlign: TextAlign.justify,
+              overflow: TextOverflow.fade,
             ),
-            primaryMeasureAxis: charts.NumericAxisSpec(
-              renderSpec: charts.GridlineRendererSpec(
-                labelStyle: charts.TextStyleSpec(
-                    fontSize: 10,
-                    color: inverseColors
-                        ? charts.Color.fromHex(code: "#2D274CFF")
-                        : charts.MaterialPalette.white),
-                lineStyle: charts.LineStyleSpec(
-                    thickness: 2,
-                    color: inverseColors
-                        ? charts.Color.fromHex(code: "#2D274CFF")
-                        : charts.MaterialPalette.white),
-              ),
-            ),
-            customSeriesRenderers: [
-              new charts.BarTargetLineRendererConfig<String>(
-                  // ID used to link series to this renderer.
-                  customRendererId: 'customTargetLine',
-                  groupingType: charts.BarGroupingType.stacked)
-            ],
           ),
-        ),
+          SizedBox(
+            width: 8,
+          ),
+          Expanded(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: charts.BarChart(
+                data,
+                animate: true,
+                domainAxis: charts.AxisSpec<String>(
+                  renderSpec: charts.GridlineRendererSpec(
+                    lineStyle: charts.LineStyleSpec(
+                      thickness: 2,
+                      color: inverseColors
+                          ? charts.Color.fromHex(code: "#2D274CFF")
+                          : charts.MaterialPalette.white,
+                    ),
+                    labelStyle: new charts.TextStyleSpec(
+                      fontSize: 10,
+                      color: inverseColors
+                          ? charts.Color.fromHex(code: "#2D274CFF")
+                          : charts.MaterialPalette.white,
+                    ),
+                  ),
+                ),
+                primaryMeasureAxis: charts.NumericAxisSpec(
+                  tickProviderSpec: charts.BasicNumericTickProviderSpec(
+                    desiredTickCount: 4,
+                  ),
+                  renderSpec: charts.GridlineRendererSpec(
+                    labelStyle: charts.TextStyleSpec(
+                        fontSize: 10,
+                        color: inverseColors
+                            ? charts.Color.fromHex(code: "#2D274CFF")
+                            : charts.MaterialPalette.white),
+                    lineStyle: charts.LineStyleSpec(
+                        thickness: 2,
+                        color: inverseColors
+                            ? charts.Color.fromHex(code: "#2D274CFF")
+                            : charts.MaterialPalette.white),
+                  ),
+                ),
+                behaviors: [
+                  new charts.RangeAnnotation(
+                    [
+                      new charts.LineAnnotationSegment(
+                        totalAverage,
+                        charts.RangeAnnotationAxisType.measure,
+                        color: charts.Color.fromHex(code: "#2D274CFF"),
+                        dashPattern: [2, 2],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       );
     } else {
       return Container(
