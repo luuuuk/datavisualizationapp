@@ -720,14 +720,15 @@ class SortingDataService {
 
   /// Method to get series only containing the total activity distance
   /// type 0: Running, type 1: Cycling
-  List<charts.Series<ActivitiesPrecisionData, String>> getAverageSpeedData(
+  List<charts.Series<ActivitiesPrecisionNumData, int>> getAverageSpeedData(
       List<RecordedActivity> recAct, int noOfActivities, int type, bool inverseColors) {
 
-    List<charts.Series<ActivitiesPrecisionData, String>> series =
-    new List<charts.Series<ActivitiesPrecisionData, String>>();
-    List<ActivitiesPrecisionData> averageSpeeds =
-    new List<ActivitiesPrecisionData>();
-    List<ActivitiesPrecisionData> targetSpeeds =new List<ActivitiesPrecisionData>();
+    List<charts.Series<ActivitiesPrecisionNumData, int>> series =
+    new List<charts.Series<ActivitiesPrecisionNumData, int>>();
+    List<ActivitiesPrecisionNumData> averageSpeeds =
+    new List<ActivitiesPrecisionNumData>();
+    List<ActivitiesPrecisionNumData> lineData =new List<ActivitiesPrecisionNumData>();
+    double totalAverage = 0;
 
     /// Sort activities
     recAct.sort((a,b) {
@@ -752,18 +753,10 @@ class SortingDataService {
 
         double averageSpeed = activity.distance.toDouble() / (double.parse(splittedDuration[0]) + double.parse(splittedDuration[1]) / 60);
 
-        averageSpeeds.insert(0, ActivitiesPrecisionData(
-            splittedDate[0] + "." + splittedDate[1],
+        averageSpeeds.insert(0, ActivitiesPrecisionNumData(
+            noOfIncludedActivities,
             averageSpeed,
             type == 0 ? ThemeColors.lightBlue : ThemeColors.orange));
-
-        /// Add data for target lines
-        targetSpeeds.add(ActivitiesPrecisionData(
-          splittedDate[0] + "." + splittedDate[1],
-          type == 0 ? 10 : 30,
-            inverseColors
-                ? ThemeColors.darkBlue
-                : Colors.white));
 
         noOfIncludedActivities++;
 
@@ -771,22 +764,36 @@ class SortingDataService {
     }
 
     if (averageSpeeds.isNotEmpty) {
-      series.add(charts.Series<ActivitiesPrecisionData, String>(
+
+      for(ActivitiesPrecisionNumData data in averageSpeeds){
+        totalAverage += data.number;
+      }
+      totalAverage /= averageSpeeds.length;
+
+      /// Add data for trend line
+      lineData.add(ActivitiesPrecisionNumData(
+          0,
+          totalAverage,
+          ThemeColors.blueGreenisShade1));
+
+      lineData.add(ActivitiesPrecisionNumData(
+          recAct.last.id,
+          totalAverage,
+          ThemeColors.blueGreenisShade1));
+
+      series.add(charts.Series<ActivitiesPrecisionNumData, int>(
         id: type == 0 ? 'Running' : 'Cycling',
-        colorFn: (ActivitiesPrecisionData sales, __) => sales.color,
-        domainFn: (ActivitiesPrecisionData sales, _) => sales.title,
-        measureFn: (ActivitiesPrecisionData sales, _) => sales.number,
+        colorFn: (ActivitiesPrecisionNumData sales, __) => sales.color,
+        domainFn: (ActivitiesPrecisionNumData sales, _) => sales.id,
+        measureFn: (ActivitiesPrecisionNumData sales, _) => sales.number,
         data: averageSpeeds,
       ));
-      /*
-      series.add(charts.Series<ActivitiesPrecisionData, String>(
-        id: type == 0 ? 'Running' : 'Cycling',
-        colorFn: (ActivitiesPrecisionData sales, __) => sales.color,
-        domainFn: (ActivitiesPrecisionData sales, _) => sales.title,
-        measureFn: (ActivitiesPrecisionData sales, _) => sales.number,
-        data: targetSpeeds,
-      )..setAttribute(charts.rendererIdKey, 'customTargetLine'),);
-       */
+      new charts.Series<ActivitiesPrecisionNumData, int>(
+          id: 'Mobile',
+          colorFn: (ActivitiesPrecisionNumData sales, __) => sales.color,
+          domainFn: (ActivitiesPrecisionNumData sales, _) => sales.id,
+          measureFn: (ActivitiesPrecisionNumData sales, _) => sales.number,
+          data: lineData)..setAttribute(charts.rendererIdKey, 'progressionLine');
     }
 
     return series;
@@ -969,6 +976,16 @@ class ActivitiesPrecisionData {
   final charts.Color color;
 
   ActivitiesPrecisionData(this.title, this.number, Color color)
+      : this.color = new charts.Color(
+      r: color.red, g: color.green, b: color.blue, a: color.alpha);
+}
+
+class ActivitiesPrecisionNumData {
+  final int id;
+  final double number;
+  final charts.Color color;
+
+  ActivitiesPrecisionNumData(this.id, this.number, Color color)
       : this.color = new charts.Color(
       r: color.red, g: color.green, b: color.blue, a: color.alpha);
 }

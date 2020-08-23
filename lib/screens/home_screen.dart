@@ -244,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Method to build the BarChart containing the data for the distance of the given [activities]
   Widget _buildYearlyDistanceChart(List<RecordedActivity> activities) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.15,
+      height: MediaQuery.of(context).size.height * 0.14,
       child: new charts.BarChart(
         SortingDataService().getYearlyActivitiesDistance(activities),
         animate: true,
@@ -291,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
             data,
             animate: true,
             defaultRenderer: new charts.ArcRendererConfig(
-              arcWidth: 24,
+              arcWidth: 18,
               arcRendererDecorators: [
                 new charts.ArcLabelDecorator(
                   labelPosition: charts.ArcLabelPosition.outside,
@@ -351,7 +351,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 8),
                 child: _buildWeeklyActivityChart(activities),
               ),
               Container(
@@ -451,7 +450,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 8),
+                padding: EdgeInsets.only(top: 4),
                 child: _build12WeeksActivityTimeChart(activities),
               ),
               Container(child: _build12WeeksCyclingDistanceChart(activities)),
@@ -498,11 +497,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 8),
+                padding: EdgeInsets.only(top: 4),
                 child: OverviewWidget(activities, 2),
               ),
               Container(
-                padding: EdgeInsets.only(top: 8),
+                padding: EdgeInsets.only(top: 16),
                 child: _buildYearlyDurationChart(activities),
               ),
               Container(
@@ -550,11 +549,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               Container(
-                padding: EdgeInsets.only(top: 8),
                 child: _buildAverageSpeedProgression(activities, 0, true),
               ),
               Container(
-                padding: EdgeInsets.only(top: 8),
                 child: _buildAverageSpeedProgression(activities, 1, true),
               ),
             ],
@@ -892,14 +889,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _buildAverageSpeedProgression(
       List<RecordedActivity> activities, int type, bool inverseColors) {
-    List<charts.Series<ActivitiesPrecisionData, String>> data =
+    List<charts.Series<ActivitiesPrecisionNumData, int>> data =
         SortingDataService().getAverageSpeedData(activities, 20, type, false);
-
-    double totalAverage = 0;
-    for(int i = 0; i < data[0].data.length; i++){
-      totalAverage +=  data[0].data[i].number;
-    }
-    totalAverage /= data[0].data.length;
 
     if (data.isNotEmpty) {
       return Row(
@@ -926,54 +917,38 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
-              child: charts.BarChart(
+              child: charts.ScatterPlotChart(
                 data,
                 animate: true,
-                domainAxis: charts.AxisSpec<String>(
+                customSeriesRenderers: [
+                  new charts.LineRendererConfig(
+                      customRendererId: 'progressionLine',
+                      layoutPaintOrder: charts.LayoutViewPaintOrder.point + 1),
+                ],
+                domainAxis: charts.NumericAxisSpec(
                   renderSpec: charts.GridlineRendererSpec(
+                    labelStyle: charts.TextStyleSpec(
+                      fontSize: 10,
+                      color: charts.Color.fromHex(code: "#2D274CFF"),
+                    ),
                     lineStyle: charts.LineStyleSpec(
                       thickness: 2,
-                      color: inverseColors
-                          ? charts.Color.fromHex(code: "#2D274CFF")
-                          : charts.MaterialPalette.white,
-                    ),
-                    labelStyle: new charts.TextStyleSpec(
-                      fontSize: 10,
-                      color: inverseColors
-                          ? charts.Color.fromHex(code: "#2D274CFF")
-                          : charts.MaterialPalette.white,
+                      color: charts.Color.fromHex(code: "#2D274CFF"),
                     ),
                   ),
                 ),
                 primaryMeasureAxis: charts.NumericAxisSpec(
-                  tickProviderSpec: charts.BasicNumericTickProviderSpec(
-                    desiredTickCount: 4,
-                  ),
                   renderSpec: charts.GridlineRendererSpec(
                     labelStyle: charts.TextStyleSpec(
-                        fontSize: 10,
-                        color: inverseColors
-                            ? charts.Color.fromHex(code: "#2D274CFF")
-                            : charts.MaterialPalette.white),
+                      fontSize: 10,
+                      color: charts.Color.fromHex(code: "#2D274CFF"),
+                    ),
                     lineStyle: charts.LineStyleSpec(
-                        thickness: 2,
-                        color: inverseColors
-                            ? charts.Color.fromHex(code: "#2D274CFF")
-                            : charts.MaterialPalette.white),
+                      thickness: 2,
+                      color: charts.Color.fromHex(code: "#2D274CFF"),
+                    ),
                   ),
                 ),
-                behaviors: [
-                  new charts.RangeAnnotation(
-                    [
-                      new charts.LineAnnotationSegment(
-                        totalAverage,
-                        charts.RangeAnnotationAxisType.measure,
-                        color: charts.Color.fromHex(code: "#2D274CFF"),
-                        dashPattern: [2, 2],
-                      ),
-                    ],
-                  ),
-                ],
               ),
             ),
           ),
