@@ -606,7 +606,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           } else {
-            return Container();
+            return Container(child: Text("You have not yet defined a personal goal."),);
           }
         });
   }
