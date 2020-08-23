@@ -774,12 +774,12 @@ class SortingDataService {
       lineData.add(ActivitiesPrecisionNumData(
           0,
           totalAverage,
-          ThemeColors.blueGreenisShade1));
+          type == 0 ? ThemeColors.lightBlue : ThemeColors.orange));
 
       lineData.add(ActivitiesPrecisionNumData(
-          recAct.last.id,
+          averageSpeeds.length,
           totalAverage,
-          ThemeColors.blueGreenisShade1));
+          type == 0 ? ThemeColors.lightBlue : ThemeColors.orange));
 
       series.add(charts.Series<ActivitiesPrecisionNumData, int>(
         id: type == 0 ? 'Running' : 'Cycling',
@@ -787,13 +787,13 @@ class SortingDataService {
         domainFn: (ActivitiesPrecisionNumData sales, _) => sales.id,
         measureFn: (ActivitiesPrecisionNumData sales, _) => sales.number,
         data: averageSpeeds,
-      ));
-      new charts.Series<ActivitiesPrecisionNumData, int>(
+      ),);
+      series.add(charts.Series<ActivitiesPrecisionNumData, int>(
           id: 'Mobile',
           colorFn: (ActivitiesPrecisionNumData sales, __) => sales.color,
           domainFn: (ActivitiesPrecisionNumData sales, _) => sales.id,
           measureFn: (ActivitiesPrecisionNumData sales, _) => sales.number,
-          data: lineData)..setAttribute(charts.rendererIdKey, 'progressionLine');
+          data: lineData)..setAttribute(charts.rendererIdKey, 'progressionLine'),);
     }
 
     return series;
