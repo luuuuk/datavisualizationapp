@@ -15,6 +15,7 @@ class SortingDataService {
       List<RecordedActivity> recAct) {
     int runningDistance = 0;
     int cyclingDistance = 0;
+    int hikingDistance = 0;
 
     for (RecordedActivity activity in recAct) {
 
@@ -28,6 +29,9 @@ class SortingDataService {
           case "Cycling":
             cyclingDistance += activity.distance;
             break;
+          case "Hiking":
+            hikingDistance += activity.distance;
+            break;
           case "Climbing":
             break;
         }
@@ -37,6 +41,7 @@ class SortingDataService {
     var data = [
       new ActivitiesData('Running', runningDistance, ThemeColors.lightBlue),
       new ActivitiesData('Cycling', cyclingDistance, ThemeColors.orange),
+      new ActivitiesData('Hiking', hikingDistance, ThemeColors.blueGreenisShade1),
     ];
 
     var series = [
@@ -59,6 +64,7 @@ class SortingDataService {
     int runningTime = 0;
     int cyclingTime = 0;
     int climbingTime = 0;
+    int hikingTime = 0;
 
     for (RecordedActivity activity in recAct) {
 
@@ -78,6 +84,9 @@ class SortingDataService {
           case "Climbing":
             climbingTime += durationInMin;
             break;
+          case "Hiking":
+            hikingTime += durationInMin;
+            break;
         }
       }
     }
@@ -86,6 +95,7 @@ class SortingDataService {
       new ActivitiesData('Running', runningTime, ThemeColors.lightBlue),
       new ActivitiesData('Cycling', cyclingTime, ThemeColors.orange),
       new ActivitiesData('Climbing', climbingTime, ThemeColors.yellowGreenish),
+      new ActivitiesData('Hiking', hikingTime, ThemeColors.blueGreenisShade1),
     ];
 
 
@@ -114,10 +124,13 @@ class SortingDataService {
         new List<ActivitiesDataDateTime>();
     List<ActivitiesDataDateTime> climbingActivitiesTime =
         new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> hikingActivitiesTime =
+        new List<ActivitiesDataDateTime>();
 
     List<double> runningTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0];
     List<double> cyclingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0];
     List<double> climbingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> hikingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0];
 
     /// Go through all activties from today-weekday-1 to today
     /// (weekday starts at 1)
@@ -147,43 +160,53 @@ class SortingDataService {
               break;
             case "Climbing":
               climbingTimePerDay[i] += durationInMin;
+              break;
+            case "Hiking":
+              hikingTimePerDay[i] += durationInMin;
+              break;
           }
         }
       }
     }
 
     for (int i = 0; i < (DateTime.now().weekday); i++) {
-      runningActivitiesTime.add(ActivitiesDataDateTime(
+      runningActivitiesTime.insert(0, ActivitiesDataDateTime(
           DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .subtract(Duration(days: i)),
           runningTimePerDay[i],
-          ThemeColors.blueGreenis));
-      cyclingActivitiesTime.add(ActivitiesDataDateTime(
+          ThemeColors.darkBlue));
+      cyclingActivitiesTime.insert(0, ActivitiesDataDateTime(
           DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .subtract(Duration(days: i)),
           cyclingTimePerDay[i],
           ThemeColors.orange));
-      climbingActivitiesTime.add(ActivitiesDataDateTime(
+      climbingActivitiesTime.insert(0, ActivitiesDataDateTime(
           DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .subtract(Duration(days: i)),
           climbingTimePerDay[i],
-          ThemeColors.yellowGreenish));
+          ThemeColors.cream));
+      hikingActivitiesTime.insert(0, ActivitiesDataDateTime(
+          DateTime(
+                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          hikingTimePerDay[i],
+          ThemeColors.blueGreenisShade1));
     }
 
     /// Fill in the rest of the week until day 7 (sunday)
     int daysToAdd = 0;
 
-    while(runningActivitiesTime.length != 7 && cyclingActivitiesTime.length != 7 && climbingActivitiesTime.length != 7){
+    while(runningActivitiesTime.length != 7 && cyclingActivitiesTime.length != 7 && climbingActivitiesTime.length != 7 && hikingActivitiesTime.length != 7){
 
       runningActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .add(Duration(days: daysToAdd+1)),
           runningTimePerDay[DateTime.now().weekday + daysToAdd],
-          ThemeColors.blueGreenis));
+          ThemeColors.darkBlue));
       cyclingActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -195,7 +218,13 @@ class SortingDataService {
               DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .add(Duration(days: daysToAdd+1)),
           climbingTimePerDay[DateTime.now().weekday + daysToAdd],
-          ThemeColors.yellowGreenish));
+          ThemeColors.cream));
+      hikingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          hikingTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.blueGreenisShade1));
 
       daysToAdd++;
     }
@@ -203,7 +232,7 @@ class SortingDataService {
     if (runningActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
         id: 'Running',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
         domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
         data: runningActivitiesTime,
@@ -231,6 +260,179 @@ class SortingDataService {
         ),
       );
     }
+    if (hikingActivitiesTime.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Hiking',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: hikingActivitiesTime,
+        ),
+      );
+    }
+
+    return series;
+  }
+
+  /// Method to get series containing only activities from the past week
+  List<charts.Series<ActivitiesDataDateTime, DateTime>> getMonthlyActivity(
+      List<RecordedActivity> recAct) {
+    List<charts.Series<ActivitiesDataDateTime, DateTime>> series =
+    new List<charts.Series<ActivitiesDataDateTime, DateTime>>();
+    List<ActivitiesDataDateTime> runningActivitiesTime =
+    new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> cyclingActivitiesTime =
+    new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> climbingActivitiesTime =
+    new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> hikingActivitiesTime =
+    new List<ActivitiesDataDateTime>();
+
+    List<double> runningTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> cyclingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> climbingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> hikingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    /// Go through all activties from today-day-1 to today
+    /// (weekday starts at 1)
+    for (int i = 0; i < (DateTime.now().day); i++) {
+      /// Check if activities match the date
+      for (RecordedActivity activity in recAct) {
+        List stringDateSplitted = activity.date.split(".");
+        DateTime dateTime = DateTime(int.parse(stringDateSplitted[2]),
+            int.parse(stringDateSplitted[1]), int.parse(stringDateSplitted[0]));
+
+        /// Check if the activity happened on the given date
+        if (dateTime.compareTo(DateTime(DateTime.now().year,
+            DateTime.now().month, DateTime.now().day)
+            .subtract(Duration(days: i))) ==
+            0) {
+          List stringDurationSplitted = activity.duration.split(":");
+          double durationInMin =
+              int.parse(stringDurationSplitted[0]).toDouble() +
+                  int.parse(stringDurationSplitted[1]) / 60;
+
+          switch (activity.activityType) {
+            case "Running":
+              runningTimePerDay[i] += durationInMin;
+              break;
+            case "Cycling":
+              cyclingTimePerDay[i] += durationInMin;
+              break;
+            case "Climbing":
+              climbingTimePerDay[i] += durationInMin;
+              break;
+            case "Hiking":
+              hikingTimePerDay[i] += durationInMin;
+              break;
+          }
+        }
+      }
+    }
+
+    for (int i = 0; i < (DateTime.now().day); i++) {
+      runningActivitiesTime.insert(0, ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          runningTimePerDay[i],
+          ThemeColors.darkBlue));
+      cyclingActivitiesTime.insert(0, ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          cyclingTimePerDay[i],
+          ThemeColors.orange));
+      climbingActivitiesTime.insert(0, ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          climbingTimePerDay[i],
+          ThemeColors.cream));
+      hikingActivitiesTime.insert(0, ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          hikingTimePerDay[i],
+          ThemeColors.blueGreenisShade1));
+    }
+
+    /// Fill in the rest of the week until day 7 (sunday)
+    int daysToAdd = 0;
+
+    while(runningActivitiesTime.length != 31 && cyclingActivitiesTime.length != 31 && climbingActivitiesTime.length != 31 && hikingActivitiesTime.length != 31){
+
+      runningActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          runningTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.darkBlue));
+      cyclingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          cyclingTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.orange));
+      climbingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          climbingTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.cream));
+      hikingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          hikingTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.blueGreenisShade1));
+
+      daysToAdd++;
+    }
+
+    if (runningActivitiesTime.isNotEmpty) {
+      series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
+        id: 'Running',
+        colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+        domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+        measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+        data: runningActivitiesTime,
+      ));
+    }
+    if (cyclingActivitiesTime.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Cycling',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: cyclingActivitiesTime,
+        ),
+      );
+    }
+    if (climbingActivitiesTime.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Climbing',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: climbingActivitiesTime,
+        ),
+      );
+    }
+    if (hikingActivitiesTime.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Hiking',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: hikingActivitiesTime,
+        ),
+      );
+    }
 
     return series;
   }
@@ -246,10 +448,13 @@ class SortingDataService {
     new List<ActivitiesDataDateTime>();
     List<ActivitiesDataDateTime> climbingActivitiesTime =
     new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> hikingActivitiesTime =
+    new List<ActivitiesDataDateTime>();
 
     List<double> runningTimePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     List<double> cyclingTimePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     List<double> climbingTimePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> hikingTimePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     /// Go through all activties from weeks T-11 to now()
     for (int i = 0; i < 11; i++) {
@@ -278,6 +483,9 @@ class SortingDataService {
               break;
             case "Climbing":
               climbingTimePerWeek[0] += durationInMin;
+              break;
+            case "Hiking":
+              hikingTimePerWeek[0] += durationInMin;
           }
         }
 
@@ -303,6 +511,9 @@ class SortingDataService {
               break;
             case "Climbing":
               climbingTimePerWeek[i+1] += durationInMin;
+              break;
+            case "Hiking":
+              hikingTimePerWeek[i+1] += durationInMin;
           }
         }
       }
@@ -327,6 +538,12 @@ class SortingDataService {
               .subtract(Duration(days: 7*i + DateTime.now().weekday)),
           climbingTimePerWeek[i],
           ThemeColors.yellowGreenish));
+      hikingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: 7*i + DateTime.now().weekday)),
+          hikingTimePerWeek[i],
+          ThemeColors.blueGreenisShade1));
     }
 
     if (runningActivitiesTime.isNotEmpty) {
@@ -360,6 +577,17 @@ class SortingDataService {
         ),
       );
     }
+    if (hikingActivitiesTime.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Hiking',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: hikingActivitiesTime,
+        )
+      );
+    }
 
     return series;
   }
@@ -373,9 +601,12 @@ class SortingDataService {
     new List<ActivitiesDataDateTime>();
     List<ActivitiesDataDateTime> cyclingActivitiesDistance =
     new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> hikingActivitiesDistance =
+    new List<ActivitiesDataDateTime>();
 
     List<double> runningDistancePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     List<double> cyclingDistancePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> hikingDistancePerWeek = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     /// Go through all activties from weeks T-11 to now()
     for (int i = 0; i < 11; i++) {
@@ -399,6 +630,9 @@ class SortingDataService {
             case "Cycling":
               cyclingDistancePerWeek[0] += distanceKm;
               break;
+            case "Hiking":
+              hikingDistancePerWeek[0] += distanceKm;
+              break;
           }
         }
 
@@ -420,6 +654,9 @@ class SortingDataService {
             case "Cycling":
               cyclingDistancePerWeek[i+1] += distanceKm;
               break;
+            case "Hiking":
+              hikingDistancePerWeek[i+1] += distanceKm;
+              break;
           }
         }
       }
@@ -438,6 +675,12 @@ class SortingDataService {
               .subtract(Duration(days: 7*i + DateTime.now().weekday)),
           cyclingDistancePerWeek[i],
           ThemeColors.orange));
+      hikingActivitiesDistance.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: 7*i + DateTime.now().weekday)),
+          hikingDistancePerWeek[i],
+          ThemeColors.blueGreenisShade1));
     }
 
     if (runningActivitiesDistance.isNotEmpty) {
@@ -460,20 +703,32 @@ class SortingDataService {
         ),
       );
     }
+    if (hikingActivitiesDistance.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Hiking',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: hikingActivitiesDistance,
+        ),
+      );
+    }
 
     return series;
   }
 
   /// Method to get series only containing the total activity distance
   /// type 0: Running, type 1: Cycling
-  List<charts.Series<ActivitiesPrecisionData, String>> getAverageSpeedData(
-      List<RecordedActivity> recAct, int noOfActivities, int type) {
+  List<charts.Series<ActivitiesPrecisionNumData, int>> getAverageSpeedData(
+      List<RecordedActivity> recAct, int noOfActivities, int type, bool inverseColors) {
 
-    List<charts.Series<ActivitiesPrecisionData, String>> series =
-    new List<charts.Series<ActivitiesPrecisionData, String>>();
-    List<ActivitiesPrecisionData> averageSpeeds =
-    new List<ActivitiesPrecisionData>();
-    List<ActivitiesPrecisionData> targetSpeeds =new List<ActivitiesPrecisionData>();
+    List<charts.Series<ActivitiesPrecisionNumData, int>> series =
+    new List<charts.Series<ActivitiesPrecisionNumData, int>>();
+    List<ActivitiesPrecisionNumData> averageSpeeds =
+    new List<ActivitiesPrecisionNumData>();
+    List<ActivitiesPrecisionNumData> lineData =new List<ActivitiesPrecisionNumData>();
+    double totalAverage = 0;
 
     /// Sort activities
     recAct.sort((a,b) {
@@ -498,16 +753,10 @@ class SortingDataService {
 
         double averageSpeed = activity.distance.toDouble() / (double.parse(splittedDuration[0]) + double.parse(splittedDuration[1]) / 60);
 
-        averageSpeeds.insert(0, ActivitiesPrecisionData(
-            splittedDate[0] + "." + splittedDate[1],
+        averageSpeeds.insert(0, ActivitiesPrecisionNumData(
+            noOfIncludedActivities,
             averageSpeed,
             type == 0 ? ThemeColors.lightBlue : ThemeColors.orange));
-
-        /// Add data for target lines
-        targetSpeeds.add(ActivitiesPrecisionData(
-          splittedDate[0] + "." + splittedDate[1],
-          type == 0 ? 10 : 30,
-        Colors.white));
 
         noOfIncludedActivities++;
 
@@ -515,20 +764,36 @@ class SortingDataService {
     }
 
     if (averageSpeeds.isNotEmpty) {
-      series.add(charts.Series<ActivitiesPrecisionData, String>(
+
+      for(ActivitiesPrecisionNumData data in averageSpeeds){
+        totalAverage += data.number;
+      }
+      totalAverage /= averageSpeeds.length;
+
+      /// Add data for trend line
+      lineData.add(ActivitiesPrecisionNumData(
+          0,
+          totalAverage,
+          type == 0 ? ThemeColors.lightBlue : ThemeColors.orange));
+
+      lineData.add(ActivitiesPrecisionNumData(
+          averageSpeeds.length,
+          totalAverage,
+          type == 0 ? ThemeColors.lightBlue : ThemeColors.orange));
+
+      series.add(charts.Series<ActivitiesPrecisionNumData, int>(
         id: type == 0 ? 'Running' : 'Cycling',
-        colorFn: (ActivitiesPrecisionData sales, __) => sales.color,
-        domainFn: (ActivitiesPrecisionData sales, _) => sales.title,
-        measureFn: (ActivitiesPrecisionData sales, _) => sales.number,
+        colorFn: (ActivitiesPrecisionNumData sales, __) => sales.color,
+        domainFn: (ActivitiesPrecisionNumData sales, _) => sales.id,
+        measureFn: (ActivitiesPrecisionNumData sales, _) => sales.number,
         data: averageSpeeds,
-      ));
-      series.add(charts.Series<ActivitiesPrecisionData, String>(
-        id: type == 0 ? 'Running' : 'Cycling',
-        colorFn: (ActivitiesPrecisionData sales, __) => sales.color,
-        domainFn: (ActivitiesPrecisionData sales, _) => sales.title,
-        measureFn: (ActivitiesPrecisionData sales, _) => sales.number,
-        data: targetSpeeds,
-      )..setAttribute(charts.rendererIdKey, 'customTargetLine'),);
+      ),);
+      series.add(charts.Series<ActivitiesPrecisionNumData, int>(
+          id: 'Mobile',
+          colorFn: (ActivitiesPrecisionNumData sales, __) => sales.color,
+          domainFn: (ActivitiesPrecisionNumData sales, _) => sales.id,
+          measureFn: (ActivitiesPrecisionNumData sales, _) => sales.number,
+          data: lineData)..setAttribute(charts.rendererIdKey, 'progressionLine'),);
     }
 
     return series;
@@ -540,7 +805,8 @@ class SortingDataService {
     /// Hours, Minutes, Seconds, Distance
     List<int> cyclingTime = [0, 0, 0, 0];
     List<int> runningTime = [0, 0, 0, 0];
-    List<int> climbingTime = [0, 0, 0];
+    List<int> climbingTime = [0, 0, 0, 0];
+    List<int> hikingTime = [0, 0, 0, 0];
     List<List<int>> returnList = new List();
     bool expressionToEvaluate;
 
@@ -607,8 +873,23 @@ class SortingDataService {
             {
               climbingTime[0] += durationInHours;
               climbingTime[1] += durationInMinutes;
-              climbingTime[2]++;
+              climbingTime[3]++;
             }
+            break;
+          case "Hiking":
+            {
+              hikingTime[0] += durationInHours;
+              hikingTime[1] += durationInMinutes;
+              hikingTime[2] += activity.distance;
+              hikingTime[3]++;
+            }
+            break;
+          default: {
+            runningTime[0] += durationInHours;
+            runningTime[1] += durationInMinutes;
+            runningTime[2] += activity.distance;
+            runningTime[3]++;
+          }
         }
       }
     }
@@ -617,16 +898,20 @@ class SortingDataService {
     int fullRunningHoursToAdd = runningTime[1] ~/ 60;
     int fullCyclingHoursToAdd = cyclingTime[1] ~/ 60;
     int fullClimbingHoursToAdd = climbingTime[1] ~/ 60;
+    int fullHikingHoursToAdd = hikingTime[1] ~/ 60;
     runningTime[0] += fullRunningHoursToAdd;
     runningTime[1] -= fullRunningHoursToAdd * 60;
     cyclingTime[0] += fullCyclingHoursToAdd;
     cyclingTime[1] -= fullCyclingHoursToAdd * 60;
     climbingTime[0] += fullClimbingHoursToAdd;
     climbingTime[1] -= fullClimbingHoursToAdd * 60;
+    hikingTime[0] += fullHikingHoursToAdd;
+    hikingTime[1] -= fullHikingHoursToAdd * 60;
 
     returnList.add(runningTime);
     returnList.add(cyclingTime);
     returnList.add(climbingTime);
+    returnList.add(hikingTime);
 
     return returnList;
   }
@@ -691,6 +976,16 @@ class ActivitiesPrecisionData {
   final charts.Color color;
 
   ActivitiesPrecisionData(this.title, this.number, Color color)
+      : this.color = new charts.Color(
+      r: color.red, g: color.green, b: color.blue, a: color.alpha);
+}
+
+class ActivitiesPrecisionNumData {
+  final int id;
+  final double number;
+  final charts.Color color;
+
+  ActivitiesPrecisionNumData(this.id, this.number, Color color)
       : this.color = new charts.Color(
       r: color.red, g: color.green, b: color.blue, a: color.alpha);
 }

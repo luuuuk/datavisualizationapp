@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:data_visualization_app/models/activity_goal.dart';
-import 'package:data_visualization_app/models/recorded_activity.dart';
+import 'package:data_visualization_app/screens/add_goal_screen.dart';
+import 'package:data_visualization_app/screens/welcome_screen.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/services/sorting_data.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
@@ -60,8 +63,6 @@ class _GoalsScreenState extends State<GoalsScreen> {
   int segmentedActivityGroupValue = 0;
   int segmentedGoalGroupValue = 0;
   int segmentedTimeFrameGroupController = 0;
-  TextEditingController _goalValueController = new TextEditingController();
-  TextEditingController _goalTitleController = new TextEditingController();
   bool isClimbing = false;
   int selectedGoalValue = 0;
   String selectedTitle;
@@ -70,78 +71,145 @@ class _GoalsScreenState extends State<GoalsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        backgroundColor: ThemeColors.lightBlue,
-        title: Text(
-          "Your Goals",
-          style: GoogleFonts.montserrat(color: Colors.white),
-        ),
-        centerTitle: true,
-      ),
       body: Container(
-        color: ThemeColors.darkBlue,
-        child: ListView(
-          shrinkWrap: true,
+        color: ThemeColors.blueGreenisShade1,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            Container(
+              padding: EdgeInsets.all(16),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    IconButton(
+                      onPressed: () {
+                        Navigator.popAndPushNamed(context, WelcomeScreen.routeName);
+                      },
+                      alignment: Alignment.topLeft,
+                      icon: Icon(
+                        Icons.keyboard_arrow_left,
+                        color: Colors.white,
+                        size: 32,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Your',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.white,
+                              fontSize: 25.0),
+                        ),
+                        SizedBox(width: 10.0),
+                        Text(
+                          'Goals',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25.0),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
             FutureBuilder<List<ActivityGoal>>(
                 future: getGoalData(),
                 builder: (context, AsyncSnapshot<List<ActivityGoal>> snapshot) {
                   if (snapshot.hasData) {
-                    return BorderContainerWidget(
-                            Container(
-                              height: 110,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data.length,
-                                  itemBuilder: (context, index) {
-                                    return CupertinoContextMenu(
-                                      actions: <Widget>[
-                                        CupertinoContextMenuAction(
-                                          child: const Text('Delete Goal'),
-                                          onPressed: () {
-                                            setState(() {
-                                              deleteData(snapshot.data[index]);
-                                              snapshot.data.removeAt(index);
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width * 0.7,
-                                        height: 110,
-                                        child: FutureBuilder<double>(
-                                      future:
-                                      SortingDataService().getCurrentGoalProgress(snapshot.data[index]),
-                                        builder: (context,
-                                            AsyncSnapshot<double> goalProgress) {
-                                          if (goalProgress.hasData) {
-                                            return GoalWidget(
-                                                snapshot.data[index].goalNumber
-                                                    .toDouble(),
-                                                goalProgress.data,
-                                                snapshot.data[index].goalTitle,
-                                                snapshot.data[index].goalType,
-                                                snapshot.data[index].activityType);
-                                          } else {
-                                            return Container();
-                                          }
-                                        })
-                                      ),
-                                    );
-                                  }),
+                    return Container(
+                      margin: EdgeInsets.fromLTRB(32, 0, 0, 16),
+                      padding: EdgeInsets.only(bottom: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(32),
+                            bottomLeft: Radius.circular(32.0)),
+                      ),
+                      alignment: Alignment.topRight,
+                      height: 280,
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.fromLTRB(0, 16, 16, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'Active',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: ThemeColors.mediumBlue,
+                                      fontSize: 16.0),
+                                ),
+                                SizedBox(width: 10.0),
+                                Text(
+                                  'Goals',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: ThemeColors.mediumBlue,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0),
+                                ),
+                              ],
                             ),
-                        "Your Goals");
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (context, index) {
+                                  return CupertinoContextMenu(
+                                    actions: <Widget>[
+                                      CupertinoContextMenuAction(
+                                        child: const Text('Delete Goal'),
+                                        onPressed: () {
+                                          setState(() {
+                                            deleteData(snapshot.data[index]);
+                                            snapshot.data.removeAt(index);
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                    child: Container(
+                                        child: FutureBuilder<double>(
+                                            future: SortingDataService()
+                                                .getCurrentGoalProgress(
+                                                    snapshot.data[index]),
+                                            builder: (context,
+                                                AsyncSnapshot<double>
+                                                    goalProgress) {
+                                              if (goalProgress.hasData) {
+                                                return GoalWidget(
+                                                  snapshot
+                                                      .data[index].goalNumber
+                                                      .toDouble(),
+                                                  goalProgress.data,
+                                                  snapshot
+                                                      .data[index].goalTitle,
+                                                  snapshot.data[index].goalType,
+                                                  snapshot
+                                                      .data[index].activityType,
+                                                  snapshot
+                                                      .data[index].timeFrame,
+                                                  false
+                                                );
+                                              } else {
+                                                return Container();
+                                              }
+                                            })),
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                    );
                   } else {
                     return BorderContainerWidget(
                         Container(
@@ -150,140 +218,64 @@ class _GoalsScreenState extends State<GoalsScreen> {
                             child: Text("No goals defined."),
                           ),
                         ),
-                        "Your Goals");
+                        "Your Goals",
+                        true);
                   }
                 }),
-            BorderContainerWidget(
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-                child: CupertinoSlidingSegmentedControl(
-                    backgroundColor: ThemeColors.lightBlue,
-                    groupValue: segmentedActivityGroupValue,
-                    children: activityType,
-                    thumbColor: ThemeColors.orange,
-                    onValueChanged: (i) {
-                      setState(() {
-                        segmentedActivityGroupValue = i;
-                        i == 2 ? isClimbing = true : isClimbing = false;
-                      });
-                    }),
-              ),
-              "Activity Type",
-            ),
-            BorderContainerWidget(
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-                child: CupertinoSlidingSegmentedControl(
-                    backgroundColor: ThemeColors.lightBlue,
-                    groupValue: segmentedGoalGroupValue,
-                    children: goalType,
-                    thumbColor: ThemeColors.orange,
-                    onValueChanged: (i) {
-                      setState(() {
-                        segmentedGoalGroupValue = i;
-                      });
-                    }),
-              ),
-              "Goal Type",
-            ),
-            BorderContainerWidget(
-              Container(
-                child: CupertinoSlidingSegmentedControl(
-                    backgroundColor: ThemeColors.lightBlue,
-                    groupValue: segmentedTimeFrameGroupController,
-                    children: timeFrame,
-                    thumbColor: ThemeColors.orange,
-                    onValueChanged: (i) {
-                      setState(() {
-                        segmentedTimeFrameGroupController = i;
-                      });
-                    }),
-              ),
-              "Goal Time Span",
-            ),
-            BorderContainerWidget(
-              TextFormField(
-                onChanged: (String enteredDistance) => {
+            GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(context, AddGoalScreen.routeName).then((value) {
                   setState(() {
-                    selectedGoalValue = int.parse(enteredDistance);
-                    _goalValueController.value =
-                        TextEditingValue(text: enteredDistance);
-                  })
-                },
-                controller: _goalValueController,
-                keyboardType: TextInputType.numberWithOptions(),
-                decoration: InputDecoration(
-                  hintText:
-                      segmentedGoalGroupValue == 0 ? 'Distance in km' : 'Duration in h',
-                  prefixIcon: Icon(
-                    Icons.flag,
-                    color: ThemeColors.orange,
-                  ),
+                  });
+                });
+              },
+              child: Container(
+                margin: EdgeInsets.fromLTRB(32, 0, 0, 16),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(32),
+                      bottomLeft: Radius.circular(32.0)),
+                ),
+                alignment: Alignment.topRight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(
+                      Icons.add_circle_outline,
+                      color: ThemeColors.mediumBlue,
+                      size: 32,
+                    ),
+                    SizedBox(width: 20.0),
+                    Row(
+                      children: [
+                        Text(
+                          'Set',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: ThemeColors.mediumBlue,
+                              fontSize: 16.0),
+                        ),
+                        SizedBox(width: 10.0),
+                        Text(
+                          'New Goal',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: ThemeColors.mediumBlue,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              segmentedGoalGroupValue == 0 ? "Distance in km" : "Duration in h",
-            ),
-            BorderContainerWidget(
-              TextFormField(
-                onChanged: (String enteredTitle) => {
-                  setState(() {
-                    selectedTitle = enteredTitle;
-                    _goalTitleController.value =
-                        TextEditingValue(text: enteredTitle);
-                  })
-                },
-                controller: _goalTitleController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  hintText: 'Title',
-                  prefixIcon: Icon(
-                    Icons.text_fields,
-                    color: ThemeColors.orange,
-                  ),
-                ),
-              ),
-              "Title",
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 24, 0, 0),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: ThemeColors.orange,
-        onPressed: () => saveEntries(),
-        tooltip: 'Save data',
-        child: Icon(
-          Icons.save,
-          color: Colors.white,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
-
-  /// Method to format a given duration
-  format(Duration d) => d.toString().split('.').first.padLeft(8, "0");
-
-  /// Method to save the entries on the screen
-  Future<void> saveEntries() async {
-    ActivityGoal newGoal = ActivityGoal(
-        DateTime.now().hashCode,
-        selectedGoalValue,
-        selectedTitle,
-        segmentedGoalGroupValue,
-        segmentedActivityGroupValue,
-        segmentedTimeFrameGroupController);
-
-    setState(() {
-
-    });
-
-    DatabaseManager dbManager = new DatabaseManager();
-    int success = await dbManager.saveGoal(newGoal);
-
-    showSnackBar(success == 0 ? false : true);
   }
 
   /// Method to get the data from the database
@@ -298,27 +290,5 @@ class _GoalsScreenState extends State<GoalsScreen> {
   void deleteData(ActivityGoal goal) {
     DatabaseManager dbManager = new DatabaseManager();
     dbManager.deleteGoal(goal);
-  }
-
-  /// Method to show the snack bar
-  void showSnackBar(bool success) {
-    _scaffoldKey.currentState.showSnackBar(
-      SnackBar(
-        backgroundColor: success
-            ? Colors.green
-            : Colors.red, // Set color depending on success
-        content: success
-            ? const Text(
-                'Activity has been saved.',
-                style: TextStyle(color: Colors.white),
-              )
-            : const Text(
-                'There has been a problem while saving your activity.',
-                style: TextStyle(color: Colors.white),
-              ),
-        //action: SnackBarAction(
-        //    label: 'DISMISS', onPressed: ,),
-      ),
-    );
   }
 }

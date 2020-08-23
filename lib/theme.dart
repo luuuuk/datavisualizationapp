@@ -7,9 +7,17 @@ class ThemeColors {
   static const darkBlue = const Color(0xFF2D274C);
   static const lightBlue = const Color(0xFF306FA5);
   static const blueGreenis = const Color(0xFF95C4B9);
+  static const blueGreenisShade1 = const Color(0xFF688C96);
+  static const blueGreenisShade2 = const Color(0xFF76A5AE);
   static const yellowGreenish = const Color(0xFFF6F2CB);
   static const orange = const Color(0xFFF06A25);
+  static const darkGrey = const Color(0xFF2E405F);
+  static const mediumBlue = const Color(0xFF3A3654);
+  static const mediumGrey = const Color(0xFF48475A);
+  static const cream = const Color(0xFFE6D8B4);
+  static const altGreen = const Color(0xFF688C96);
 }
+
 
 class VisualizationTheme {
   ThemeData theme = ThemeData(
@@ -18,12 +26,13 @@ class VisualizationTheme {
     accentColor: ThemeColors.yellowGreenish,
 
     // Define the default font family.
-    fontFamily: 'Roboto',
+    fontFamily: 'Montserrat',
     cupertinoOverrideTheme: CupertinoThemeData(
       textTheme: CupertinoTextThemeData(
         dateTimePickerTextStyle:
-            TextStyle(color: ThemeColors.orange, fontSize: 16),
+            TextStyle(color: Colors.white, fontSize: 16),
         pickerTextStyle: TextStyle(color: Colors.white, fontSize: 12),
+        primaryColor: ThemeColors.blueGreenisShade1,
       ),
     ),
   );
