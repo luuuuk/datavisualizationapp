@@ -134,6 +134,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(32)),
                               ),
+                              child: _last12WeeksOverviewWidget(snapshot.data),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(32)),
+                              ),
                               child: _annualOverviewWidget(snapshot.data),
                             ),
                           ],
@@ -154,21 +164,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       /*
-                      BorderContainerWidget(
-                          _weeklyOverviewWidget(snapshot.data),
-                          "Weekly Activity Overview",
-                          true),
-                      SizedBox(
-                        height: 32,
-                      ),
-                      BorderContainerWidget(
-                        _monthlyOverviewWidget(snapshot.data),
-                        "Monthly Activity Overview: " + _getCurrentMonthName(),
-                        false,
-                      ),
-                      SizedBox(
-                        height: 32,
-                      ),
                       BorderContainerWidget(
                         _build12WeeksActivityTimeChart(snapshot.data),
                         "Activity Time last 12 weeks",
@@ -282,90 +277,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _getFAB() {
-    return SpeedDial(
-      animatedIcon: AnimatedIcons.menu_close,
-      animatedIconTheme: IconThemeData(size: 22, color: Colors.white),
-      backgroundColor: ThemeColors.orange,
-      visible: true,
-      curve: Curves.bounceIn,
-      children: [
-        // FAB 1
-        SpeedDialChild(
-          child: Icon(
-            Icons.list,
-            color: Colors.white,
-          ),
-          backgroundColor: ThemeColors.orange,
-          onTap: () {
-            Navigator.pushNamed(context, ActivityListScreen.routeName)
-                .then((value) {
-              setState(() {});
-            });
-          },
-        ),
-        // FAB 2
-        SpeedDialChild(
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          backgroundColor: ThemeColors.orange,
-          onTap: () {
-            Navigator.pushNamed(context, AddDataScreen.routeName).then((value) {
-              setState(() {});
-            });
-          },
-        ),
-        // FAB 3
-        SpeedDialChild(
-          child: Icon(
-            Icons.flag,
-            color: Colors.white,
-          ),
-          backgroundColor: ThemeColors.orange,
-          onTap: () {
-            Navigator.pushNamed(context, GoalsScreen.routeName).then((value) {
-              setState(() {});
-            });
-          },
-        ),
-      ],
-    );
-  }
-
   /// Method to get the data from the database
   Future<List<RecordedActivity>> getActivityData() async {
     DatabaseManager dbManager = new DatabaseManager();
     List<RecordedActivity> activities = await dbManager.getActivities();
 
     return activities;
-  }
-
-  /// Method to fill the rows of the table
-  List<DataRow> getTableRows(List<RecordedActivity> activities) {
-    List<DataRow> tableRows = new List<DataRow>();
-
-    for (RecordedActivity recAct in activities) {
-      tableRows.add(DataRow(
-        cells: [
-          DataCell(Text(
-            recAct.activityType,
-            style: GoogleFonts.montserrat(color: Colors.white),
-          )),
-          DataCell(Text(
-            recAct.duration,
-            style: GoogleFonts.montserrat(color: Colors.white),
-          )),
-          DataCell(Text(
-            recAct.distance.toString(),
-            style: GoogleFonts.montserrat(color: Colors.white),
-          )),
-        ],
-      ));
-    }
-
-    return tableRows;
   }
 
   /// Method to build the BarChart containing the data for the distance of the given [activities]
@@ -495,19 +412,94 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _monthlyOverviewWidget(List<RecordedActivity> activities) {
     return Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          OverviewWidget(activities, 1),
           Container(
-            margin: EdgeInsets.fromLTRB(8, 16, 8, 32),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(32),
-              ),
+            child: Column(
+              children: [
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Monthly Overview",
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            color: ThemeColors.darkBlue,
+                            fontSize: 16.0),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        _getCurrentMonthName(),
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            color: ThemeColors.darkBlue,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 8),
+                  child: _buildMonthlyActivityChart(activities),
+                ),
+                Container(
+                  child: OverviewWidget(activities, 1),
+                ),
+              ],
             ),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+          ),
+          Container(
             child: _buildGoalList(1),
+          ),
+        ]);
+  }
+
+  Widget _last12WeeksOverviewWidget(List<RecordedActivity> activities) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Overview",
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            color: ThemeColors.darkBlue,
+                            fontSize: 16.0),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Last 12 Weeks",
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            color: ThemeColors.darkBlue,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 8),
+                  child: _build12WeeksActivityTimeChart(activities),
+                ),
+                Container(child: _build12WeeksCyclingDistanceChart(activities)),
+                Container(child: _build12WeeksRunningDistanceChart(activities)),
+              ],
+            ),
           ),
         ]);
   }
@@ -632,7 +624,32 @@ class _HomeScreenState extends State<HomeScreen> {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
         SortingDataService().getActivityTimePast12Weeks(activities);
 
-    return _buildLineGraphWithAreaAndPoints(data, 200, false);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        RotatedBox(
+          quarterTurns: 3,
+          child: Text(
+            "All activities",
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+              color: ThemeColors.darkBlue,
+              fontWeight: FontWeight.bold,
+              fontSize: 14.0,
+            ),
+            textAlign: TextAlign.justify,
+            overflow: TextOverflow.fade,
+          ),
+        ),
+        SizedBox(
+          width: 8,
+        ),
+        Expanded(
+          child: _buildLineGraphWithAreaAndPoints(
+              data, MediaQuery.of(context).size.height * 0.2, true, false),
+        ),
+      ],
+    );
   }
 
   _build12WeeksCyclingDistanceChart(List<RecordedActivity> activities) {
@@ -640,8 +657,34 @@ class _HomeScreenState extends State<HomeScreen> {
         SortingDataService().getActivityDistancePast12Weeks(activities);
 
     data.removeAt(0);
+    data.removeLast();
 
-    return _buildLineGraphWithAreaAndPoints(data, 200, false);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        RotatedBox(
+          quarterTurns: 3,
+          child: Text(
+            "Cycling",
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+              color: ThemeColors.darkBlue,
+              fontWeight: FontWeight.bold,
+              fontSize: 14.0,
+            ),
+            textAlign: TextAlign.justify,
+            overflow: TextOverflow.fade,
+          ),
+        ),
+        SizedBox(
+          width: 8,
+        ),
+        Expanded(
+          child: _buildLineGraphWithAreaAndPoints(
+              data, MediaQuery.of(context).size.height * 0.2, true, true),
+        ),
+      ],
+    );
   }
 
   _build12WeeksRunningDistanceChart(List<RecordedActivity> activities) {
@@ -649,18 +692,51 @@ class _HomeScreenState extends State<HomeScreen> {
         SortingDataService().getActivityDistancePast12Weeks(activities);
 
     data.removeAt(1);
+    data.removeLast();
 
-    return _buildLineGraphWithAreaAndPoints(data, 200, false);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        RotatedBox(
+          quarterTurns: 3,
+          child: Text(
+            "Running",
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+              color: ThemeColors.darkBlue,
+              fontWeight: FontWeight.bold,
+              fontSize: 14.0,
+            ),
+            textAlign: TextAlign.justify,
+            overflow: TextOverflow.fade,
+          ),
+        ),
+        SizedBox(
+          width: 8,
+        ),
+        Expanded(
+          child: _buildLineGraphWithAreaAndPoints(
+              data, MediaQuery.of(context).size.height * 0.2, true, true),
+        ),
+      ],
+    );
   }
 
   Widget _buildWeeklyActivityChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
         SortingDataService().getWeeklyActivity(activities);
 
-    return _buildLineGraphWithAreaAndPoints(data, 160, true);
+    return _buildActivityBarChart(data, 160, true);
   }
 
-  _buildLineGraphWithAreaAndPoints(
+  _buildMonthlyActivityChart(List<RecordedActivity> activities) {
+    List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
+        SortingDataService().getMonthlyActivity(activities);
+
+    return _buildActivityBarChart(data, 160, true);
+  }
+
+  _buildActivityBarChart(
       List<charts.Series<ActivitiesDataDateTime, DateTime>> data,
       double height,
       bool inverseColors) {
@@ -709,6 +785,87 @@ class _HomeScreenState extends State<HomeScreen> {
             primaryMeasureAxis: charts.NumericAxisSpec(
               tickFormatterSpec: charts.BasicNumericTickFormatterSpec(
                   (num value) => '$value h'),
+              tickProviderSpec:
+                  new charts.BasicNumericTickProviderSpec(desiredTickCount: 3),
+              renderSpec: charts.GridlineRendererSpec(
+                labelStyle: charts.TextStyleSpec(
+                    fontSize: 10,
+                    color: inverseColors
+                        ? charts.Color.fromHex(code: "#2D274CFF")
+                        : charts.MaterialPalette.white),
+                lineStyle: charts.LineStyleSpec(
+                    thickness: 2,
+                    color: inverseColors
+                        ? charts.Color.fromHex(code: "#2D274CFF")
+                        : charts.MaterialPalette.white),
+              ),
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Center(
+        child: Text(
+          "There seems to be no training data this week...\nTime to start training!",
+          style: GoogleFonts.montserrat(color: Colors.white),
+        ),
+      );
+    }
+  }
+
+  _buildLineGraphWithAreaAndPoints(
+      List<charts.Series<ActivitiesDataDateTime, DateTime>> data,
+      double height,
+      bool inverseColors,
+      bool distance) {
+    if (data.isNotEmpty) {
+      return Container(
+        //padding: EdgeInsets.all(4.0),
+        //margin: EdgeInsets.only(bottom: 32),
+        child: SizedBox(
+          height: height,
+          child: new charts.TimeSeriesChart(
+            data,
+            animate: true,
+            defaultRenderer: new charts.LineRendererConfig(
+              includePoints: true,
+              includeArea: true,
+            ),
+            domainAxis: new charts.DateTimeAxisSpec(
+              renderSpec: charts.GridlineRendererSpec(
+                axisLineStyle: charts.LineStyleSpec(
+                  color: inverseColors
+                      ? charts.Color.fromHex(code: "#2D274CFF")
+                      : charts.MaterialPalette
+                          .white, // this also doesn't change the Y axis labels
+                ),
+                labelStyle: new charts.TextStyleSpec(
+                  fontSize: 10,
+                  color: inverseColors
+                      ? charts.Color.fromHex(code: "#2D274CFF")
+                      : charts.MaterialPalette.white,
+                ),
+                lineStyle: charts.LineStyleSpec(
+                  thickness: 2,
+                  color: inverseColors
+                      ? charts.Color.fromHex(code: "#2D274CFF")
+                      : charts.MaterialPalette.white,
+                ),
+              ),
+              tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+                hour: new charts.TimeFormatterSpec(
+                  format: 'H',
+                  transitionFormat: 'H',
+                ),
+              ),
+            ),
+            primaryMeasureAxis: charts.NumericAxisSpec(
+              tickFormatterSpec: charts.BasicNumericTickFormatterSpec(
+                  (num value) {
+                    String valueTronc = value.toStringAsFixed(0);
+
+                    return distance ? valueTronc + " km" : valueTronc + " h";
+                  }),
               tickProviderSpec:
                   new charts.BasicNumericTickProviderSpec(desiredTickCount: 3),
               renderSpec: charts.GridlineRendererSpec(

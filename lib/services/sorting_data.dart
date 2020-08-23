@@ -275,6 +275,168 @@ class SortingDataService {
     return series;
   }
 
+  /// Method to get series containing only activities from the past week
+  List<charts.Series<ActivitiesDataDateTime, DateTime>> getMonthlyActivity(
+      List<RecordedActivity> recAct) {
+    List<charts.Series<ActivitiesDataDateTime, DateTime>> series =
+    new List<charts.Series<ActivitiesDataDateTime, DateTime>>();
+    List<ActivitiesDataDateTime> runningActivitiesTime =
+    new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> cyclingActivitiesTime =
+    new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> climbingActivitiesTime =
+    new List<ActivitiesDataDateTime>();
+    List<ActivitiesDataDateTime> hikingActivitiesTime =
+    new List<ActivitiesDataDateTime>();
+
+    List<double> runningTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> cyclingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> climbingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<double> hikingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    /// Go through all activties from today-day-1 to today
+    /// (weekday starts at 1)
+    for (int i = 0; i < (DateTime.now().day); i++) {
+      /// Check if activities match the date
+      for (RecordedActivity activity in recAct) {
+        List stringDateSplitted = activity.date.split(".");
+        DateTime dateTime = DateTime(int.parse(stringDateSplitted[2]),
+            int.parse(stringDateSplitted[1]), int.parse(stringDateSplitted[0]));
+
+        /// Check if the activity happened on the given date
+        if (dateTime.compareTo(DateTime(DateTime.now().year,
+            DateTime.now().month, DateTime.now().day)
+            .subtract(Duration(days: i))) ==
+            0) {
+          List stringDurationSplitted = activity.duration.split(":");
+          double durationInMin =
+              int.parse(stringDurationSplitted[0]).toDouble() +
+                  int.parse(stringDurationSplitted[1]) / 60;
+
+          switch (activity.activityType) {
+            case "Running":
+              runningTimePerDay[i] += durationInMin;
+              break;
+            case "Cycling":
+              cyclingTimePerDay[i] += durationInMin;
+              break;
+            case "Climbing":
+              climbingTimePerDay[i] += durationInMin;
+              break;
+            case "Hiking":
+              hikingTimePerDay[i] += durationInMin;
+              break;
+          }
+        }
+      }
+    }
+
+    for (int i = 0; i < (DateTime.now().day); i++) {
+      runningActivitiesTime.insert(0, ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          runningTimePerDay[i],
+          ThemeColors.darkBlue));
+      cyclingActivitiesTime.insert(0, ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          cyclingTimePerDay[i],
+          ThemeColors.orange));
+      climbingActivitiesTime.insert(0, ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          climbingTimePerDay[i],
+          ThemeColors.cream));
+      hikingActivitiesTime.insert(0, ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .subtract(Duration(days: i)),
+          hikingTimePerDay[i],
+          ThemeColors.blueGreenisShade1));
+    }
+
+    /// Fill in the rest of the week until day 7 (sunday)
+    int daysToAdd = 0;
+
+    while(runningActivitiesTime.length != 31 && cyclingActivitiesTime.length != 31 && climbingActivitiesTime.length != 31 && hikingActivitiesTime.length != 31){
+
+      runningActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          runningTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.darkBlue));
+      cyclingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          cyclingTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.orange));
+      climbingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          climbingTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.cream));
+      hikingActivitiesTime.add(ActivitiesDataDateTime(
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day)
+              .add(Duration(days: daysToAdd+1)),
+          hikingTimePerDay[DateTime.now().weekday + daysToAdd],
+          ThemeColors.blueGreenisShade1));
+
+      daysToAdd++;
+    }
+
+    if (runningActivitiesTime.isNotEmpty) {
+      series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
+        id: 'Running',
+        colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+        domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+        measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+        data: runningActivitiesTime,
+      ));
+    }
+    if (cyclingActivitiesTime.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Cycling',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: cyclingActivitiesTime,
+        ),
+      );
+    }
+    if (climbingActivitiesTime.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Climbing',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: climbingActivitiesTime,
+        ),
+      );
+    }
+    if (hikingActivitiesTime.isNotEmpty) {
+      series.add(
+        charts.Series<ActivitiesDataDateTime, DateTime>(
+          id: 'Hiking',
+          colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
+          domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
+          measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
+          data: hikingActivitiesTime,
+        ),
+      );
+    }
+
+    return series;
+  }
+
   /// Method to get series containing only activity times from the past 12 weeks
   List<charts.Series<ActivitiesDataDateTime, DateTime>> getActivityTimePast12Weeks(
       List<RecordedActivity> recAct) {
