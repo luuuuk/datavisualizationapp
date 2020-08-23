@@ -606,7 +606,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           } else {
-            return Container(child: Text("You have not yet defined a personal goal."),);
+            return Container(
+              child: Text("You have not yet defined a personal goal."),
+            );
           }
         });
   }
@@ -890,7 +892,7 @@ class _HomeScreenState extends State<HomeScreen> {
   _buildAverageSpeedProgression(
       List<RecordedActivity> activities, int type, bool inverseColors) {
     List<charts.Series<ActivitiesPrecisionNumData, int>> data =
-        SortingDataService().getAverageSpeedData(activities, 20, type, false);
+        SortingDataService().getAverageSpeedData(activities, 25, type, false);
 
     if (data.isNotEmpty) {
       return Row(
@@ -938,6 +940,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 primaryMeasureAxis: charts.NumericAxisSpec(
+                  tickProviderSpec:
+                      charts.BasicNumericTickProviderSpec(zeroBound: false),
                   renderSpec: charts.GridlineRendererSpec(
                     labelStyle: charts.TextStyleSpec(
                       fontSize: 10,
