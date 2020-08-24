@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             }),
                         items: [
-                          Container(
+                          _currentPosition == 0 ? Container(
                             margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
                             padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
@@ -109,8 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   BorderRadius.all(Radius.circular(32)),
                             ),
                             child: _weeklyOverviewWidget(snapshot.data),
-                          ),
-                          Container(
+                          ) : Container(),
+                          _currentPosition == 1 ? Container(
                             margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
                             padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
@@ -119,8 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   BorderRadius.all(Radius.circular(32)),
                             ),
                             child: _monthlyOverviewWidget(snapshot.data),
-                          ),
-                          Container(
+                          ) : Container(),
+                          _currentPosition == 2 ? Container(
                             margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
                             padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
@@ -129,8 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   BorderRadius.all(Radius.circular(32)),
                             ),
                             child: _last12WeeksOverviewWidget(snapshot.data),
-                          ),
-                          Container(
+                          ) : Container(),
+                          _currentPosition == 3 ? Container(
                             margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
                             padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
@@ -139,8 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   BorderRadius.all(Radius.circular(32)),
                             ),
                             child: _annualOverviewWidget(snapshot.data),
-                          ),
-                          Container(
+                          ) : Container(),
+                          _currentPosition == 4 ? Container(
                             margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
                             padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   BorderRadius.all(Radius.circular(32)),
                             ),
                             child: _progressionWidget(snapshot.data),
-                          ),
+                          ) :  Container(),
                         ],
                       ),
                     ),
@@ -248,6 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: new charts.BarChart(
         SortingDataService().getYearlyActivitiesDistance(activities),
         animate: true,
+        animationDuration: Duration(seconds: 1),
         vertical: false,
         domainAxis: charts.AxisSpec<String>(
           tickFormatterSpec: charts.BasicOrdinalTickFormatterSpec(),
@@ -290,6 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
           new charts.PieChart(
             data,
             animate: true,
+            animationDuration: Duration(seconds: 1),
             defaultRenderer: new charts.ArcRendererConfig(
               arcWidth: 18,
               arcRendererDecorators: [
@@ -744,6 +746,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: new charts.TimeSeriesChart(
             data,
             animate: true,
+            animationDuration: Duration(seconds: 1),
             defaultRenderer: new charts.BarRendererConfig<DateTime>(
               cornerStrategy: const charts.ConstCornerStrategy(30),
               groupingType: charts.BarGroupingType.stacked,
@@ -822,6 +825,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: new charts.TimeSeriesChart(
             data,
             animate: true,
+            animationDuration: Duration(seconds: 1),
             defaultRenderer: new charts.LineRendererConfig(
               includePoints: true,
               includeArea: true,
@@ -841,7 +845,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       : charts.MaterialPalette.white,
                 ),
                 lineStyle: charts.LineStyleSpec(
-                  thickness: 2,
+                  thickness: 1,
                   color: inverseColors
                       ? charts.Color.fromHex(code: "#2D274CFF")
                       : charts.MaterialPalette.white,
@@ -870,7 +874,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ? charts.Color.fromHex(code: "#2D274CFF")
                         : charts.MaterialPalette.white),
                 lineStyle: charts.LineStyleSpec(
-                    thickness: 2,
+                    thickness: 1,
                     color: inverseColors
                         ? charts.Color.fromHex(code: "#2D274CFF")
                         : charts.MaterialPalette.white),
@@ -921,7 +925,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: MediaQuery.of(context).size.height * 0.3,
               child: charts.ScatterPlotChart(
                 data,
-                animate: true,
+                animate: false,
                 customSeriesRenderers: [
                   new charts.LineRendererConfig(
                       customRendererId: 'progressionLine',
