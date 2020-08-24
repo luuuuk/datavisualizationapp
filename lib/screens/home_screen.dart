@@ -3,6 +3,7 @@ import 'package:data_visualization_app/models/activity_goal.dart';
 import 'package:data_visualization_app/models/recorded_activity.dart';
 import 'package:data_visualization_app/screens/welcome_screen.dart';
 import 'package:data_visualization_app/services/database_manager.dart';
+import 'package:data_visualization_app/services/graph_builder.dart';
 import 'package:data_visualization_app/services/sorting_data.dart';
 import 'package:data_visualization_app/theme.dart';
 import 'package:data_visualization_app/widgets/goal.dart';
@@ -21,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   double _currentPosition = 0;
+  GraphBuilder graphBuilder = GraphBuilder();
 
   @override
   Widget build(BuildContext context) {
@@ -99,57 +101,68 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             }),
                         items: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              //boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(0, 5), blurRadius: 1.0, spreadRadius: 1.0)],
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(32)),
-                            ),
-                            child: _weeklyOverviewWidget(snapshot.data),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(32)),
-                            ),
-                            child: _monthlyOverviewWidget(snapshot.data),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(32)),
-                            ),
-                            child: _last12WeeksOverviewWidget(snapshot.data),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(32)),
-                            ),
-                            child: _annualOverviewWidget(snapshot.data),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(32)),
-                            ),
-                            child: _progressionWidget(snapshot.data),
-                          ),
+                          _currentPosition == 0
+                              ? Container(
+                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    //boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(0, 5), blurRadius: 1.0, spreadRadius: 1.0)],
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(32)),
+                                  ),
+                                  child: _weeklyOverviewWidget(snapshot.data),
+                                )
+                              : _getEmptyContainer(),
+                          _currentPosition == 1
+                              ? Container(
+                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(32)),
+                                  ),
+                                  child: _monthlyOverviewWidget(snapshot.data),
+                                )
+                              : _getEmptyContainer(),
+                          _currentPosition == 2
+                              ? Container(
+                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(32)),
+                                  ),
+                                  child:
+                                      _last12WeeksOverviewWidget(snapshot.data),
+                                )
+                              : _getEmptyContainer(),
+                          _currentPosition == 3
+                              ? Container(
+                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(32)),
+                                  ),
+                                  child: _annualOverviewWidget(snapshot.data),
+                                )
+                              : _getEmptyContainer(),
+                          _currentPosition == 4
+                              ? Container(
+                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(32)),
+                                  ),
+                                  child: _progressionWidget(snapshot.data),
+                                )
+                              : _getEmptyContainer(),
                         ],
                       ),
                     ),
@@ -243,32 +256,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Method to build the BarChart containing the data for the distance of the given [activities]
   Widget _buildYearlyDistanceChart(List<RecordedActivity> activities) {
+    List<charts.Series<ActivitiesData, String>> data =
+        SortingDataService().getYearlyActivitiesDistance(activities);
+
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.14,
-      child: new charts.BarChart(
-        SortingDataService().getYearlyActivitiesDistance(activities),
-        animate: true,
-        vertical: false,
-        domainAxis: charts.AxisSpec<String>(
-          tickFormatterSpec: charts.BasicOrdinalTickFormatterSpec(),
-          renderSpec: charts.GridlineRendererSpec(
-            lineStyle: charts.LineStyleSpec(
-                thickness: 1, color: charts.Color.fromHex(code: "#2D274CFF")),
-            labelStyle: new charts.TextStyleSpec(
-              fontSize: 10,
-              color: charts.Color.fromHex(code: "#2D274CFF"),
-            ),
-          ),
-        ),
-        primaryMeasureAxis: charts.NumericAxisSpec(
-          renderSpec: charts.GridlineRendererSpec(
-            labelStyle: charts.TextStyleSpec(
-                fontSize: 10, color: charts.Color.fromHex(code: "#2D274CFF")),
-            lineStyle: charts.LineStyleSpec(
-                thickness: 1, color: charts.Color.fromHex(code: "#2D274CFF")),
-          ),
-        ),
-      ),
+      child: graphBuilder.buildTimeSeriesChartHorizontalBarChart(data),
     );
   }
 
@@ -290,6 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
           new charts.PieChart(
             data,
             animate: true,
+            animationDuration: Duration(seconds: 1),
             defaultRenderer: new charts.ArcRendererConfig(
               arcWidth: 18,
               arcRendererDecorators: [
@@ -722,14 +716,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return _buildActivityBarChart(data, 160, true, true);
   }
 
-  _buildMonthlyActivityChart(List<RecordedActivity> activities) {
+  Widget _buildMonthlyActivityChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
         SortingDataService().getMonthlyActivity(activities);
 
     return _buildActivityBarChart(data, 160, true, false);
   }
 
-  _buildActivityBarChart(
+  Widget _buildActivityBarChart(
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data,
     double height,
     bool inverseColors,
@@ -741,76 +735,21 @@ class _HomeScreenState extends State<HomeScreen> {
         margin: EdgeInsets.only(bottom: 32),
         child: SizedBox(
           height: height,
-          child: new charts.TimeSeriesChart(
-            data,
-            animate: true,
-            defaultRenderer: new charts.BarRendererConfig<DateTime>(
-              cornerStrategy: const charts.ConstCornerStrategy(30),
-              groupingType: charts.BarGroupingType.stacked,
-            ),
-            defaultInteractions: false,
-            domainAxis: new charts.DateTimeAxisSpec(
-              tickProviderSpec:
-                  charts.DayTickProviderSpec(increments: [week ? 1 : 7]),
-              renderSpec: charts.GridlineRendererSpec(
-                axisLineStyle: charts.LineStyleSpec(
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette
-                          .white, // this also doesn't change the Y axis labels
-                ),
-                labelStyle: new charts.TextStyleSpec(
-                  fontSize: 10,
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette.white,
-                ),
-                lineStyle: charts.LineStyleSpec(
-                  thickness: 2,
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette.white,
-                ),
-              ),
-              tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
-                hour: new charts.TimeFormatterSpec(
-                  format: 'H',
-                  transitionFormat: 'H',
-                ),
-              ),
-            ),
-            primaryMeasureAxis: charts.NumericAxisSpec(
-              tickFormatterSpec: charts.BasicNumericTickFormatterSpec(
-                  (num value) => '$value h'),
-              tickProviderSpec:
-                  new charts.BasicNumericTickProviderSpec(desiredTickCount: 3),
-              renderSpec: charts.GridlineRendererSpec(
-                labelStyle: charts.TextStyleSpec(
-                    fontSize: 10,
-                    color: inverseColors
-                        ? charts.Color.fromHex(code: "#2D274CFF")
-                        : charts.MaterialPalette.white),
-                lineStyle: charts.LineStyleSpec(
-                    thickness: 2,
-                    color: inverseColors
-                        ? charts.Color.fromHex(code: "#2D274CFF")
-                        : charts.MaterialPalette.white),
-              ),
-            ),
-          ),
+          child: GraphBuilder()
+              .buildTimeSeriesChartBarChart(data, height, inverseColors, week),
         ),
       );
     } else {
       return Center(
         child: Text(
           "There seems to be no training data this week...\nTime to start training!",
-          style: GoogleFonts.montserrat(color: Colors.white),
+          style: GoogleFonts.montserrat(color: ThemeColors.darkBlue),
         ),
       );
     }
   }
 
-  _buildLineGraphWithAreaAndPoints(
+  Widget _buildLineGraphWithAreaAndPoints(
       List<charts.Series<ActivitiesDataDateTime, DateTime>> data,
       double height,
       bool inverseColors,
@@ -819,64 +758,8 @@ class _HomeScreenState extends State<HomeScreen> {
       return Container(
         child: SizedBox(
           height: height,
-          child: new charts.TimeSeriesChart(
-            data,
-            animate: true,
-            defaultRenderer: new charts.LineRendererConfig(
-              includePoints: true,
-              includeArea: true,
-            ),
-            domainAxis: new charts.DateTimeAxisSpec(
-              renderSpec: charts.GridlineRendererSpec(
-                axisLineStyle: charts.LineStyleSpec(
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette
-                          .white, // this also doesn't change the Y axis labels
-                ),
-                labelStyle: new charts.TextStyleSpec(
-                  fontSize: 10,
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette.white,
-                ),
-                lineStyle: charts.LineStyleSpec(
-                  thickness: 2,
-                  color: inverseColors
-                      ? charts.Color.fromHex(code: "#2D274CFF")
-                      : charts.MaterialPalette.white,
-                ),
-              ),
-              tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
-                hour: new charts.TimeFormatterSpec(
-                  format: 'H',
-                  transitionFormat: 'H',
-                ),
-              ),
-            ),
-            primaryMeasureAxis: charts.NumericAxisSpec(
-              tickFormatterSpec:
-                  charts.BasicNumericTickFormatterSpec((num value) {
-                String valueTronc = value.toStringAsFixed(0);
-
-                return distance ? valueTronc + " km" : valueTronc + " h";
-              }),
-              tickProviderSpec:
-                  new charts.BasicNumericTickProviderSpec(desiredTickCount: 3),
-              renderSpec: charts.GridlineRendererSpec(
-                labelStyle: charts.TextStyleSpec(
-                    fontSize: 10,
-                    color: inverseColors
-                        ? charts.Color.fromHex(code: "#2D274CFF")
-                        : charts.MaterialPalette.white),
-                lineStyle: charts.LineStyleSpec(
-                    thickness: 2,
-                    color: inverseColors
-                        ? charts.Color.fromHex(code: "#2D274CFF")
-                        : charts.MaterialPalette.white),
-              ),
-            ),
-          ),
+          child: graphBuilder.buildTimeSeriesChartPointsLinesArea(
+              data, inverseColors, distance),
         ),
       );
     } else {
@@ -889,7 +772,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  _buildAverageSpeedProgression(
+  Widget _buildAverageSpeedProgression(
       List<RecordedActivity> activities, int type, bool inverseColors) {
     List<charts.Series<ActivitiesPrecisionNumData, int>> data =
         SortingDataService().getAverageSpeedData(activities, 25, type, false);
@@ -919,41 +802,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
-              child: charts.ScatterPlotChart(
-                data,
-                animate: true,
-                customSeriesRenderers: [
-                  new charts.LineRendererConfig(
-                      customRendererId: 'progressionLine',
-                      layoutPaintOrder: charts.LayoutViewPaintOrder.point + 1),
-                ],
-                domainAxis: charts.NumericAxisSpec(
-                  renderSpec: charts.GridlineRendererSpec(
-                    labelStyle: charts.TextStyleSpec(
-                      fontSize: 10,
-                      color: charts.Color.fromHex(code: "#2D274CFF"),
-                    ),
-                    lineStyle: charts.LineStyleSpec(
-                      thickness: 2,
-                      color: charts.Color.fromHex(code: "#2D274CFF"),
-                    ),
-                  ),
-                ),
-                primaryMeasureAxis: charts.NumericAxisSpec(
-                  tickProviderSpec:
-                      charts.BasicNumericTickProviderSpec(zeroBound: false),
-                  renderSpec: charts.GridlineRendererSpec(
-                    labelStyle: charts.TextStyleSpec(
-                      fontSize: 10,
-                      color: charts.Color.fromHex(code: "#2D274CFF"),
-                    ),
-                    lineStyle: charts.LineStyleSpec(
-                      thickness: 2,
-                      color: charts.Color.fromHex(code: "#2D274CFF"),
-                    ),
-                  ),
-                ),
-              ),
+              child: graphBuilder.buildScatterPlotChart(data),
             ),
           ),
         ],
@@ -983,6 +832,18 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return returnGoals;
+  }
+
+  /// Method to return an empty white container for slider pages
+  Widget _getEmptyContainer() {
+    return Container(
+      margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(32)),
+      ),
+    );
   }
 
   /// Method to return the name of the current month
