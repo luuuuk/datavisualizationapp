@@ -1,7 +1,9 @@
 # Banana Stats
 
-A Flutter application, visualizing your sports activity data. 
-![logo](https://github.com/luuuuk/datavisualizationapp/tree/develop/assets/banana_icon.png "Banana Stats Logo")
+A Flutter application, visualizing your sports activity data.
+
+<img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/assets/banana_icon.png" width=10% height=10%>
+
 
 ## Idea
 
