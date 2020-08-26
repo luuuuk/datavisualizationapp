@@ -29,10 +29,10 @@ class SortingDataService {
           case ActivityInfo.activity2Name:
             cyclingDistance += activity.distance;
             break;
-          case ActivityInfo.activity3Name:
+          case ActivityInfo.activity4Name:
             hikingDistance += activity.distance;
             break;
-          case ActivityInfo.activity4Name:
+          case ActivityInfo.activity3Name:
             break;
         }
       }
@@ -41,7 +41,7 @@ class SortingDataService {
     var data = [
       new ActivitiesData(ActivityInfo.activity1Name, runningDistance, ThemeColors.lightBlue),
       new ActivitiesData(ActivityInfo.activity2Name, cyclingDistance, ThemeColors.orange),
-      new ActivitiesData(ActivityInfo.activity3Name, hikingDistance, ThemeColors.blueGreenisShade1),
+      new ActivitiesData(ActivityInfo.activity4Name, hikingDistance, ThemeColors.blueGreenisShade1),
     ];
 
     var series = [
