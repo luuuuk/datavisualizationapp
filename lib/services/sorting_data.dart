@@ -23,25 +23,25 @@ class SortingDataService {
 
       if(int.parse(splittedDate[2]) == DateTime.now().year) {
         switch (activity.activityType) {
-          case "Running":
+          case ActivityInfo.activity1Name:
             runningDistance += activity.distance;
             break;
-          case "Cycling":
+          case ActivityInfo.activity2Name:
             cyclingDistance += activity.distance;
             break;
-          case "Hiking":
+          case ActivityInfo.activity3Name:
             hikingDistance += activity.distance;
             break;
-          case "Climbing":
+          case ActivityInfo.activity4Name:
             break;
         }
       }
     }
 
     var data = [
-      new ActivitiesData('Running', runningDistance, ThemeColors.lightBlue),
-      new ActivitiesData('Cycling', cyclingDistance, ThemeColors.orange),
-      new ActivitiesData('Hiking', hikingDistance, ThemeColors.blueGreenisShade1),
+      new ActivitiesData(ActivityInfo.activity1Name, runningDistance, ThemeColors.lightBlue),
+      new ActivitiesData(ActivityInfo.activity2Name, cyclingDistance, ThemeColors.orange),
+      new ActivitiesData(ActivityInfo.activity3Name, hikingDistance, ThemeColors.blueGreenisShade1),
     ];
 
     var series = [
@@ -75,16 +75,16 @@ class SortingDataService {
         int durationInMin = int.parse(stringDurationSplitted[0]) * 60 + int.parse(stringDurationSplitted[1]);
 
         switch (activity.activityType) {
-          case "Running":
+          case ActivityInfo.activity1Name:
             runningTime += durationInMin;
             break;
-          case "Cycling":
+          case ActivityInfo.activity2Name:
             cyclingTime += durationInMin;
             break;
-          case "Climbing":
+          case ActivityInfo.activity3Name:
             climbingTime += durationInMin;
             break;
-          case "Hiking":
+          case ActivityInfo.activity4Name:
             hikingTime += durationInMin;
             break;
         }
@@ -92,10 +92,10 @@ class SortingDataService {
     }
 
     var data = [
-      new ActivitiesData('Running', runningTime, ThemeColors.lightBlue),
-      new ActivitiesData('Cycling', cyclingTime, ThemeColors.orange),
-      new ActivitiesData('Climbing', climbingTime, ThemeColors.yellowGreenish),
-      new ActivitiesData('Hiking', hikingTime, ThemeColors.blueGreenisShade1),
+      new ActivitiesData(ActivityInfo.activity1Name, runningTime, ThemeColors.lightBlue),
+      new ActivitiesData(ActivityInfo.activity2Name, cyclingTime, ThemeColors.orange),
+      new ActivitiesData(ActivityInfo.activity3Name, climbingTime, ThemeColors.yellowGreenish),
+      new ActivitiesData(ActivityInfo.activity4Name, hikingTime, ThemeColors.blueGreenisShade1),
     ];
 
 
@@ -152,16 +152,16 @@ class SortingDataService {
                   int.parse(stringDurationSplitted[1]) / 60;
 
           switch (activity.activityType) {
-            case "Running":
+            case ActivityInfo.activity1Name:
               runningTimePerDay[i] += durationInMin;
               break;
-            case "Cycling":
+            case ActivityInfo.activity2Name:
               cyclingTimePerDay[i] += durationInMin;
               break;
-            case "Climbing":
+            case ActivityInfo.activity3Name:
               climbingTimePerDay[i] += durationInMin;
               break;
-            case "Hiking":
+            case ActivityInfo.activity4Name:
               hikingTimePerDay[i] += durationInMin;
               break;
           }
@@ -231,7 +231,7 @@ class SortingDataService {
 
     if (runningActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
-        id: 'Running',
+        id: ActivityInfo.activity1Name,
         colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
         domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -241,7 +241,7 @@ class SortingDataService {
     if (cyclingActivitiesTime.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Cycling',
+          id: ActivityInfo.activity2Name,
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -252,7 +252,7 @@ class SortingDataService {
     if (climbingActivitiesTime.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Climbing',
+          id: ActivityInfo.activity3Name,
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -263,7 +263,7 @@ class SortingDataService {
     if (hikingActivitiesTime.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Hiking',
+          id: ActivityInfo.activity4Name,
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -294,7 +294,7 @@ class SortingDataService {
     List<double> climbingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     List<double> hikingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-    /// Go through all activties from today-day-1 to today
+    /// Go through all activities from today-day-1 to today
     /// (weekday starts at 1)
     for (int i = 0; i < (DateTime.now().day); i++) {
       /// Check if activities match the date
@@ -314,16 +314,16 @@ class SortingDataService {
                   int.parse(stringDurationSplitted[1]) / 60;
 
           switch (activity.activityType) {
-            case "Running":
+            case ActivityInfo.activity1Name:
               runningTimePerDay[i] += durationInMin;
               break;
-            case "Cycling":
+            case ActivityInfo.activity2Name:
               cyclingTimePerDay[i] += durationInMin;
               break;
-            case "Climbing":
+            case ActivityInfo.activity3Name:
               climbingTimePerDay[i] += durationInMin;
               break;
-            case "Hiking":
+            case ActivityInfo.activity4Name:
               hikingTimePerDay[i] += durationInMin;
               break;
           }
@@ -393,7 +393,7 @@ class SortingDataService {
 
     if (runningActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
-        id: 'Running',
+        id: ActivityInfo.activity1Name,
         colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
         domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -403,7 +403,7 @@ class SortingDataService {
     if (cyclingActivitiesTime.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Cycling',
+          id: ActivityInfo.activity2Name,
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -414,7 +414,7 @@ class SortingDataService {
     if (climbingActivitiesTime.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Climbing',
+          id: ActivityInfo.activity3Name,
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -425,7 +425,7 @@ class SortingDataService {
     if (hikingActivitiesTime.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Hiking',
+          id: ActivityInfo.activity4Name,
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -475,16 +475,16 @@ class SortingDataService {
                   int.parse(stringDurationSplitted[1]) / 60;
 
           switch (activity.activityType) {
-            case "Running":
+            case ActivityInfo.activity1Name:
               runningTimePerWeek[0] += durationInMin;
               break;
-            case "Cycling":
+            case ActivityInfo.activity2Name:
               cyclingTimePerWeek[0] += durationInMin;
               break;
-            case "Climbing":
+            case ActivityInfo.activity3Name:
               climbingTimePerWeek[0] += durationInMin;
               break;
-            case "Hiking":
+            case ActivityInfo.activity4Name:
               hikingTimePerWeek[0] += durationInMin;
           }
         }
@@ -503,16 +503,16 @@ class SortingDataService {
                   int.parse(stringDurationSplitted[1]) / 60;
 
           switch (activity.activityType) {
-            case "Running":
+            case ActivityInfo.activity1Name:
               runningTimePerWeek[i+1] += durationInMin;
               break;
-            case "Cycling":
+            case ActivityInfo.activity2Name:
               cyclingTimePerWeek[i+1] += durationInMin;
               break;
-            case "Climbing":
+            case ActivityInfo.activity3Name:
               climbingTimePerWeek[i+1] += durationInMin;
               break;
-            case "Hiking":
+            case ActivityInfo.activity4Name:
               hikingTimePerWeek[i+1] += durationInMin;
           }
         }
@@ -548,7 +548,7 @@ class SortingDataService {
 
     if (runningActivitiesTime.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
-        id: 'Running',
+        id: ActivityInfo.activity1Name,
         colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
         domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -558,7 +558,7 @@ class SortingDataService {
     if (cyclingActivitiesTime.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Cycling',
+          id: ActivityInfo.activity2Name,
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -569,7 +569,7 @@ class SortingDataService {
     if (climbingActivitiesTime.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Climbing',
+          id: ActivityInfo.activity3Name,
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -580,7 +580,7 @@ class SortingDataService {
     if (hikingActivitiesTime.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Hiking',
+          id: ActivityInfo.activity4Name,
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -624,13 +624,13 @@ class SortingDataService {
           int distanceKm = activity.distance;
 
           switch (activity.activityType) {
-            case "Running":
+            case ActivityInfo.activity1Name:
               runningDistancePerWeek[0] += distanceKm;
               break;
-            case "Cycling":
+            case ActivityInfo.activity2Name:
               cyclingDistancePerWeek[0] += distanceKm;
               break;
-            case "Hiking":
+            case ActivityInfo.activity4Name:
               hikingDistancePerWeek[0] += distanceKm;
               break;
           }
@@ -648,13 +648,13 @@ class SortingDataService {
           int distanceKm = activity.distance;
 
           switch (activity.activityType) {
-            case "Running":
+            case ActivityInfo.activity1Name:
               runningDistancePerWeek[i+1] += distanceKm;
               break;
-            case "Cycling":
+            case ActivityInfo.activity2Name:
               cyclingDistancePerWeek[i+1] += distanceKm;
               break;
-            case "Hiking":
+            case ActivityInfo.activity4Name:
               hikingDistancePerWeek[i+1] += distanceKm;
               break;
           }
@@ -685,7 +685,7 @@ class SortingDataService {
 
     if (runningActivitiesDistance.isNotEmpty) {
       series.add(charts.Series<ActivitiesDataDateTime, DateTime>(
-        id: 'Running',
+        id: ActivityInfo.activity1Name,
         colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
         domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
         measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -695,7 +695,7 @@ class SortingDataService {
     if (cyclingActivitiesDistance.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Cycling',
+          id: ActivityInfo.activity2Name,
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -706,7 +706,7 @@ class SortingDataService {
     if (hikingActivitiesDistance.isNotEmpty) {
       series.add(
         charts.Series<ActivitiesDataDateTime, DateTime>(
-          id: 'Hiking',
+          id: ActivityInfo.activity4Name,
           colorFn: (ActivitiesDataDateTime sales, __) => sales.color,
           domainFn: (ActivitiesDataDateTime sales, _) => sales.dateTime,
           measureFn: (ActivitiesDataDateTime sales, _) => sales.number,
@@ -740,7 +740,7 @@ class SortingDataService {
     });
 
     int noOfIncludedActivities = 0;
-    String lookingForType = type == 0 ? "Running" : "Cycling";
+    String lookingForType = type == 0 ? ActivityInfo.activity1Name : ActivityInfo.activity2Name;
 
     /// Iterate through all activities
     for(RecordedActivity activity in recAct){
@@ -782,7 +782,7 @@ class SortingDataService {
           type == 0 ? ThemeColors.lightBlue : ThemeColors.orange));
 
       series.add(charts.Series<ActivitiesPrecisionNumData, int>(
-        id: type == 0 ? 'Running' : 'Cycling',
+        id: type == 0 ? ActivityInfo.activity1Name : ActivityInfo.activity2Name,
         colorFn: (ActivitiesPrecisionNumData sales, __) => sales.color,
         domainFn: (ActivitiesPrecisionNumData sales, _) => averageSpeeds.length - sales.id,
         measureFn: (ActivitiesPrecisionNumData sales, _) => sales.number,
@@ -853,7 +853,7 @@ class SortingDataService {
 
         /// Add up duration and distance per activity type
         switch (activity.activityType) {
-          case "Running":
+          case ActivityInfo.activity1Name:
             {
               runningTime[0] += durationInHours;
               runningTime[1] += durationInMinutes;
@@ -861,7 +861,7 @@ class SortingDataService {
               runningTime[3]++;
             }
             break;
-          case "Cycling":
+          case ActivityInfo.activity2Name:
             {
               cyclingTime[0] += durationInHours;
               cyclingTime[1] += durationInMinutes;
@@ -869,14 +869,14 @@ class SortingDataService {
               cyclingTime[3]++;
             }
             break;
-          case "Climbing":
+          case ActivityInfo.activity3Name:
             {
               climbingTime[0] += durationInHours;
               climbingTime[1] += durationInMinutes;
               climbingTime[3]++;
             }
             break;
-          case "Hiking":
+          case ActivityInfo.activity4Name:
             {
               hikingTime[0] += durationInHours;
               hikingTime[1] += durationInMinutes;

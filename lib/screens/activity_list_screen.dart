@@ -170,7 +170,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                                     children: [
                                       Text("\t\t\tDuration: " + snapshot.data[index].duration, style: GoogleFonts.montserrat(
                                           color: Colors.white),),
-                                      snapshot.data[index].activityType == "Climbing" ? Text("\t\t\tDistance: - km", style: GoogleFonts.montserrat(
+                                      snapshot.data[index].activityType == ActivityInfo.activity3Name ? Text("\t\t\tDistance: - km", style: GoogleFonts.montserrat(
                                           color: Colors.white),) : Text("\t\t\tDistance: " + snapshot.data[index].distance.toString()+ " km", style: GoogleFonts.montserrat(
                                           color: Colors.white),),
                                     ],
@@ -318,15 +318,15 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
     Icon typeIcon;
 
     switch(activity.activityType){
-      case "Running": typeIcon = Icon(Icons.directions_run, color: ThemeColors.lightBlue,);
+      case ActivityInfo.activity1Name: typeIcon = Icon(ActivityInfo.activity1Icon, color: ThemeColors.lightBlue,);
       break;
-      case "Cycling": typeIcon = Icon(Icons.directions_bike, color: ThemeColors.orange,);
+      case ActivityInfo.activity2Name: typeIcon = Icon(ActivityInfo.activity2Icon, color: ThemeColors.orange,);
       break;
-      case "Climbing": typeIcon = Icon(Icons.filter_hdr, color: ThemeColors.yellowGreenish,);
+      case ActivityInfo.activity3Name: typeIcon = Icon(ActivityInfo.activity3Icon, color: ThemeColors.yellowGreenish,);
       break;
-      case "Hiking": typeIcon = Icon(Icons.directions_walk, color: ThemeColors.blueGreenisShade2,);
+      case ActivityInfo.activity4Name: typeIcon = Icon(ActivityInfo.activity4Icon, color: ThemeColors.blueGreenisShade2,);
       break;
-      default: typeIcon = Icon(Icons.directions_run, color: ThemeColors.lightBlue,);
+      default: typeIcon = Icon(ActivityInfo.activity1Icon, color: ThemeColors.lightBlue,);
     }
 
     return typeIcon;

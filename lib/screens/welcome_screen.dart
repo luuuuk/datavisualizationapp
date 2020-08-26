@@ -51,9 +51,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       setState(() {});
     });
 
-    _container1controller.animateTo(200);
-    _container2controller.animateTo(200);
-    _container3controller.animateTo(200);
+    _container1controller.animateTo(160);
+    _container2controller.animateTo(180);
+    _container3controller.animateTo(160);
   }
 
   void dispose() {

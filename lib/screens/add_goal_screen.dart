@@ -157,7 +157,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                 padding: EdgeInsets.all(16),
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
                                 child: Icon(
-                                  Icons.directions_run,
+                                  ActivityInfo.activity1Icon,
                                   color: Colors.white,
                                 ),
                               ),
@@ -182,7 +182,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                 padding: EdgeInsets.all(16),
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
                                 child: Icon(
-                                  Icons.directions_bike,
+                                  ActivityInfo.activity2Icon,
                                   color: Colors.white,
                                 ),
                               ),
@@ -207,7 +207,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                 padding: EdgeInsets.all(16),
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
                                 child: Icon(
-                                  Icons.filter_hdr,
+                                  ActivityInfo.activity3Icon,
                                   color: Colors.white,
                                 ),
                               ),
@@ -232,7 +232,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                 padding: EdgeInsets.all(16),
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
                                 child: Icon(
-                                  Icons.directions_walk,
+                                  ActivityInfo.activity4Icon,
                                   color: Colors.white,
                                 ),
                               ),
@@ -297,7 +297,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                   style:  TextStyle(
                                       fontFamily: 'Montserrat',
                                       color: Colors.white,
-                                      fontSize: 16.0),
+                                      fontSize: 14.0),
                                 ),
                                 ),
                               ),
@@ -325,7 +325,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                   style:  TextStyle(
                                       fontFamily: 'Montserrat',
                                       color: Colors.white,
-                                      fontSize: 16.0),
+                                      fontSize: 14.0),
                                 ),
                               ),
                             ),
@@ -353,7 +353,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                   style:  TextStyle(
                                       fontFamily: 'Montserrat',
                                       color: Colors.white,
-                                      fontSize: 16.0),
+                                      fontSize: 14.0),
                                 ),
                               ),
                             ),
@@ -417,7 +417,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                   style:  TextStyle(
                                       fontFamily: 'Montserrat',
                                       color: Colors.white,
-                                      fontSize: 16.0),
+                                      fontSize: 14.0),
                                 ),
                               ),
                             ),
@@ -445,7 +445,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                   style:  TextStyle(
                                       fontFamily: 'Montserrat',
                                       color: Colors.white,
-                                      fontSize: 16.0),
+                                      fontSize: 14.0),
                                 ),
                               ),
                             ),
@@ -503,7 +503,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                             child: TextFormField(
                               onEditingComplete: () => FocusScope.of(context).unfocus(),
                               inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.digitsOnly
+                                //FilteringTextInputFormatter.digitsOnly
                               ],
                               onChanged: (String enteredDistance) => {
                                 setState(() {

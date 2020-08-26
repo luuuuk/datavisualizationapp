@@ -83,7 +83,7 @@ class GoalWidget extends StatelessWidget {
               padding: EdgeInsets.only(top: 16),
               child: CircularPercentIndicator(
                 lineWidth: 4,
-                radius: 82.0,
+                radius: 75.0,
                 percent: (currentNumber / goalNumber) > 1
                     ? 1.0
                     : (currentNumber / goalNumber),
@@ -225,27 +225,27 @@ class GoalWidget extends StatelessWidget {
     switch (activityType) {
       case 0:
         return Icon(
-          Icons.directions_run,
+          ActivityInfo.activity1Icon,
           color: ThemeColors.lightBlue,
         );
       case 1:
         return Icon(
-          Icons.directions_bike,
+          ActivityInfo.activity2Icon,
           color: ThemeColors.orange,
         );
       case 2:
         return Icon(
-          Icons.filter_hdr,
+          ActivityInfo.activity3Icon,
           color: ThemeColors.yellowGreenish,
         );
       case 3:
         return Icon(
-          Icons.directions_walk,
+          ActivityInfo.activity4Icon,
           color: ThemeColors.blueGreenisShade1,
         );
       default:
         return Icon(
-          Icons.directions_run,
+          ActivityInfo.activity1Icon,
           color: ThemeColors.lightBlue,
         );
     }
@@ -289,19 +289,19 @@ class GoalWidget extends StatelessWidget {
     } else {
       switch (activityType) {
         case 0:
-          goal += "Running ";
+          goal = goal + ActivityInfo.activity1Name + " ";
           break;
         case 1:
-          goal += "Cycling ";
+          goal = goal + ActivityInfo.activity2Name + " ";
           break;
         case 2:
-          goal += "Climbing ";
+          goal = goal + ActivityInfo.activity3Name + " ";
           break;
         case 3:
-          goal += "Hiking ";
+          goal = goal + ActivityInfo.activity4Name + " ";
           break;
         default:
-          goal += "Running ";
+          goal = goal + ActivityInfo.activity1Name + " ";
       }
 
       goal += "Goal";

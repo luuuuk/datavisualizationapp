@@ -37,3 +37,15 @@ class VisualizationTheme {
     ),
   );
 }
+
+class ActivityInfo {
+  static const String activity1Name = "Running";
+  static const String activity2Name = "Cycling";
+  static const String activity3Name = "Climbing";
+  static const String activity4Name = "Hiking";
+
+  static const IconData activity1Icon = Icons.directions_run;
+  static const IconData activity2Icon = Icons.directions_bike;
+  static const IconData activity3Icon = Icons.filter_hdr;
+  static const IconData activity4Icon = Icons.directions_walk;
+}

@@ -19,20 +19,24 @@ class OverviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     List<List<int>> dataList =
         SortingDataService().getOverviewData(activities, overviewCode);
-    List<Icon> iconList = [Icon(
-      Icons.directions_run,
-      color: ThemeColors.darkBlue,
-    ),
+    List<Icon> iconList = [
       Icon(
-        Icons.directions_bike,
+        ActivityInfo.activity1Icon,
+        color: ThemeColors.darkBlue,
+      ),
+      Icon(
+        ActivityInfo.activity2Icon,
         color: ThemeColors.orange,
-      ),Icon(
-        Icons.filter_hdr,
+      ),
+      Icon(
+        ActivityInfo.activity3Icon,
         color: ThemeColors.cream,
-      ),Icon(
-        Icons.directions_walk,
+      ),
+      Icon(
+        ActivityInfo.activity4Icon,
         color: ThemeColors.blueGreenisShade1,
-      )];
+      )
+    ];
 
     return SizedBox(
       height: 101,
@@ -41,52 +45,52 @@ class OverviewWidget extends StatelessWidget {
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          dataList[0][3].toString() + " x ",
-                          style: GoogleFonts.montserrat(
-                              color: ThemeColors.darkBlue, fontSize: 11),
-                        ),
-                        iconList[0],
-                      ],
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        dataList[0][0].toString() +
-                            " h : " +
-                            dataList[0][1].toString() +
-                            " m",
-                        style: GoogleFonts.montserrat(
-                            color: ThemeColors.darkBlue, fontSize: 11),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        dataList[0][2].toString() + " km",
-                        style: GoogleFonts.montserrat(
-                            color: ThemeColors.darkBlue, fontSize: 11),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        dataList[0][3] == 0
-                            ? "- km/act"
-                            : (dataList[0][2] / dataList[0][3])
-                            .toStringAsPrecision(3) +
-                            " km/act",
-                        style: GoogleFonts.montserrat(
-                            color: ThemeColors.darkBlue, fontSize: 11),
-                      ),
-                    ),
-                  ],
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    dataList[0][3].toString() + " x ",
+                    style: GoogleFonts.montserrat(
+                        color: ThemeColors.darkBlue, fontSize: 11),
+                  ),
+                  iconList[0],
+                ],
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Text(
+                  dataList[0][0].toString() +
+                      " h : " +
+                      dataList[0][1].toString() +
+                      " m",
+                  style: GoogleFonts.montserrat(
+                      color: ThemeColors.darkBlue, fontSize: 11),
                 ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Text(
+                  dataList[0][2].toString() + " km",
+                  style: GoogleFonts.montserrat(
+                      color: ThemeColors.darkBlue, fontSize: 11),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Text(
+                  dataList[0][3] == 0
+                      ? "- km/act"
+                      : (dataList[0][2] / dataList[0][3])
+                              .toStringAsPrecision(3) +
+                          " km/act",
+                  style: GoogleFonts.montserrat(
+                      color: ThemeColors.darkBlue, fontSize: 11),
+                ),
+              ),
+            ],
+          ),
           VerticalDivider(
             color: ThemeColors.darkBlue,
             thickness: 1,
@@ -131,8 +135,8 @@ class OverviewWidget extends StatelessWidget {
                   dataList[1][3] == 0
                       ? "- km/act"
                       : (dataList[1][2] / dataList[1][3])
-                      .toStringAsPrecision(3) +
-                      " km/act",
+                              .toStringAsPrecision(3) +
+                          " km/act",
                   style: GoogleFonts.montserrat(
                       color: ThemeColors.darkBlue, fontSize: 11),
                 ),
@@ -183,8 +187,8 @@ class OverviewWidget extends StatelessWidget {
                   dataList[2][3] == 0
                       ? "- km/act"
                       : (dataList[2][2] / dataList[2][3])
-                      .toStringAsPrecision(3) +
-                      " km/act",
+                              .toStringAsPrecision(3) +
+                          " km/act",
                   style: GoogleFonts.montserrat(
                       color: ThemeColors.darkBlue, fontSize: 11),
                 ),
@@ -235,8 +239,8 @@ class OverviewWidget extends StatelessWidget {
                   dataList[3][3] == 0
                       ? "- km/act"
                       : (dataList[3][2] / dataList[3][3])
-                      .toStringAsPrecision(3) +
-                      " km/act",
+                              .toStringAsPrecision(3) +
+                          " km/act",
                   style: GoogleFonts.montserrat(
                       color: ThemeColors.darkBlue, fontSize: 11),
                 ),

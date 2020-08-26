@@ -561,7 +561,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return FutureBuilder<List<ActivityGoal>>(
         future: getGoalData(timeSpan),
         builder: (context, AsyncSnapshot<List<ActivityGoal>> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data.isNotEmpty) {
             return Container(
               height: 100,
               child: Column(
@@ -601,7 +601,16 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           } else {
             return Container(
-              child: Text("You have not yet defined a personal goal."),
+              child: Center(
+                child: Text(
+                  "You have no goals defined.",
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      color: ThemeColors.darkBlue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12.0),
+                ),
+              ),
             );
           }
         });
@@ -652,7 +661,7 @@ class _HomeScreenState extends State<HomeScreen> {
         RotatedBox(
           quarterTurns: 3,
           child: Text(
-            "Cycling",
+            ActivityInfo.activity2Name,
             style: TextStyle(
               fontFamily: 'Montserrat',
               color: ThemeColors.darkBlue,
@@ -687,7 +696,7 @@ class _HomeScreenState extends State<HomeScreen> {
         RotatedBox(
           quarterTurns: 3,
           child: Text(
-            "Running",
+            ActivityInfo.activity1Name,
             style: TextStyle(
               fontFamily: 'Montserrat',
               color: ThemeColors.darkBlue,
@@ -785,7 +794,7 @@ class _HomeScreenState extends State<HomeScreen> {
           RotatedBox(
             quarterTurns: 3,
             child: Text(
-              type == 0 ? "Running" : "Cycling",
+              type == 0 ? ActivityInfo.activity1Name : ActivityInfo.activity2Name,
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 color: ThemeColors.darkBlue,

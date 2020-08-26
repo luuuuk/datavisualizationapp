@@ -180,7 +180,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                 style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   color: Colors.white,
-                                  fontSize: 20.0,
+                                  fontSize: 18.0,
                                 ),
                               ),
                             ),
@@ -261,7 +261,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                             ),
                                           ),
                                         ),
@@ -304,7 +304,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                             ),
                                           ),
                                         ),
@@ -347,7 +347,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                             ),
                                           ),
                                         ),
@@ -390,7 +390,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                             ),
                                           ),
                                         ),
@@ -599,7 +599,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
               mode: CupertinoTimerPickerMode.hms,
               minuteInterval: 1,
               secondInterval: 1,
-              initialTimerDuration: selectedDuration,
+              initialTimerDuration: Duration(hours: 1),
               onTimerDurationChanged: (Duration changedtimer) {
                 setState(() {
                   selectedDuration = changedtimer;
@@ -668,9 +668,10 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
 
   int _getActivityType(){
     switch(widget.activityToUpdate.activityType){
-      case "Running": return 0;
-      case "Cycling": return 1;
-      case "Climbing": return 2;
+      case ActivityInfo.activity1Name: return 0;
+      case ActivityInfo.activity2Name: return 1;
+      case ActivityInfo.activity3Name: return 2;
+      case ActivityInfo.activity4Name: return 3;
       default: return 0;
     }
   }

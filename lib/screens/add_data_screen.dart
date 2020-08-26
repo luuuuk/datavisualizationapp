@@ -19,20 +19,6 @@ class AddDataScreen extends StatefulWidget {
 class _AddDataScreenState extends State<AddDataScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   DateTime dateTime;
-  final Map<int, Widget> type = <int, Widget>{
-    0: Text(
-      "Running",
-      style: GoogleFonts.montserrat(),
-    ),
-    1: Text(
-      "Cycling",
-      style: GoogleFonts.montserrat(),
-    ),
-    2: Text(
-      "Climbing",
-      style: GoogleFonts.montserrat(),
-    ),
-  };
   int activityTypeValue = 0;
   TextEditingController _dateController = new TextEditingController();
   TextEditingController _timeController = new TextEditingController();
@@ -233,18 +219,18 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                         RotatedBox(
                                           quarterTurns: 3,
                                           child: Text(
-                                            'Running',
+                                            ActivityInfo.activity1Name,
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                             ),
                                           ),
                                         ),
                                         Container(
                                           padding: EdgeInsets.only(top: 16),
                                           child: Icon(
-                                            Icons.directions_run,
+                                            ActivityInfo.activity1Icon,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -276,18 +262,18 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                         RotatedBox(
                                           quarterTurns: 3,
                                           child: Text(
-                                            'Cycling',
+                                            ActivityInfo.activity2Name,
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                             ),
                                           ),
                                         ),
                                         Container(
                                           padding: EdgeInsets.only(top: 16),
                                           child: Icon(
-                                            Icons.directions_bike,
+                                            ActivityInfo.activity2Icon,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -319,18 +305,18 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                         RotatedBox(
                                           quarterTurns: 3,
                                           child: Text(
-                                            'Climbing',
+                                            ActivityInfo.activity3Name,
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                             ),
                                           ),
                                         ),
                                         Container(
                                           padding: EdgeInsets.only(top: 16),
                                           child: Icon(
-                                            Icons.filter_hdr,
+                                            ActivityInfo.activity3Icon,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -362,18 +348,18 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                         RotatedBox(
                                           quarterTurns: 3,
                                           child: Text(
-                                            'Hiking',
+                                            ActivityInfo.activity4Name,
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                             ),
                                           ),
                                         ),
                                         Container(
                                           padding: EdgeInsets.only(top: 16),
                                           child: Icon(
-                                            Icons.directions_walk,
+                                            ActivityInfo.activity4Icon,
                                             color: Colors.white,
                                           ),
                                         ),
