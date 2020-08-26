@@ -1,16 +1,29 @@
-# data_visualization_app
+# Banana Stats
 
-A Flutter application, visualizing your favorite data.
+A Flutter application, visualizing your sports activity data. ![logo](https://github.com/luuuuk/datavisualizationapp/tree/develop/assets/banana_icon.png "Banana Stats Logo")
 
-## Getting Started
+## Idea
 
-This project is a starting point for a Flutter application.
+Add your data for four different activity types, see your stats, set goals and follow your progression:
 
-A few resources to get you started if this is your first Flutter project:
+Activities:
+- Running
+- Cycling
+- Climbing
+- Hiking
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Stats:
+- weekly overview
+- monthly overview
+- 12 weeks overview
+- annual overview
+- average speed of the last 25 activities in the categories **Running** and **Cycling**
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Goals for a specific activity type, for a specific time span and for a specific goal type:
+- time span:
+  - weekly goals
+  - monthly goals
+  - annual goals
+- goal type:
+  - distance
+  - time
