@@ -786,6 +786,8 @@ class _HomeScreenState extends State<HomeScreen> {
     List<charts.Series<ActivitiesPrecisionNumData, int>> data =
         SortingDataService().getAverageSpeedData(activities, 25, type, false);
 
+    String nameToUse = type == 0 ? ActivityInfo.activity1Name : ActivityInfo.activity2Name;
+
     if (data.isNotEmpty) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -819,7 +821,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       return Container(
         child: Text(
-          "No activities yet.",
+          "No " + nameToUse + " activities yet.",
           style: GoogleFonts.montserrat(
             color: inverseColors ? ThemeColors.darkBlue : Colors.white,
           ),

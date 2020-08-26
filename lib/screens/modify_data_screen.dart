@@ -257,7 +257,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                         RotatedBox(
                                           quarterTurns: 3,
                                           child: Text(
-                                            'Running',
+                                            ActivityInfo.activity1Name,
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
@@ -268,7 +268,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                         Container(
                                           padding: EdgeInsets.only(top: 16),
                                           child: Icon(
-                                            Icons.directions_run,
+                                            ActivityInfo.activity1Icon,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -300,7 +300,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                         RotatedBox(
                                           quarterTurns: 3,
                                           child: Text(
-                                            'Cycling',
+                                            ActivityInfo.activity2Name,
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
@@ -311,7 +311,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                         Container(
                                           padding: EdgeInsets.only(top: 16),
                                           child: Icon(
-                                            Icons.directions_bike,
+                                            ActivityInfo.activity2Icon,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -343,7 +343,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                         RotatedBox(
                                           quarterTurns: 3,
                                           child: Text(
-                                            'Climbing',
+                                            ActivityInfo.activity3Name,
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
@@ -354,7 +354,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                         Container(
                                           padding: EdgeInsets.only(top: 16),
                                           child: Icon(
-                                            Icons.filter_hdr,
+                                            ActivityInfo.activity3Icon,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -386,7 +386,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                         RotatedBox(
                                           quarterTurns: 3,
                                           child: Text(
-                                            'Hiking',
+                                            ActivityInfo.activity4Name,
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               color: Colors.white,
@@ -397,7 +397,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                         Container(
                                           padding: EdgeInsets.only(top: 16),
                                           child: Icon(
-                                            Icons.directions_walk,
+                                            ActivityInfo.activity4Icon,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -632,15 +632,15 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
     String activityType;
 
     switch(activityTypeValue){
-      case 0: activityType = "Running";
+      case 0: activityType = ActivityInfo.activity1Name;
       break;
-      case 1: activityType = "Cycling";
+      case 1: activityType = activityType = ActivityInfo.activity2Name;
       break;
-      case 2: activityType = "Climbing";
+      case 2: activityType = activityType = ActivityInfo.activity3Name;
       break;
-      case 3:activityType = "Hiking";
+      case 3:activityType = activityType = ActivityInfo.activity4Name;
       break;
-      default: activityType = "Running";
+      default: activityType = activityType = ActivityInfo.activity1Name;
     }
 
     return activityType;
