@@ -583,19 +583,19 @@ class _AddDataScreenState extends State<AddDataScreen> {
     String activityType;
     switch (activityTypeValue) {
       case 0:
-        activityType = "Running";
+        activityType = ActivityInfo.activity1Name;
         break;
       case 1:
-        activityType = "Cycling";
+        activityType = ActivityInfo.activity2Name;
         break;
       case 2:
-        activityType = "Climbing";
+        activityType = ActivityInfo.activity3Name;
         break;
       case 3:
-        activityType = "Hiking";
+        activityType = ActivityInfo.activity4Name;
         break;
       default:
-        activityType = "Running";
+        activityType = ActivityInfo.activity1Name;
     }
 
     RecordedActivity newActivity = RecordedActivity(
