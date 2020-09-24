@@ -185,10 +185,10 @@ class OverviewWidget extends StatelessWidget {
                 padding: EdgeInsets.only(top: 8.0),
                 child: Text(
                   dataList[2][3] == 0
-                      ? "- km/act"
-                      : (dataList[2][2] / dataList[2][3])
+                      ? "- h/act"
+                      : ((dataList[2][0] + dataList[2][1]/60) / dataList[2][3])
                               .toStringAsPrecision(3) +
-                          " km/act",
+                          " h/act",
                   style: GoogleFonts.montserrat(
                       color: ThemeColors.darkBlue, fontSize: 11),
                 ),
