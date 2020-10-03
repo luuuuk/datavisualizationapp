@@ -23,9 +23,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   double _currentPosition = 0;
   GraphBuilder graphBuilder = GraphBuilder();
+  int weeksInPast = 0;
+  int monthsInPast = 0;
+  int yearsInPast = 0;
 
   @override
   Widget build(BuildContext context) {
+
+    print("weeksInPast = " + weeksInPast.toString() + "\nmonthsInPast = " + monthsInPast.toString() + "\nyearsInPast = " + yearsInPast.toString());
+
     return Scaffold(
       body: Container(
         color: ThemeColors.darkBlue,
@@ -323,6 +329,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back_ios, color: ThemeColors.darkBlue, size: 16,),
+                      onPressed: (){
+                        /// Load data for previous week
+                        setState(() {
+                          weeksInPast++;
+                        });
+                      },
+                    ),
                     Text(
                       "Weekly",
                       style: TextStyle(
@@ -340,6 +355,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: ThemeColors.darkBlue,
                           fontWeight: FontWeight.bold,
                           fontSize: 16.0),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.arrow_forward_ios, color: weeksInPast == 0 ? Colors.white : ThemeColors.darkBlue, size: 16,),
+                      onPressed: (){
+                        /// Load data for next week if displayed week is not the current week
+                        if(weeksInPast > 0){
+                          setState(() {
+                            weeksInPast--;
+                          });
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -371,6 +397,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back_ios, color: ThemeColors.darkBlue, size: 16,),
+                      onPressed: (){
+                        /// Load data for previous month
+                        setState(() {
+                          monthsInPast++;
+                        });
+                      },
+                    ),
                     Text(
                       "Monthly Overview",
                       style: TextStyle(
@@ -388,6 +423,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: ThemeColors.darkBlue,
                           fontWeight: FontWeight.bold,
                           fontSize: 16.0),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.arrow_forward_ios, color: monthsInPast == 0 ? Colors.white : ThemeColors.darkBlue, size: 16,),
+                      onPressed: (){
+                        /// Load data for next month if displayed month is not the current month
+                        if(monthsInPast > 0){
+                          setState(() {
+                            monthsInPast--;
+                          });
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -469,6 +515,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back_ios, color: ThemeColors.darkBlue, size: 16,),
+                      onPressed: (){
+                        /// Load data for previous year
+                        setState(() {
+                          yearsInPast++;
+                        });
+                      },
+                    ),
                     Text(
                       "Annual Overview",
                       style: TextStyle(
@@ -486,6 +541,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: ThemeColors.darkBlue,
                           fontWeight: FontWeight.bold,
                           fontSize: 16.0),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.arrow_forward_ios, color: yearsInPast == 0 ? Colors.white : ThemeColors.darkBlue, size: 16,),
+                      onPressed: (){
+                        /// Load data for next year if displayed year is not the current week
+                        if(yearsInPast > 0){
+                          setState(() {
+                            yearsInPast--;
+                          });
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -721,6 +787,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildWeeklyActivityChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
         SortingDataService().getWeeklyActivity(activities);
+
+    /// include [weeksInPast]
 
     return _buildActivityBarChart(data, 160, true, true);
   }
