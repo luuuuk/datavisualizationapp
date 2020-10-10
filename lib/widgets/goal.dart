@@ -82,6 +82,8 @@ class GoalWidget extends StatelessWidget {
             Container(
               padding: EdgeInsets.only(top: 16),
               child: CircularPercentIndicator(
+                animation: true,
+                animationDuration: 1,
                 lineWidth: 4,
                 radius: 75.0,
                 percent: (currentNumber / goalNumber) > 1

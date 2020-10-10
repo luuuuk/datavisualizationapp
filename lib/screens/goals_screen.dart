@@ -181,7 +181,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                                         child: FutureBuilder<double>(
                                             future: SortingDataService()
                                                 .getCurrentGoalProgress(
-                                                    snapshot.data[index]),
+                                                    snapshot.data[index], 0),
                                             builder: (context,
                                                 AsyncSnapshot<double>
                                                     goalProgress) {

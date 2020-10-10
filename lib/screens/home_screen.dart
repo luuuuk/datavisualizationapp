@@ -640,6 +640,18 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Method to return a list view containing the goals for the specified time span
   /// where 0: week, 1: month, 2: year
   Widget _buildGoalList(int timeSpan) {
+
+    int retroView;
+    switch(timeSpan){
+      case 0: retroView = weeksInPast;
+      break;
+      case 1: retroView = monthsInPast;
+      break;
+      case 2: retroView = yearsInPast;
+      break;
+      default: retroView = weeksInPast;
+    }
+
     return FutureBuilder<List<ActivityGoal>>(
         future: getGoalData(timeSpan),
         builder: (context, AsyncSnapshot<List<ActivityGoal>> snapshot) {
@@ -658,7 +670,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: FutureBuilder<double>(
                                 future: SortingDataService()
                                     .getCurrentGoalProgress(
-                                        snapshot.data[index]),
+                                        snapshot.data[index], retroView),
                                 builder: (context,
                                     AsyncSnapshot<double> goalProgress) {
                                   if (goalProgress.hasData) {

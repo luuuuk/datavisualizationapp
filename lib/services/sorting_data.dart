@@ -1015,12 +1015,14 @@ class SortingDataService {
     return returnList;
   }
 
-  Future<double> getCurrentGoalProgress(ActivityGoal goal) async {
+  /// Function to return the goal progress for a given [goal], in a given
+  /// timeframe, which includes weeks/months/years in the past given by [retroView]
+  Future<double> getCurrentGoalProgress(ActivityGoal goal, int retroView) async {
     DatabaseManager dbManager = new DatabaseManager();
     List<RecordedActivity> activities = await dbManager.getActivities();
 
     List data =
-        SortingDataService().getOverviewData(activities, goal.timeFrame, 0);
+        SortingDataService().getOverviewData(activities, goal.timeFrame, retroView);
 
     double goalProgress = 0.0;
 
