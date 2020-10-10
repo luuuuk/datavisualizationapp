@@ -263,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Method to build the BarChart containing the data for the distance of the given [activities]
   Widget _buildYearlyDistanceChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesData, String>> data =
-        SortingDataService().getYearlyActivitiesDistance(activities);
+        SortingDataService().getYearlyActivitiesDistance(activities, yearsInPast);
 
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.14,
@@ -274,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Method to build the BarChart containing the data for the duration of the given [activities]
   Widget _buildYearlyDurationChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesData, String>> data =
-        SortingDataService().getYearlyActivitiesTime(activities);
+        SortingDataService().getYearlyActivitiesTime(activities, yearsInPast);
 
     int totalHours = 0;
 
@@ -282,39 +282,55 @@ class _HomeScreenState extends State<HomeScreen> {
       totalHours += data[0].data[i].number ~/ 60;
     }
 
-    return SizedBox(
-      height: 140.0,
-      child: Stack(
-        children: [
-          new charts.PieChart(
-            data,
-            animate: true,
-            animationDuration: Duration(seconds: 1),
-            defaultRenderer: new charts.ArcRendererConfig(
-              arcWidth: 18,
-              arcRendererDecorators: [
-                new charts.ArcLabelDecorator(
-                  labelPosition: charts.ArcLabelPosition.outside,
-                  outsideLabelStyleSpec: charts.TextStyleSpec(
-                      color: charts.Color.fromHex(code: "#2D274CFF"),
-                      fontSize: 12),
-                ),
-              ],
-            ),
+    if(totalHours == 0){
+      return SizedBox(
+        height: 140.0,
+        child: Center(
+          child: Text(
+            '0 h',
+            style: TextStyle(
+                fontFamily: 'Montserrat',
+                color: ThemeColors.darkBlue,
+                fontWeight: FontWeight.bold,
+                fontSize: 12.0),
           ),
-          Center(
-            child: Text(
-              totalHours.toString() + " h",
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: ThemeColors.darkBlue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12.0),
+        ),
+      );
+    } else {
+      return SizedBox(
+        height: 140.0,
+        child: Stack(
+          children: [
+            new charts.PieChart(
+              data,
+              animate: true,
+              animationDuration: Duration(seconds: 1),
+              defaultRenderer: new charts.ArcRendererConfig(
+                arcWidth: 18,
+                arcRendererDecorators: [
+                  new charts.ArcLabelDecorator(
+                    labelPosition: charts.ArcLabelPosition.outside,
+                    outsideLabelStyleSpec: charts.TextStyleSpec(
+                        color: charts.Color.fromHex(code: "#2D274CFF"),
+                        fontSize: 12),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+            Center(
+              child: Text(
+                totalHours.toString() + " h",
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    color: ThemeColors.darkBlue,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12.0),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   /// Method to assemble the weekly overview
@@ -339,7 +355,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                     Text(
-                      "Weekly",
+                      "Overview",
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           color: ThemeColors.darkBlue,
@@ -349,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 5,
                     ),
                     Text(
-                      "Overview",
+                      weeksInPast == 0 ? "This Week" : weeksInPast > 1 ? "$weeksInPast Weeks ago" : "$weeksInPast Week ago",
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           color: ThemeColors.darkBlue,
@@ -374,7 +390,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: _buildWeeklyActivityChart(activities),
               ),
               Container(
-                child: OverviewWidget(activities, 0),
+                child: OverviewWidget(activities, 0, weeksInPast),
               ),
             ],
           ),
@@ -417,7 +433,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 5,
                     ),
                     Text(
-                      _getCurrentMonthName(),
+                      _getMonthName(),
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           color: ThemeColors.darkBlue,
@@ -443,7 +459,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: _buildMonthlyActivityChart(activities),
               ),
               Container(
-                child: OverviewWidget(activities, 1),
+                child: OverviewWidget(activities, 1, monthsInPast),
               ),
             ],
           ),
@@ -535,7 +551,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 5,
                     ),
                     Text(
-                      DateTime.now().year.toString(),
+                    (DateTime.now().year - yearsInPast).toString(),
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           color: ThemeColors.darkBlue,
@@ -558,7 +574,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Container(
                 padding: EdgeInsets.only(top: 4),
-                child: OverviewWidget(activities, 2),
+                child: OverviewWidget(activities, 2, yearsInPast),
               ),
               Container(
                 padding: EdgeInsets.only(top: 16),
@@ -786,16 +802,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildWeeklyActivityChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
-        SortingDataService().getWeeklyActivity(activities);
-
-    /// include [weeksInPast]
+        SortingDataService().getWeeklyActivity(activities, weeksInPast);
 
     return _buildActivityBarChart(data, 160, true, true);
   }
 
   Widget _buildMonthlyActivityChart(List<RecordedActivity> activities) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> data =
-        SortingDataService().getMonthlyActivity(activities);
+        SortingDataService().getMonthlyActivity(activities, monthsInPast);
 
     return _buildActivityBarChart(data, 160, true, false);
   }
@@ -925,9 +939,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// Method to return the name of the current month
-  String _getCurrentMonthName() {
-    switch (DateTime.now().month) {
+  /// Method to return the name of the month for which the data has been retrieved
+  String _getMonthName() {
+    switch (DateTime.now().month - monthsInPast) {
       case DateTime.january:
         return "January";
       case DateTime.february:

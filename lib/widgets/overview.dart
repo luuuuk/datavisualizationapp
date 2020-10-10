@@ -9,16 +9,19 @@ import 'package:google_fonts/google_fonts.dart';
 /// Data is being given by [activities] whereas the [overviewCode] defines the
 /// time period over which the overview is being given, 0: one week 1: one month
 /// 2: one year
+/// [inThePast] defines how many weeks/months/years back in time the data shall
+/// be searched
 class OverviewWidget extends StatelessWidget {
   final List<RecordedActivity> activities;
   final int overviewCode;
+  final int inThePast;
 
-  OverviewWidget(this.activities, this.overviewCode);
+  OverviewWidget(this.activities, this.overviewCode, this.inThePast);
 
   @override
   Widget build(BuildContext context) {
     List<List<int>> dataList =
-        SortingDataService().getOverviewData(activities, overviewCode);
+        SortingDataService().getOverviewData(activities, overviewCode, inThePast);
     List<Icon> iconList = [
       Icon(
         ActivityInfo.activity1Icon,
