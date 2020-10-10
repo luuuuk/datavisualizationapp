@@ -914,12 +914,12 @@ class SortingDataService {
                   0);
             } else {
               expressionToEvaluate = ((dateTime.compareTo((DateTime.now()
-                  .subtract(Duration(days: 7 * inThePast)))
-                  .subtract(Duration(days: DateTime.now().weekday)))) >
+                  .subtract(Duration(days: 7 * (inThePast))))
+                  .subtract(Duration(days: DateTime.now().weekday)))) >=
                   0 &&
                   (dateTime.compareTo((DateTime.now()
-                      .subtract(Duration(days: 7 * (inThePast-1))))
-                      .subtract(Duration(days: DateTime.now().weekday - 1)))) <
+                      .subtract(Duration(days: (7 * (inThePast-1)))))
+                      .subtract(Duration(days: DateTime.now().weekday)))) <=
                       0);
             }
           }
