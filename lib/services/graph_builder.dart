@@ -179,6 +179,7 @@ class GraphBuilder {
   /// Method to build a horizontal BarChart with given [data]
   Widget buildTimeSeriesChartHorizontalBarChart(
       List<charts.Series<ActivitiesData, String>> data) {
+
     return charts.BarChart(
       data,
       animate: true,
