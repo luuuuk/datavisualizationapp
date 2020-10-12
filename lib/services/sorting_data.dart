@@ -122,7 +122,8 @@ class SortingDataService {
     return series;
   }
 
-  /// Method to get series containing only activities from the past week
+  /// Method to get series containing only activities of a week, where [weeksAgo]
+  /// indicates how far in the past the week in question is
   List<charts.Series<ActivitiesDataDateTime, DateTime>> getWeeklyActivity(
       List<RecordedActivity> recAct, int weeksAgo) {
     List<charts.Series<ActivitiesDataDateTime, DateTime>> series =
@@ -154,10 +155,14 @@ class SortingDataService {
         DateTime dateTime = DateTime(int.parse(stringDateSplitted[2]),
             int.parse(stringDateSplitted[1]), int.parse(stringDateSplitted[0]));
 
+        int subtractDays = 7*(weeksAgo - retroDiff) + retroDiff*DateTime.now().weekday;
+
+        print(subtractDays.toString());
+
         /// Check if the activity happened on the given date
         if (dateTime.compareTo((DateTime(DateTime.now().year,
                     DateTime.now().month, DateTime.now().day))
-                .subtract(Duration(days: (7*weeksAgo - retroDiff)))
+                .subtract(Duration(days: (7*(weeksAgo - retroDiff) + retroDiff*DateTime.now().weekday)))
                 .subtract(Duration(days: i))) ==
             0) {
           List stringDurationSplitted = activity.duration.split(":");
@@ -189,7 +194,7 @@ class SortingDataService {
           ActivitiesDataDateTime(
               (DateTime(DateTime.now().year,
                   DateTime.now().month, DateTime.now().day))
-                  .subtract(Duration(days: (7*weeksAgo  - retroDiff)))
+                  .subtract(Duration(days: (7*(weeksAgo - retroDiff) + retroDiff*DateTime.now().weekday)))
                   .subtract(Duration(days: i)),
               runningTimePerDay[i],
               ThemeColors.darkBlue));
@@ -198,7 +203,7 @@ class SortingDataService {
           ActivitiesDataDateTime(
               (DateTime(DateTime.now().year,
                   DateTime.now().month, DateTime.now().day))
-                  .subtract(Duration(days: (7*weeksAgo  - retroDiff)))
+                  .subtract(Duration(days: (7*(weeksAgo - retroDiff) + retroDiff*DateTime.now().weekday)))
                   .subtract(Duration(days: i)),
               cyclingTimePerDay[i],
               ThemeColors.orange));
@@ -207,7 +212,7 @@ class SortingDataService {
           ActivitiesDataDateTime(
               (DateTime(DateTime.now().year,
                   DateTime.now().month, DateTime.now().day))
-                  .subtract(Duration(days: (7*weeksAgo  - retroDiff)))
+                  .subtract(Duration(days: (7*(weeksAgo - retroDiff) + retroDiff*DateTime.now().weekday)))
                   .subtract(Duration(days: i)),
               climbingTimePerDay[i],
               ThemeColors.cream));
@@ -216,7 +221,7 @@ class SortingDataService {
           ActivitiesDataDateTime(
               (DateTime(DateTime.now().year,
                   DateTime.now().month, DateTime.now().day))
-                  .subtract(Duration(days: (7*weeksAgo  - retroDiff)))
+                  .subtract(Duration(days: (7*(weeksAgo - retroDiff) + retroDiff*DateTime.now().weekday)))
                   .subtract(Duration(days: i)),
               hikingTimePerDay[i],
               ThemeColors.blueGreenisShade1));
@@ -325,7 +330,7 @@ class SortingDataService {
     List<double> hikingTimePerDay = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     /// Go through all activities from today-day-1 to today
-    /// (weekday starts at 1
+    /// weekday starts at 1
 
     int loopEnd;
     int yearsAgo = 0;
