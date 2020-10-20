@@ -691,7 +691,7 @@ class SortingDataService {
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
           runningTimePerWeek[i],
-          ThemeColors.lightBlue));
+          ThemeColors.darkBlue));
       cyclingActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -703,7 +703,7 @@ class SortingDataService {
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
           climbingTimePerWeek[i],
-          ThemeColors.yellowGreenish));
+          ThemeColors.cream));
       hikingActivitiesTime.add(ActivitiesDataDateTime(
           DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -860,7 +860,7 @@ class SortingDataService {
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
           runningDistancePerWeek[i],
-          ThemeColors.lightBlue));
+          ThemeColors.darkBlue));
       cyclingActivitiesDistance.add(ActivitiesDataDateTime(
           DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
