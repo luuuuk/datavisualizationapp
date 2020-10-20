@@ -238,12 +238,17 @@ class GoalWidget extends StatelessWidget {
       case 2:
         return Icon(
           ActivityInfo.activity3Icon,
-          color: ThemeColors.yellowGreenish,
+          color: ThemeColors.cream,
         );
       case 3:
         return Icon(
           ActivityInfo.activity4Icon,
           color: ThemeColors.blueGreenisShade1,
+        );
+      case 4:
+        return Icon(
+          ActivityInfo.activity5Icon,
+          color: ThemeColors.lightBlue,
         );
       default:
         return Icon(
@@ -257,13 +262,15 @@ class GoalWidget extends StatelessWidget {
   _getActivityColor() {
     switch (activityType) {
       case 0:
-        return ThemeColors.lightBlue;
+        return ThemeColors.altBlueGreen;
       case 1:
         return ThemeColors.orange;
       case 2:
         return ThemeColors.cream;
       case 3:
         return ThemeColors.blueGreenisShade1;
+      case 4:
+        return ThemeColors.lightBlue;
       default:
         return ThemeColors.lightBlue;
     }
@@ -301,6 +308,9 @@ class GoalWidget extends StatelessWidget {
           break;
         case 3:
           goal = goal + ActivityInfo.activity4Name + " ";
+          break;
+        case 4:
+          goal = goal + ActivityInfo.activity5Name + " ";
           break;
         default:
           goal = goal + ActivityInfo.activity1Name + " ";

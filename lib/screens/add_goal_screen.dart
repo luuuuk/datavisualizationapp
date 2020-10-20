@@ -134,110 +134,139 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                       ),
                       Container(
                         padding: EdgeInsets.only(top: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  goalActivityValue = 0;
-                                  FocusScope.of(context).unfocus();
-                                });
-                              },
-                              child: AnimatedContainer(
-                                curve: Curves.fastOutSlowIn,
-                                duration: Duration(milliseconds: 500),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
-                                  color: goalActivityValue == 0
-                                      ? selectedColor
-                                      : unselectedColor,
-                                ),
-                                padding: EdgeInsets.all(16),
-                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: Icon(
-                                  ActivityInfo.activity1Icon,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  goalActivityValue = 1;
-                                  FocusScope.of(context).unfocus();
-                                });
-                              },
-                              child: AnimatedContainer(
-                                curve: Curves.fastOutSlowIn,
-                                duration: Duration(milliseconds: 500),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
-                                  color: goalActivityValue == 1
-                                      ? selectedColor
-                                      : unselectedColor,
-                                ),
-                                padding: EdgeInsets.all(16),
-                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: Icon(
-                                  ActivityInfo.activity2Icon,
-                                  color: Colors.white,
+                        child: SizedBox(
+                          height: 60,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    goalActivityValue = 0;
+                                    FocusScope.of(context).unfocus();
+                                  });
+                                },
+                                child: AnimatedContainer(
+                                  curve: Curves.fastOutSlowIn,
+                                  duration: Duration(milliseconds: 500),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
+                                    color: goalActivityValue == 0
+                                        ? selectedColor
+                                        : unselectedColor,
+                                  ),
+                                  padding: EdgeInsets.all(16),
+                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                  child: Icon(
+                                    ActivityInfo.activity1Icon,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  goalActivityValue = 2;
-                                  FocusScope.of(context).unfocus();
-                                });
-                              },
-                              child: AnimatedContainer(
-                                curve: Curves.fastOutSlowIn,
-                                duration: Duration(milliseconds: 500),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
-                                  color: goalActivityValue == 2
-                                      ? selectedColor
-                                      : unselectedColor,
-                                ),
-                                padding: EdgeInsets.all(16),
-                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: Icon(
-                                  ActivityInfo.activity3Icon,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  goalActivityValue = 3;
-                                  FocusScope.of(context).unfocus();
-                                });
-                              },
-                              child: AnimatedContainer(
-                                curve: Curves.fastOutSlowIn,
-                                duration: Duration(milliseconds: 500),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
-                                  color: goalActivityValue == 3
-                                      ? selectedColor
-                                      : unselectedColor,
-                                ),
-                                padding: EdgeInsets.all(16),
-                                margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: Icon(
-                                  ActivityInfo.activity4Icon,
-                                  color: Colors.white,
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    goalActivityValue = 1;
+                                    FocusScope.of(context).unfocus();
+                                  });
+                                },
+                                child: AnimatedContainer(
+                                  curve: Curves.fastOutSlowIn,
+                                  duration: Duration(milliseconds: 500),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
+                                    color: goalActivityValue == 1
+                                        ? selectedColor
+                                        : unselectedColor,
+                                  ),
+                                  padding: EdgeInsets.all(16),
+                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                  child: Icon(
+                                    ActivityInfo.activity2Icon,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    goalActivityValue = 2;
+                                    FocusScope.of(context).unfocus();
+                                  });
+                                },
+                                child: AnimatedContainer(
+                                  curve: Curves.fastOutSlowIn,
+                                  duration: Duration(milliseconds: 500),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
+                                    color: goalActivityValue == 2
+                                        ? selectedColor
+                                        : unselectedColor,
+                                  ),
+                                  padding: EdgeInsets.all(16),
+                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                  child: Icon(
+                                    ActivityInfo.activity3Icon,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    goalActivityValue = 3;
+                                    FocusScope.of(context).unfocus();
+                                  });
+                                },
+                                child: AnimatedContainer(
+                                  curve: Curves.fastOutSlowIn,
+                                  duration: Duration(milliseconds: 500),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
+                                    color: goalActivityValue == 3
+                                        ? selectedColor
+                                        : unselectedColor,
+                                  ),
+                                  padding: EdgeInsets.all(16),
+                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                  child: Icon(
+                                    ActivityInfo.activity4Icon,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    goalActivityValue = 4;
+                                    FocusScope.of(context).unfocus();
+                                  });
+                                },
+                                child: AnimatedContainer(
+                                  curve: Curves.fastOutSlowIn,
+                                  duration: Duration(milliseconds: 500),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
+                                    color: goalActivityValue == 4
+                                        ? selectedColor
+                                        : unselectedColor,
+                                  ),
+                                  padding: EdgeInsets.all(16),
+                                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                  child: Icon(
+                                    ActivityInfo.activity5Icon,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Container(

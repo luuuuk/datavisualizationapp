@@ -190,10 +190,9 @@ class _AddDataScreenState extends State<AddDataScreen> {
                           margin: EdgeInsets.only(top: 16),
                           child: SizedBox(
                             height: 140,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
                               children: [
                                 GestureDetector(
                                   onTap: () {
@@ -212,7 +211,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                           : unselectedColor,
                                     ),
                                     padding: EdgeInsets.all(16),
-                                    margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                    margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -255,7 +254,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                           : unselectedColor,
                                     ),
                                     padding: EdgeInsets.all(16),
-                                    margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                    margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -298,7 +297,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                           : unselectedColor,
                                     ),
                                     padding: EdgeInsets.all(16),
-                                    margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                    margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -341,7 +340,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                           : unselectedColor,
                                     ),
                                     padding: EdgeInsets.all(16),
-                                    margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                    margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -360,6 +359,49 @@ class _AddDataScreenState extends State<AddDataScreen> {
                                           padding: EdgeInsets.only(top: 16),
                                           child: Icon(
                                             ActivityInfo.activity4Icon,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      activityTypeValue = 4;
+                                    });
+                                  },
+                                  child: AnimatedContainer(
+                                    curve: Curves.fastOutSlowIn,
+                                    duration: Duration(milliseconds: 500),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(16)),
+                                      color: activityTypeValue == 4
+                                          ? selectedColor
+                                          : unselectedColor,
+                                    ),
+                                    padding: EdgeInsets.all(16),
+                                    margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        RotatedBox(
+                                          quarterTurns: 3,
+                                          child: Text(
+                                            ActivityInfo.activity5Name,
+                                            style: TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              color: Colors.white,
+                                              fontSize: 14.0,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(top: 16),
+                                          child: Icon(
+                                            ActivityInfo.activity5Icon,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -593,6 +635,9 @@ class _AddDataScreenState extends State<AddDataScreen> {
         break;
       case 3:
         activityType = ActivityInfo.activity4Name;
+        break;
+      case 4:
+        activityType = ActivityInfo.activity5Name;
         break;
       default:
         activityType = ActivityInfo.activity1Name;

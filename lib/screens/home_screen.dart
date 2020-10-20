@@ -525,6 +525,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: <Widget>[
         Container(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
@@ -573,11 +574,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 4),
                 child: OverviewWidget(activities, 2, yearsInPast),
               ),
               Container(
-                padding: EdgeInsets.only(top: 16),
+                padding: EdgeInsets.only(top: 8),
                 child: _buildYearlyDurationChart(activities),
               ),
               Container(

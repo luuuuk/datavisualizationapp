@@ -228,10 +228,9 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                           margin: EdgeInsets.only(top: 16),
                           child: SizedBox(
                             height: 140,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
                               children: [
                                 GestureDetector(
                                   onTap: () {
@@ -250,7 +249,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                           : unselectedColor,
                                     ),
                                     padding: EdgeInsets.all(16),
-                                    margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                    margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -293,7 +292,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                           : unselectedColor,
                                     ),
                                     padding: EdgeInsets.all(16),
-                                    margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                    margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -336,7 +335,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                           : unselectedColor,
                                     ),
                                     padding: EdgeInsets.all(16),
-                                    margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                    margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -379,7 +378,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                           : unselectedColor,
                                     ),
                                     padding: EdgeInsets.all(16),
-                                    margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                    margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -398,6 +397,49 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                                           padding: EdgeInsets.only(top: 16),
                                           child: Icon(
                                             ActivityInfo.activity4Icon,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      activityTypeValue = 4;
+                                    });
+                                  },
+                                  child: AnimatedContainer(
+                                    curve: Curves.fastOutSlowIn,
+                                    duration: Duration(milliseconds: 500),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(16)),
+                                      color: activityTypeValue == 4
+                                          ? selectedColor
+                                          : unselectedColor,
+                                    ),
+                                    padding: EdgeInsets.all(16),
+                                    margin: EdgeInsets.fromLTRB(16, 0, 8, 0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        RotatedBox(
+                                          quarterTurns: 3,
+                                          child: Text(
+                                            ActivityInfo.activity5Name,
+                                            style: TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              color: Colors.white,
+                                              fontSize: 14.0,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(top: 16),
+                                          child: Icon(
+                                            ActivityInfo.activity5Icon,
                                             color: Colors.white,
                                           ),
                                         ),
@@ -634,13 +676,15 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
     switch(activityTypeValue){
       case 0: activityType = ActivityInfo.activity1Name;
       break;
-      case 1: activityType = activityType = ActivityInfo.activity2Name;
+      case 1: activityType = ActivityInfo.activity2Name;
       break;
-      case 2: activityType = activityType = ActivityInfo.activity3Name;
+      case 2: activityType = ActivityInfo.activity3Name;
       break;
-      case 3:activityType = activityType = ActivityInfo.activity4Name;
+      case 3: activityType = ActivityInfo.activity4Name;
       break;
-      default: activityType = activityType = ActivityInfo.activity1Name;
+      case 4: activityType = ActivityInfo.activity5Name;
+      break;
+      default: activityType = ActivityInfo.activity1Name;
     }
 
     return activityType;
@@ -672,6 +716,7 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
       case ActivityInfo.activity2Name: return 1;
       case ActivityInfo.activity3Name: return 2;
       case ActivityInfo.activity4Name: return 3;
+      case ActivityInfo.activity5Name: return 4;
       default: return 0;
     }
   }

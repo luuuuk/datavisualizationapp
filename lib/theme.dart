@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class ThemeColors {
   static const darkBlue = const Color(0xFF2D274C);
-  static const lightBlue = const Color(0xFF306FA5);
+  static const lightBlue = const Color(0xFF165099);
   static const blueGreenis = const Color(0xFF95C4B9);
   static const blueGreenisShade1 = const Color(0xFF688C96);
   static const blueGreenisShade2 = const Color(0xFF76A5AE);
@@ -14,8 +14,8 @@ class ThemeColors {
   static const darkGrey = const Color(0xFF2E405F);
   static const mediumBlue = const Color(0xFF3A3654);
   static const mediumGrey = const Color(0xFF48475A);
-  static const cream = const Color(0xFFE6D8B4);
-  static const altGreen = const Color(0xFF688C96);
+  static const cream = const Color(0xFFF4C789);
+  static const altBlueGreen = const Color(0xFF478993);
 }
 
 
@@ -43,9 +43,11 @@ class ActivityInfo {
   static const String activity2Name = "Cycling";
   static const String activity3Name = "Climbing";
   static const String activity4Name = "Hiking";
+  static const String activity5Name = "Skiing";
 
   static const IconData activity1Icon = Icons.directions_run;
   static const IconData activity2Icon = Icons.directions_bike;
   static const IconData activity3Icon = Icons.filter_hdr;
   static const IconData activity4Icon = Icons.directions_walk;
+  static const IconData activity5Icon = Icons.ac_unit;
 }

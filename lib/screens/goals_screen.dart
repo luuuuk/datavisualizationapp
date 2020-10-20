@@ -35,6 +35,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
       "Climbing",
       style: GoogleFonts.montserrat(),
     ),
+    3: Text(
+      "Hiking",
+      style: GoogleFonts.montserrat(),
+    ),
+    4: Text(
+      "Skiing",
+      style: GoogleFonts.montserrat(),
+    ),
   };
   final Map<int, Widget> goalType = <int, Widget>{
     0: Text(

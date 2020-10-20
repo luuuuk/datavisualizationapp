@@ -318,13 +318,15 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
     Icon typeIcon;
 
     switch(activity.activityType){
-      case ActivityInfo.activity1Name: typeIcon = Icon(ActivityInfo.activity1Icon, color: ThemeColors.lightBlue,);
+      case ActivityInfo.activity1Name: typeIcon = Icon(ActivityInfo.activity1Icon, color: ThemeColors.altBlueGreen,);
       break;
       case ActivityInfo.activity2Name: typeIcon = Icon(ActivityInfo.activity2Icon, color: ThemeColors.orange,);
       break;
-      case ActivityInfo.activity3Name: typeIcon = Icon(ActivityInfo.activity3Icon, color: ThemeColors.yellowGreenish,);
+      case ActivityInfo.activity3Name: typeIcon = Icon(ActivityInfo.activity3Icon, color: ThemeColors.cream,);
       break;
       case ActivityInfo.activity4Name: typeIcon = Icon(ActivityInfo.activity4Icon, color: ThemeColors.blueGreenisShade2,);
+      break;
+      case ActivityInfo.activity5Name: typeIcon = Icon(ActivityInfo.activity5Icon, color: ThemeColors.lightBlue,);
       break;
       default: typeIcon = Icon(ActivityInfo.activity1Icon, color: ThemeColors.lightBlue,);
     }
