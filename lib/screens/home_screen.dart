@@ -747,6 +747,7 @@ class _HomeScreenState extends State<HomeScreen> {
         SortingDataService().getActivityDistancePast12Weeks(activities);
 
     data.removeAt(0);
+    data.removeAt(2);
     data.removeLast();
 
     return Row(
@@ -782,6 +783,7 @@ class _HomeScreenState extends State<HomeScreen> {
         SortingDataService().getActivityDistancePast12Weeks(activities);
 
     data.removeAt(1);
+    data.removeAt(2);
     data.removeLast();
 
     return Row(
