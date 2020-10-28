@@ -31,7 +31,7 @@ class RouterProvider {
         return PageTransition(child: ActivityListScreen(), type: PageTransitionType.fade);
         break;
         case AddGoalScreen.routeName:
-        return PageTransition(child: AddGoalScreen(), type: PageTransitionType.downToUp);
+        return PageTransition(child: AddGoalScreen(), type: PageTransitionType.bottomToTop);
         break;
       default:
         return null;

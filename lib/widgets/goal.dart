@@ -262,7 +262,7 @@ class GoalWidget extends StatelessWidget {
   _getActivityColor() {
     switch (activityType) {
       case 0:
-        return ThemeColors.altBlueGreen;
+        return ThemeColors.darkBlue;
       case 1:
         return ThemeColors.orange;
       case 2:
