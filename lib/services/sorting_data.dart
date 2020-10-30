@@ -172,7 +172,6 @@ class SortingDataService {
 
         int subtractDays =
             7 * (weeksAgo - retroDiff) + retroDiff * DateTime.now().weekday;
-        print("Subtracting " + (subtractDays + i).toString() + " days");
 
         DateTime compareDate = (DateTime(
             DateTime.now().year,
@@ -262,34 +261,28 @@ class SortingDataService {
           climbingActivitiesTime.length != 7 &&
           hikingActivitiesTime.length != 7 &&
           skiingActivitiesTime.length != 7) {
+
+        DateTime dateToAdd = DateTime(DateTime.now().year, DateTime.now().month,
+            (DateTime.now().day + daysToAdd + 1));
+
         runningActivitiesTime.add(ActivitiesDataDateTime(
-            DateTime(DateTime.now().year, DateTime.now().month,
-                    DateTime.now().day)
-                .add(Duration(days: daysToAdd + 1)),
+            dateToAdd,
             runningTimePerDay[DateTime.now().weekday + daysToAdd],
             ThemeColors.darkBlue));
         cyclingActivitiesTime.add(ActivitiesDataDateTime(
-            DateTime(DateTime.now().year, DateTime.now().month,
-                    DateTime.now().day)
-                .add(Duration(days: daysToAdd + 1)),
+            dateToAdd,
             cyclingTimePerDay[DateTime.now().weekday + daysToAdd],
             ThemeColors.orange));
         climbingActivitiesTime.add(ActivitiesDataDateTime(
-            DateTime(DateTime.now().year, DateTime.now().month,
-                    DateTime.now().day)
-                .add(Duration(days: daysToAdd + 1)),
+            dateToAdd,
             climbingTimePerDay[DateTime.now().weekday + daysToAdd],
             ThemeColors.cream));
         hikingActivitiesTime.add(ActivitiesDataDateTime(
-            DateTime(DateTime.now().year, DateTime.now().month,
-                    DateTime.now().day)
-                .add(Duration(days: daysToAdd + 1)),
+            dateToAdd,
             hikingTimePerDay[DateTime.now().weekday + daysToAdd],
             ThemeColors.blueGreenisShade1));
         skiingActivitiesTime.add(ActivitiesDataDateTime(
-            DateTime(DateTime.now().year, DateTime.now().month,
-                    DateTime.now().day)
-                .add(Duration(days: daysToAdd + 1)),
+            dateToAdd,
             skiingTimePerDay[DateTime.now().weekday + daysToAdd],
             ThemeColors.lightBlue));
 
@@ -370,171 +363,11 @@ class SortingDataService {
     List<ActivitiesDataDateTime> skiingActivitiesTime =
         new List<ActivitiesDataDateTime>();
 
-    List<double> runningTimePerDay = [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ];
-    List<double> cyclingTimePerDay = [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ];
-    List<double> climbingTimePerDay = [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ];
-    List<double> hikingTimePerDay = [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ];
-    List<double> skiingTimePerDay = [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ];
+    List<double> runningTimePerDay = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    List<double> cyclingTimePerDay = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    List<double> climbingTimePerDay = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    List<double> hikingTimePerDay = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    List<double> skiingTimePerDay = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
     /// Go through all activities from today-day-1 to today
     /// weekday starts at 1
@@ -547,12 +380,10 @@ class SortingDataService {
       if (monthsAgo > 11) {
         yearsAgo = monthsAgo % 12;
         monthsAgo -= 12 * yearsAgo;
-        print("yearsAgo: " + yearsAgo.toString());
       }
       loopEnd = DateTime(DateTime.now().year - yearsAgo,
               (DateTime.now().month - (monthsAgo - 1)), 0)
           .day;
-      print("Calculated loop end :" + loopEnd.toString());
     }
 
     for (int i = 0; i < loopEnd; i++) {
@@ -567,13 +398,9 @@ class SortingDataService {
         if (monthsAgo == 0 && yearsAgo == 0) {
           compareDate = DateTime(DateTime.now().year, DateTime.now().month,
               (DateTime.now().day - i));
-          print("compareDate: " + compareDate.toString());
         } else {
-          print("Detected monthsInPast > 0, mothsInPast :" +
-              monthsAgo.toString());
           compareDate = DateTime(DateTime.now().year - yearsAgo,
               DateTime.now().month - (monthsAgo - 1), (0 - i));
-          print("compareDate: " + compareDate.toString());
         }
 
         /// Check if the activity happened on the given date
@@ -644,34 +471,28 @@ class SortingDataService {
           cyclingActivitiesTime.length != 31 &&
           climbingActivitiesTime.length != 31 &&
           hikingActivitiesTime.length != 31) {
+
+        DateTime dateToAdd = DateTime(DateTime.now().year, DateTime.now().month,
+            (DateTime.now().day + daysToAdd + 1));
+
         runningActivitiesTime.add(ActivitiesDataDateTime(
-            DateTime(DateTime.now().year, DateTime.now().month,
-                    DateTime.now().day)
-                .add(Duration(days: daysToAdd + 1)),
+            dateToAdd,
             runningTimePerDay[DateTime.now().day + daysToAdd],
             ThemeColors.darkBlue));
         cyclingActivitiesTime.add(ActivitiesDataDateTime(
-            DateTime(DateTime.now().year, DateTime.now().month,
-                    DateTime.now().day)
-                .add(Duration(days: daysToAdd + 1)),
+            dateToAdd,
             cyclingTimePerDay[DateTime.now().day + daysToAdd],
             ThemeColors.orange));
         climbingActivitiesTime.add(ActivitiesDataDateTime(
-            DateTime(DateTime.now().year, DateTime.now().month,
-                    DateTime.now().day)
-                .add(Duration(days: daysToAdd + 1)),
+            dateToAdd,
             climbingTimePerDay[DateTime.now().day + daysToAdd],
             ThemeColors.cream));
         hikingActivitiesTime.add(ActivitiesDataDateTime(
-            DateTime(DateTime.now().year, DateTime.now().month,
-                    DateTime.now().day)
-                .add(Duration(days: daysToAdd + 1)),
+            dateToAdd,
             hikingTimePerDay[DateTime.now().day + daysToAdd],
             ThemeColors.blueGreenisShade1));
         skiingActivitiesTime.add(ActivitiesDataDateTime(
-            DateTime(DateTime.now().year, DateTime.now().month,
-                    DateTime.now().day)
-                .add(Duration(days: daysToAdd + 1)),
+            dateToAdd,
             skiingTimePerDay[DateTime.now().day + daysToAdd],
             ThemeColors.lightBlue));
 
@@ -833,34 +654,29 @@ class SortingDataService {
     }
 
     for (int i = 0; i < 12; i++) {
+
+      DateTime dateToAdd = DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day)
+          .subtract(Duration(days: 7 * i + DateTime.now().weekday));
+
       runningActivitiesTime.add(ActivitiesDataDateTime(
-          DateTime(
-                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
+          dateToAdd,
           runningTimePerWeek[i],
           ThemeColors.darkBlue));
       cyclingActivitiesTime.add(ActivitiesDataDateTime(
-          DateTime(
-                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
+          dateToAdd,
           cyclingTimePerWeek[i],
           ThemeColors.orange));
       climbingActivitiesTime.add(ActivitiesDataDateTime(
-          DateTime(
-                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
+          dateToAdd,
           climbingTimePerWeek[i],
           ThemeColors.cream));
       hikingActivitiesTime.add(ActivitiesDataDateTime(
-          DateTime(
-                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
+          dateToAdd,
           hikingTimePerWeek[i],
           ThemeColors.blueGreenisShade1));
       skiingActivitiesTime.add(ActivitiesDataDateTime(
-          DateTime(
-                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
+          dateToAdd,
           skiingTimePerWeek[i],
           ThemeColors.lightBlue));
     }
@@ -1002,28 +818,25 @@ class SortingDataService {
     }
 
     for (int i = 0; i < 12; i++) {
+
+      DateTime dateToAdd =  DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day)
+          .subtract(Duration(days: 7 * i + DateTime.now().weekday));
+
       runningActivitiesDistance.add(ActivitiesDataDateTime(
-          DateTime(
-                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
+          dateToAdd,
           runningDistancePerWeek[i],
           ThemeColors.darkBlue));
       cyclingActivitiesDistance.add(ActivitiesDataDateTime(
-          DateTime(
-                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
+          dateToAdd,
           cyclingDistancePerWeek[i],
           ThemeColors.orange));
       hikingActivitiesDistance.add(ActivitiesDataDateTime(
-          DateTime(
-                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
+          dateToAdd,
           hikingDistancePerWeek[i],
           ThemeColors.blueGreenisShade1));
       skiingActivitiesDistance.add(ActivitiesDataDateTime(
-          DateTime(
-                  DateTime.now().year, DateTime.now().month, DateTime.now().day)
-              .subtract(Duration(days: 7 * i + DateTime.now().weekday)),
+          dateToAdd,
           skiingDistancePerWeek[i],
           ThemeColors.lightBlue));
     }
