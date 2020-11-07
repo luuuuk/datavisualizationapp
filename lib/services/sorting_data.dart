@@ -1018,8 +1018,12 @@ class SortingDataService {
           {
             if (DateTime.now().month - inThePast < 1) {
             } else {
+              int yearDiff = 0;
+              if(inThePast > 12){
+                yearDiff = inThePast % 12;
+              }
               expressionToEvaluate =
-                  (dateTime.month == (DateTime.now().month - inThePast));
+                  ((dateTime.month == (DateTime.now().month - inThePast)) && (dateTime.year == (DateTime.now().year-yearDiff)));
             }
           }
           break;
