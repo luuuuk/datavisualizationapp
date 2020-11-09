@@ -15,12 +15,13 @@ Add your data for four different activity types, see your stats, set goals and f
 - Cycling
 - Climbing
 - Hiking
+- Skiing
 
 2. Stats:
-- weekly overview
-- monthly overview
+- weekly overview (with retroview of previous weeks)
+- monthly overview (with retroview of previuos months)
 - 12 weeks overview
-- annual overview
+- annual overview (with retroview of previous years)
 - average speed of the last 25 activities in the categories **Running** and **Cycling**
 
 3. Goals for a specific activity type, for a specific time span and for a specific goal type:
@@ -33,4 +34,4 @@ Add your data for four different activity types, see your stats, set goals and f
   - time
 
 ## Screenshots
-<img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-27.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-31.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-33.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-52-28.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-34.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-36.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-38.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-40.jpg" width=30% height=30%>
+<img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-27.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-31.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/IMG_4216.PNG" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-52-28.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-34.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-36.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-11-09_15-05-37.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-38.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/photo_2020-08-28_18-51-40.jpg" width=30% height=30%><img src="https://github.com/luuuuk/datavisualizationapp/raw/develop/test/IMG_4217.PNG" width=30% height=30%>
