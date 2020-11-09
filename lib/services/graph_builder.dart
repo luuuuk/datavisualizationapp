@@ -8,13 +8,15 @@ class GraphBuilder {
       List<charts.Series<ActivitiesPrecisionNumData, int>> data) {
     return charts.ScatterPlotChart(
       data,
-      animate: false,
+      animate: true,
+      animationDuration: Duration(seconds: 1),
       customSeriesRenderers: [
         new charts.LineRendererConfig(
             customRendererId: 'progressionLine',
             layoutPaintOrder: charts.LayoutViewPaintOrder.point + 1),
       ],
       domainAxis: charts.NumericAxisSpec(
+        tickProviderSpec: charts.BasicNumericTickProviderSpec(desiredMinTickCount: 5),
         renderSpec: charts.GridlineRendererSpec(
           labelStyle: charts.TextStyleSpec(
             fontSize: 10,
