@@ -15,12 +15,13 @@ Add your data for four different activity types, see your stats, set goals and f
 - Cycling
 - Climbing
 - Hiking
+- Skiing
 
 2. Stats:
-- weekly overview
-- monthly overview
+- weekly overview (with retroview of previous weeks)
+- monthly overview (with retroview of previuos months)
 - 12 weeks overview
-- annual overview
+- annual overview (with retroview of previous years)
 - average speed of the last 25 activities in the categories **Running** and **Cycling**
 
 3. Goals for a specific activity type, for a specific time span and for a specific goal type:
