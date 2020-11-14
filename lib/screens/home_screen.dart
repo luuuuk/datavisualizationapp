@@ -880,7 +880,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildAverageSpeedProgression(
       List<RecordedActivity> activities, int type, bool inverseColors) {
     List<charts.Series<ActivitiesPrecisionNumData, int>> data =
-        SortingDataService().getAverageSpeedData(activities, 25, type, false);
+        SortingDataService().getAverageSpeedData(activities, 24, type, false);
 
     String nameToUse = type == 0 ? ActivityInfo.activity1Name : ActivityInfo.activity2Name;
 
