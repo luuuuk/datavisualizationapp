@@ -152,7 +152,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                   duration: Duration(milliseconds: 500),
                                   decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
+                                        BorderRadius.all(Radius.circular(16)),
                                     color: goalActivityValue == 0
                                         ? selectedColor
                                         : unselectedColor,
@@ -177,7 +177,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                   duration: Duration(milliseconds: 500),
                                   decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
+                                        BorderRadius.all(Radius.circular(16)),
                                     color: goalActivityValue == 1
                                         ? selectedColor
                                         : unselectedColor,
@@ -202,7 +202,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                   duration: Duration(milliseconds: 500),
                                   decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
+                                        BorderRadius.all(Radius.circular(16)),
                                     color: goalActivityValue == 2
                                         ? selectedColor
                                         : unselectedColor,
@@ -227,7 +227,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                   duration: Duration(milliseconds: 500),
                                   decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
+                                        BorderRadius.all(Radius.circular(16)),
                                     color: goalActivityValue == 3
                                         ? selectedColor
                                         : unselectedColor,
@@ -252,7 +252,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                   duration: Duration(milliseconds: 500),
                                   decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(16)),
+                                        BorderRadius.all(Radius.circular(16)),
                                     color: goalActivityValue == 4
                                         ? selectedColor
                                         : unselectedColor,
@@ -314,7 +314,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                 duration: Duration(milliseconds: 500),
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                                      BorderRadius.all(Radius.circular(16)),
                                   color: goalTimeFrameValue == 0
                                       ? selectedColor
                                       : unselectedColor,
@@ -323,13 +323,13 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
                                 child: Text(
                                   "Weekly",
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                       fontFamily: 'Montserrat',
                                       color: Colors.white,
                                       fontSize: 14.0),
                                 ),
-                                ),
                               ),
+                            ),
                             GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -342,16 +342,16 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                 duration: Duration(milliseconds: 500),
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                                      BorderRadius.all(Radius.circular(16)),
                                   color: goalTimeFrameValue == 1
                                       ? selectedColor
                                       : unselectedColor,
                                 ),
                                 padding: EdgeInsets.all(16),
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child:  Text(
+                                child: Text(
                                   "Monthly",
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                       fontFamily: 'Montserrat',
                                       color: Colors.white,
                                       fontSize: 14.0),
@@ -370,16 +370,16 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                 duration: Duration(milliseconds: 500),
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                                      BorderRadius.all(Radius.circular(16)),
                                   color: goalTimeFrameValue == 2
                                       ? selectedColor
                                       : unselectedColor,
                                 ),
                                 padding: EdgeInsets.all(16),
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child:  Text(
+                                child: Text(
                                   "Annual",
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                       fontFamily: 'Montserrat',
                                       color: Colors.white,
                                       fontSize: 14.0),
@@ -434,7 +434,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                 duration: Duration(milliseconds: 500),
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                                      BorderRadius.all(Radius.circular(16)),
                                   color: goalTypeValue == 0
                                       ? selectedColor
                                       : unselectedColor,
@@ -443,7 +443,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
                                 child: Text(
                                   "Distance",
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                       fontFamily: 'Montserrat',
                                       color: Colors.white,
                                       fontSize: 14.0),
@@ -462,16 +462,16 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                 duration: Duration(milliseconds: 500),
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                                      BorderRadius.all(Radius.circular(16)),
                                   color: goalTypeValue == 1
                                       ? selectedColor
                                       : unselectedColor,
                                 ),
                                 padding: EdgeInsets.all(16),
                                 margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child:  Text(
+                                child: Text(
                                   "Time",
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                       fontFamily: 'Montserrat',
                                       color: Colors.white,
                                       fontSize: 14.0),
@@ -530,15 +530,15 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                           Container(
                             width: MediaQuery.of(context).size.width / 3,
                             child: TextFormField(
-                              onEditingComplete: () => FocusScope.of(context).unfocus(),
-                              inputFormatters: <TextInputFormatter>[
-                                //FilteringTextInputFormatter.digitsOnly
-                              ],
+                              onEditingComplete: () =>
+                                  FocusScope.of(context).unfocus(),
                               onChanged: (String enteredDistance) => {
                                 setState(() {
-                                  selectedGoalValue = int.parse(enteredDistance);
-                                  _goalValueController.value =
-                                      TextEditingValue(text: enteredDistance);
+                                  int newDistance =
+                                      int.tryParse(enteredDistance);
+                                  if (newDistance != null) {
+                                    selectedGoalValue = newDistance;
+                                  }
                                 })
                               },
                               controller: _goalValueController,
@@ -548,9 +548,9 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                                     ? 'Enter Distance'
                                     : 'Enter Duration',
                                 hintStyle: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      color: ThemeColors.mediumBlue,
-                                      fontSize: 12.0),
+                                    fontFamily: 'Montserrat',
+                                    color: ThemeColors.mediumBlue,
+                                    fontSize: 12.0),
                               ),
                               textInputAction: TextInputAction.done,
                               cursorColor: ThemeColors.mediumBlue,
@@ -562,9 +562,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                             ),
                           ),
                           Text(
-                              goalTypeValue == 0
-                                  ? 'km'
-                                  : 'hours',
+                            goalTypeValue == 0 ? 'km' : 'hours',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 color: ThemeColors.mediumBlue,
@@ -580,13 +578,16 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                   onTap: () => saveEntries(),
                   child: Container(
                     alignment: Alignment.bottomRight,
-                    margin: EdgeInsets.only(left: MediaQuery.of(context).size.width / 1.5, bottom: 32),
+                    margin: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width / 1.5,
+                        bottom: 32),
                     padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(32), bottomLeft: Radius.circular(32)),
-                      color: ThemeColors.mediumBlue
-                    ),
-                    child:Text(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(32),
+                            bottomLeft: Radius.circular(32)),
+                        color: ThemeColors.mediumBlue),
+                    child: Text(
                       'Save',
                       style: TextStyle(
                           fontFamily: 'Montserrat',

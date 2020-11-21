@@ -5,6 +5,8 @@ import 'package:data_visualization_app/services/database_manager.dart';
 import 'package:data_visualization_app/widgets/border_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -32,6 +34,10 @@ class _AddDataScreenState extends State<AddDataScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    _dateController.value = TextEditingValue(
+        text: DateFormat('dd.MM.yyyy').format(selectedDate));
+
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       key: _scaffoldKey,
@@ -544,8 +550,10 @@ class _AddDataScreenState extends State<AddDataScreen> {
                           child: TextFormField(
                             onChanged: (String enteredDistance) => {
                               setState(() {
-                                selectedDistance = int.parse(enteredDistance);
-                                _distanceController.value = TextEditingValue(text: enteredDistance);
+                                int newDistance = int.tryParse(enteredDistance);
+                                if(newDistance != null){
+                                  selectedDistance = newDistance;
+                                }
                               })
                             },
                             controller: _distanceController,

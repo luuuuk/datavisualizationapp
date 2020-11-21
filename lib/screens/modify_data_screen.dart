@@ -582,14 +582,17 @@ class _ModifyDataScreenState extends State<ModifyDataScreen> {
                           child: TextFormField(
                             onChanged: (String enteredDistance) => {
                               setState(() {
-                                selectedDistance = int.parse(enteredDistance);
-                                _distanceController.value = TextEditingValue(text: enteredDistance);
+                                int newDistance = int.tryParse(enteredDistance);
+                                if(newDistance != null){
+                                  selectedDistance = newDistance;
+                                }
                               })
                             },
                             controller: _distanceController,
                             decoration: InputDecoration.collapsed(hintText: "Activity Distance"),
                             keyboardType: TextInputType.numberWithOptions(),
                             textInputAction: TextInputAction.done,
+                            cursorColor: Colors.white,
                           ),
                         ),
                       ],
